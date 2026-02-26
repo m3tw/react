@@ -1,0 +1,62 @@
+#root {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.app-shell {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.app-header h1 {
+  margin: 0.25rem 0 0;
+  font-size: 2rem;
+}
+
+.story-badge {
+  margin: 0;
+  color: #3554d1;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.m3-reference-card {
+  border: 1px solid #d0d7de;
+  border-radius: 16px;
+  padding: 1.25rem;
+  background: #ffffff;
+  box-shadow: 0 4px 16px rgb(15 23 42 / 8%);
+}
+
+.m3-reference-card h2 {
+  margin: 0;
+  font-size: 1.4rem;
+}
+
+.m3-reference-card p {
+  margin: 0.75rem 0 0;
+  color: #334155;
+}
+
+@media (prefers-color-scheme: dark) {
+  #root {
+    color: #f8fafc;
+  }
+
+  .story-badge {
+    color: #93c5fd;
+  }
+
+  .m3-reference-card {
+    border-color: #334155;
+    background: #111827;
+    box-shadow: none;
+  }
+
+  .m3-reference-card p {
+    color: #cbd5e1;
+  }
+}
