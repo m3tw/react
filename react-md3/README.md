@@ -1,73 +1,99 @@
-# React + TypeScript + Vite
+# react-md3 Getting-Started (<= 5 Minuten)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Kompakter Einstieg vom frischen Setup bis zur ersten produktiven Komponente (`M3ReferenceCard`).
 
-Currently, two official plugins are available:
+## 1) Voraussetzungen
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Node.js 24.x LTS
+- npm 11.x, pnpm 10.x, Yarn 4.x oder Bun 1.3.x
+- Pro Working Copy genau einen Package-Manager verwenden
+- Fuer pnpm/yarn vorab: `corepack enable`
 
-## React Compiler
+## 2) Setup und Start
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### npm
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+cd react-md3
+npm install
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### pnpm
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+cd react-md3
+pnpm install
+pnpm dev
 ```
+
+### yarn
+
+```bash
+cd react-md3
+yarn install
+yarn dev
+```
+
+### bun
+
+```bash
+cd react-md3
+bun install
+bun run dev
+```
+
+## 3) Verifikation des 5-Minuten-Pfads
+
+Oeffne die lokale URL (standardmaessig `http://localhost:5173`) und pruefe:
+
+1. Story-Badge: `Story 1.3 Getting Started`
+2. Headline: `M3 Getting Started ist bereit`
+3. Sichtbare Komponente: `M3 Referenzkomponente`
+
+Damit ist mindestens eine produktive M3-Komponente lauffaehig integriert.
+
+## 4) API-Hinweise + Standardbeispiel
+
+Die Komponente wird ueber den Public Barrel genutzt:
+
+- `src/App.tsx` importiert aus `./index`
+- `src/index.ts` exportiert aus `./components`
+- `src/components/index.ts` exportiert `M3ReferenceCard`
+- Keine Deep-Imports verwenden
+
+### Importpfad in `src/App.tsx`
+
+```tsx
+import { M3ReferenceCard } from './index'
+```
+
+### Standardbeispiel
+
+```tsx
+<M3ReferenceCard
+  title="M3 Referenzkomponente"
+  supportingText="Diese erste produktive Komponente verifiziert den lauffaehigen 5-Minuten-Flow."
+/>
+```
+
+### Relevante Props
+
+- `title: string` (required)
+- `supportingText?: string` (optional, Fallbacktext wird automatisch gesetzt)
+
+## 5) Quality Gates
+
+Pflicht-Gates fuer diese Story:
+
+```bash
+npm run lint
+npm run test
+npm run build
+```
+
+## 6) Troubleshooting
+
+- Package-Manager fehlt: `corepack enable` ausfuehren und Version pruefen
+- Importfehler: nur Public API (`src/index.ts`) verwenden, keine Deep-Imports
+- Node-Probleme: Node auf 24.x LTS aktualisieren und erneut installieren

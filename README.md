@@ -71,6 +71,25 @@ bun run build
 | Build/Import-Fehler wegen falschem Einstieg | Deep-Import oder falscher Entry verwendet | Public API nur ueber `src/index.ts` nutzen (kein Deep-Import) |
 | Tooling bricht frueh mit Engine-/Syntax-Hinweisen | Node-Version nicht auf 24.x-LTS-Baseline | Node auf aktuelle 24.x-LTS-Version heben und Install erneut ausfuehren |
 
+## Story 1.3 Getting-Started-Flow (<= 5 Minuten)
+
+Schnellpfad fuer Erstnutzer von frischem Setup bis zur ersten produktiven Komponente:
+
+1. Voraussetzungen pruefen (Node 24.x LTS, ein Package-Manager, Corepack bei pnpm/yarn aktiv).
+2. `react-md3` installieren (siehe Story-1.2-Pfade oben fuer npm/pnpm/yarn/bun).
+3. Dev-Server starten:
+
+```bash
+cd react-md3
+npm run dev
+```
+
+4. Im Browser die Starter-Seite pruefen (standardmaessig `http://localhost:5173`):
+   - Story-Badge "Story 1.3 Getting Started"
+   - sichtbare produktive Komponente `M3ReferenceCard`
+5. API-Hinweise und Standardbeispiel direkt im Paket-Guide nutzen:
+   - `react-md3/README.md` (Importpfad ueber Public Barrel `src/index.ts`, Props und Beispielcode)
+
 ## Initialisierung und Verifikation (Story 1.1)
 
 ```bash
