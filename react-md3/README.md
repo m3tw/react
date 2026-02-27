@@ -92,8 +92,41 @@ npm run test
 npm run build
 ```
 
-## 6) Troubleshooting
+## 6) Troubleshooting (Schema: Symptom -> Diagnose -> Fix -> Verifikation)
 
-- Package-Manager fehlt: `corepack enable` ausfuehren und Version pruefen
-- Importfehler: nur Public API (`src/index.ts`) verwenden, keine Deep-Imports
-- Node-Probleme: Node auf 24.x LTS aktualisieren und erneut installieren
+### Package-Manager-Konflikte
+
+- **Symptom:** `pnpm` oder `yarn` fehlt auf dem System.
+  - **Diagnose:** `pnpm --version` oder `yarn --version` liefert "command not found".
+  - **Fix:** `corepack enable` ausfuehren und Version erneut pruefen.
+  - **Verifikation:** Version wird ausgegeben und anschliessend funktioniert `npm run build` (bzw. der Build mit deinem aktiven Manager).
+- **Symptom:** Installation scheitert nach Manager-Wechsel.
+  - **Diagnose:** Mehrere Lockfiles vorhanden oder `node_modules` ist inkonsistent.
+  - **Fix:** "Ein Manager pro Working Copy" einhalten, unpassende Lockfiles + `node_modules` entfernen und neu installieren.
+  - **Verifikation:** `npm install` (oder `pnpm install` / `yarn install` / `bun install`) laeuft sauber durch.
+
+### Build-Konflikte
+
+- **Symptom:** Build stoppt mit Engine-/Syntax-Fehlern.
+  - **Diagnose:** `node --version` ist nicht 24.x LTS.
+  - **Fix:** Node auf 24.x LTS aktualisieren und Dependencies neu installieren.
+  - **Verifikation:** `npm run build` laeuft erfolgreich.
+- **Symptom:** Typecheck/Build meldet Import- oder Entry-Fehler.
+  - **Diagnose:** Deep-Import statt Public Barrel wird verwendet.
+  - **Fix:** Import auf `./index` bzw. `src/index.ts` umstellen, keine Deep-Imports verwenden.
+  - **Verifikation:** `npm run test` und `npm run build` laufen beide durch.
+- **Symptom:** Build scheitert wegen fehlender Abhaengigkeiten.
+  - **Diagnose:** `npm ls` oder Build-Log zeigt fehlende Pakete.
+  - **Fix:** Fehlende Pakete installieren und Build erneut starten.
+  - **Verifikation:** Build erzeugt `dist/` ohne Missing-Dependency-Fehler.
+
+### Theming-/M3-Integrationskonflikte
+
+- **Symptom:** `M3ReferenceCard` ist sichtbar, aber ungestylt.
+  - **Diagnose:** Pruefen, ob `src/App.tsx` `./App.css` importiert und die Karte `className="m3-reference-card"` nutzt.
+  - **Fix:** CSS-Import und Klassenbezeichner auf den Standardzustand zuruecksetzen.
+  - **Verifikation:** `npm run dev` + Browsercheck auf Story-Badge, Headline und gestylte Karte.
+- **Symptom:** Darstellung kippt im Dark-Mode.
+  - **Diagnose:** `src/index.css` und `src/App.css` auf `@media (prefers-color-scheme: dark)` pruefen.
+  - **Fix:** Fehlende/ueberschriebene Dark-Mode-Regeln wiederherstellen.
+  - **Verifikation:** Karte und Text bleiben im Dark-Mode lesbar.

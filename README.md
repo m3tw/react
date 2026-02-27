@@ -62,14 +62,44 @@ bun run build
 
 **Verifikationsziel pro Pfad:** erfolgreicher Install-Lauf plus erfolgreicher Build-Lauf mit Import ueber `src/index.ts`.
 
-### Haeufige Fehlerbilder (Install/Import) mit Diagnose und Fix
+### Story 1.4 Troubleshooting-Basis (Schema: Symptom -> Diagnose -> Fix -> Verifikation)
 
-| Fehlerbild | Diagnose | Fix |
-| --- | --- | --- |
-| `pnpm`/`yarn` nicht gefunden | Corepack nicht aktiv oder Tool nicht vorbereitet | `corepack enable` und danach Version pruefen (`pnpm --version` / `yarn --version`) |
-| Lockfile-Konflikte nach Manager-Wechsel | Mehrere Lockfiles bzw. alter `node_modules`-Stand | Working Copy bereinigen (`node_modules` + unpassende Lockfiles) und mit genau einem Manager neu installieren |
-| Build/Import-Fehler wegen falschem Einstieg | Deep-Import oder falscher Entry verwendet | Public API nur ueber `src/index.ts` nutzen (kein Deep-Import) |
-| Tooling bricht frueh mit Engine-/Syntax-Hinweisen | Node-Version nicht auf 24.x-LTS-Baseline | Node auf aktuelle 24.x-LTS-Version heben und Install erneut ausfuehren |
+#### Package-Manager-Konflikte
+
+- **Symptom:** `pnpm` oder `yarn` wird nicht gefunden.
+  - **Diagnose:** `pnpm --version` oder `yarn --version` liefert "command not found".
+  - **Fix:** `corepack enable` ausfuehren und Version erneut pruefen.
+  - **Verifikation:** Version wird ausgegeben (pnpm 10.x / Yarn 4.x), danach `npm run build` in `react-md3` erfolgreich.
+- **Symptom:** Install-Lauf scheitert nach Manager-Wechsel.
+  - **Diagnose:** Mehrere Lockfiles gleichzeitig (`package-lock.json`, `pnpm-lock.yaml`, `yarn.lock`, `bun.lockb`) oder veraltetes `node_modules`.
+  - **Fix:** Guardrail "ein Manager pro Working Copy" anwenden, unpassende Lockfiles und `node_modules` entfernen und mit genau einem Manager neu installieren.
+  - **Verifikation:** `npm install` (oder entsprechender Manager) laeuft ohne Konflikt und `npm run build` ist erfolgreich.
+
+#### Build-Konflikte
+
+- **Symptom:** Build bricht mit Engine-/Syntax-Fehlern ab.
+  - **Diagnose:** `node --version` ist nicht auf 24.x LTS.
+  - **Fix:** Node auf 24.x LTS aktualisieren, dann Dependencies neu installieren.
+  - **Verifikation:** `npm run build` in `react-md3` laeuft ohne Engine-Fehler durch.
+- **Symptom:** Build/Typecheck meldet Import-/Entry-Probleme.
+  - **Diagnose:** Deep-Import statt Public Barrel (`src/index.ts`) wird verwendet.
+  - **Fix:** Importe auf Public API umstellen (z. B. `import { M3ReferenceCard } from './index'`).
+  - **Verifikation:** `npm run test` und `npm run build` laufen erfolgreich.
+- **Symptom:** Build scheitert wegen fehlender Abhaengigkeiten.
+  - **Diagnose:** `npm install` oder `npm ls` zeigt fehlende Module.
+  - **Fix:** Fehlende Dependencies sauber installieren und danach erneut bauen.
+  - **Verifikation:** `npm run build` erzeugt `dist/` ohne Fehler.
+
+#### Theming-/M3-Integrationskonflikte
+
+- **Symptom:** `M3ReferenceCard` ist ungestylt oder nicht sichtbar.
+  - **Diagnose:** `src/App.tsx` auf `import './App.css'` und Import ueber `./index` pruefen; Dev-Server-Ausgabe auf Runtime-Fehler pruefen.
+  - **Fix:** Fehlende Imports wiederherstellen und Klassen (`m3-reference-card`) unveraendert verwenden.
+  - **Verifikation:** `npm run dev` starten und im Browser Badge "Story 1.3 Getting Started", Headline und sichtbare `M3ReferenceCard` bestaetigen.
+- **Symptom:** Farben/Kontrast wirken im Dark-Mode inkonsistent.
+  - **Diagnose:** `src/index.css` und `src/App.css` auf `@media (prefers-color-scheme: dark)` pruefen.
+  - **Fix:** Vorhandene Dark-Mode-Regeln nicht entfernen; bei Abweichung auf den aktuellen Stand angleichen.
+  - **Verifikation:** Im Dark-Mode bleibt die Karte lesbar (`h2` und `p` mit ausreichendem Kontrast).
 
 ## Story 1.3 Getting-Started-Flow (<= 5 Minuten)
 
