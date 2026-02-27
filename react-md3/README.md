@@ -1,6 +1,6 @@
 # react-md3 Getting-Started (<= 5 Minuten)
 
-Kompakter Einstieg vom frischen Setup bis zu produktiven Komponenten (`TopAppBar`, `NavigationRail`, `NavigationDrawer`, `Surface` plus bestehende Basis-Komponenten).
+Kompakter Einstieg vom frischen Setup bis zu produktiven Komponenten (`Snackbar`, `Dialog`, `AlertDialog` plus bestehende Basis-Komponenten).
 
 ## 1) Voraussetzungen
 
@@ -47,58 +47,60 @@ bun run dev
 
 Oeffne die lokale URL (standardmaessig `http://localhost:5173`) und pruefe:
 
-1. Story-Badge: `Story 2.4 Navigation/Surfaces`
-2. Headline: `M3 Navigation & Surfaces sind bereit`
-3. Sichtbare Komponenten inkl. Varianten: `TopAppBar`, `NavigationRail` (kompakt/erweitert), `NavigationDrawer`, `Surface`
+1. Story-Badge: `Story 2.5 Feedback/Overlay`
+2. Headline: `M3 Feedback & Overlay sind bereit`
+3. Sichtbare Komponenten inkl. Varianten: `Snackbar` (Success/Warning/Error), `Dialog`, `AlertDialog`
 
 Damit ist mindestens eine produktive M3-Komponente lauffaehig integriert.
 
 ## 4) API-Hinweise + Standardbeispiel
 
-Die Komponente wird ueber den Public Barrel genutzt:
+Die Komponenten werden ueber den Public Barrel genutzt:
 
 - `src/App.tsx` importiert aus `./index`
 - `src/index.ts` exportiert aus `./components`
-- `src/components/index.ts` exportiert alle freigegebenen UI-Bausteine inkl. Navigation/Surface-Slice
+- `src/components/index.ts` exportiert alle freigegebenen UI-Bausteine inkl. Feedback-/Overlay-Slice
 - Keine Deep-Imports verwenden
 
 ### Importpfad in `src/App.tsx`
 
 ```tsx
-import { NavigationDrawer, NavigationRail, Surface, TopAppBar } from './index'
+import {
+  AlertDialog,
+  Dialog,
+  NavigationDrawer,
+  NavigationRail,
+  Snackbar,
+  Surface,
+  TopAppBar,
+} from './index'
 ```
 
 ### Standardbeispiele
 
 ```tsx
-<TopAppBar
-  actions={[{ label: 'Suche' }, { label: 'Sync pausiert', disabled: true }]}
-  title="M3 Navigation & Surfaces sind bereit"
+<Dialog
+  description="Aenderungen werden sofort veroeffentlicht."
+  onOpenChange={setDialogOpen}
+  open={dialogOpen}
+  title="Aenderung speichern?"
 />
 
-<NavigationRail
-  compact
-  destinations={[
-    { label: 'Dashboard', value: 'dashboard' },
-    { label: 'Projekte', value: 'projekte' },
-  ]}
-  onValueChange={setActiveDestination}
-  value={activeDestination}
+<AlertDialog
+  cancelLabel="Abbrechen"
+  confirmLabel="Loeschen"
+  description="Dieser Schritt kann nicht rueckgaengig gemacht werden."
+  onOpenChange={setAlertDialogOpen}
+  open={alertDialogOpen}
+  title="Destruktive Aktion bestaetigen"
 />
 
-<NavigationDrawer
-  destinations={[
-    { label: 'Dashboard', value: 'dashboard' },
-    { label: 'Projekte', value: 'projekte' },
-  ]}
-  heading="Projektbereiche"
-  onValueChange={setActiveDestination}
-  value={activeDestination}
+<Snackbar
+  message={snackbarMessage}
+  onOpenChange={setSnackbarOpen}
+  open={snackbarOpen}
+  tone={snackbarTone}
 />
-
-<Surface as="main" elevation={2} tonal>
-  <h1>Navigation Surface Referenzlayout</h1>
-</Surface>
 ```
 
 ### Relevante Props
@@ -112,32 +114,34 @@ import { NavigationDrawer, NavigationRail, Surface, TopAppBar } from './index'
 - `as?: 'div' | 'section' | 'article' | 'main' | 'aside'` (optional fuer `Surface`)
 - `elevation?: 0 | 1 | 2 | 3` (optional, Default: `1`)
 - `tonal?: boolean` (optional, Default: `false`)
+- `open?: boolean`, `defaultOpen?: boolean`, `onOpenChange?: (open: boolean) => void` (controlled/uncontrolled fuer `Snackbar`, `Dialog`, `AlertDialog`)
+- `tone?: 'success' | 'warning' | 'error'` (optional fuer `Snackbar`, Default: `success`)
+- `actionLabel?: string`, `onAction?: () => void` (`Snackbar`: nur gemeinsam erlaubt, z. B. Retry)
+- `title: string`, `description?: string` (`Dialog`)
+- `title: string`, `description: string`, `confirmLabel: string`, `cancelLabel: string` (`AlertDialog`)
 - Bestehende Slice-A/B APIs (`Button`, `TextField`, `Checkbox`, `RadioGroup`, `M3ReferenceCard`) bleiben unveraendert verfuegbar.
 
 ### Edge-Case-Beispiel (Action Control)
 
 ```tsx
-<TopAppBar
-  actions={[
-    { label: 'Sync pausiert', disabled: true },
-    { label: 'Versteckte Aktion', hidden: true },
-  ]}
-  title="M3 Navigation"
+<Snackbar
+  actionLabel="Erneut versuchen"
+  message="Upload fehlgeschlagen."
+  onAction={retryUpload}
+  onOpenChange={setSnackbarOpen}
+  open={snackbarOpen}
+  tone="error"
 />
 
-<NavigationRail
-  destinations={[
-    { label: 'Dashboard', value: 'dashboard' },
-    { label: 'Reports', value: 'reports', disabled: true },
-    { label: 'Archiv', value: 'archiv', hidden: true },
-  ]}
-  onValueChange={setActiveDestination}
-  value={activeDestination}
+<AlertDialog
+  cancelLabel="Abbrechen"
+  confirmLabel="Loeschen"
+  description="Dieser Schritt entfernt den Eintrag dauerhaft."
+  onConfirm={deleteItem}
+  onOpenChange={setAlertDialogOpen}
+  open={alertDialogOpen}
+  title="Kritischer Eingriff"
 />
-
-<Surface as="aside" elevation={1}>
-  Disabled/Hidden Destination bleibt fuer Nutzer klar nachvollziehbar.
-</Surface>
 ```
 
 ## 5) Public-API-Vertrag und Deprecation-Policy
@@ -148,13 +152,16 @@ import { NavigationDrawer, NavigationRail, Surface, TopAppBar } from './index'
 - `src/components/index.ts` ist eine interne Aggregationsschicht hinter dem Public Barrel.
 - Deep-Imports (z. B. `src/components/...`) sind kein oeffentlicher Vertrag.
 - Aktuell freigegebene Exports:
+  - `AlertDialog`
   - `Button`
   - `Checkbox`
+  - `Dialog`
   - `M3ReferenceCard`
   - `M3_REFERENCE_FALLBACK_TEXT`
   - `NavigationDrawer`
   - `NavigationRail`
   - `RadioGroup`
+  - `Snackbar`
   - `Surface`
   - `TextField`
   - `TopAppBar`

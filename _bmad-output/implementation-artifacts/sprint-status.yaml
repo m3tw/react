@@ -51,7 +51,7 @@ development_status:
   2-2-komponenten-slice-a-action-primary-controls-liefern: done
   2-3-komponenten-slice-b-form-selection-liefern: done
   2-4-komponenten-slice-c-navigation-surfaces-liefern: done
-  2-5-komponenten-slice-d-feedback-overlay-liefern: backlog
+  2-5-komponenten-slice-d-feedback-overlay-liefern: done
   epic-2-retrospective: optional
   epic-3: backlog
   3-1-kompatibilitaetsmatrix-definieren-und-in-ci-absichern: backlog

@@ -8,13 +8,13 @@ describe('App getting-started flow', () => {
     cleanup()
   })
 
-  it('renders story 2.4 reference layout with semantic landmarks and navigation states', () => {
+  it('renders story 2.5 reference layout with overlay interactions', () => {
     const { getByRole, getByText, queryByRole } = render(<App />)
 
-    expect(getByText('Story 2.4 Navigation/Surfaces')).toBeInTheDocument()
+    expect(getByText('Story 2.5 Feedback/Overlay')).toBeInTheDocument()
     expect(getByRole('banner', { name: 'Produktkopfzeile' })).toBeInTheDocument()
     expect(
-      getByRole('heading', { name: 'Navigation Surface Referenzlayout', level: 1 }),
+      getByRole('heading', { name: 'Feedback Overlay Referenzlayout', level: 1 }),
     ).toBeInTheDocument()
     expect(getByRole('main', { name: 'Hauptinhalt' })).toBeInTheDocument()
     expect(getByRole('navigation', { name: 'Hauptnavigation kompakt' })).toBeInTheDocument()
@@ -35,5 +35,21 @@ describe('App getting-started flow', () => {
       'page',
     )
     expect(getByText('Aktive Destination: projekte')).toBeInTheDocument()
+
+    fireEvent.click(getByRole('button', { name: 'Error zeigen' }))
+    expect(getByRole('alert')).toBeInTheDocument()
+
+    fireEvent.click(getByRole('button', { name: 'Erneut versuchen' }))
+    expect(queryByRole('alert')).not.toBeInTheDocument()
+    expect(getByText('Retry fuer fehlgeschlagenen Vorgang gestartet.')).toBeInTheDocument()
+
+    fireEvent.click(getByRole('button', { name: 'Kritischen AlertDialog oeffnen' }))
+    expect(getByRole('alertdialog', { name: 'Destruktive Aktion bestaetigen' })).toBeInTheDocument()
+
+    fireEvent.click(getByRole('button', { name: 'Loeschen' }))
+    expect(
+      queryByRole('alertdialog', { name: 'Destruktive Aktion bestaetigen' }),
+    ).not.toBeInTheDocument()
+    expect(getByText('Destructive Confirm ausgefuehrt.')).toBeInTheDocument()
   })
 })

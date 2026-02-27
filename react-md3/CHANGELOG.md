@@ -1,5 +1,14 @@
 # Changelog
 
+## 2026-02-27 - Story 2.5 Feedback & Overlay Slice D
+
+[api-contract-hash:76d2934e6e76b9eda31e4c51ef716d11978bac4c0c9dc3913fe0047b3759be83]
+
+- changeType: minor
+- affectedExports: AlertDialog, Button, Checkbox, Dialog, M3ReferenceCard, M3_REFERENCE_FALLBACK_TEXT, NavigationDrawer, NavigationRail, RadioGroup, Snackbar, Surface, TextField, TopAppBar
+- riskLevel: low
+- migrationGuide: Additive Aenderung; `Snackbar`, `Dialog` und `AlertDialog` stehen zusaetzlich zur Verfuegung. Bestehende Imports bleiben unveraendert.
+
 ## 2026-02-27 - Story 2.4 Navigation & Surfaces Slice C
 
 [api-contract-hash:37b8630777bef891a320c12904d7367dfd0c91fa3c18f630f54ea3d0389e05e2]

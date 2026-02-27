@@ -28,6 +28,19 @@
   margin-top: 0;
 }
 
+.feedback-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.event-log {
+  margin: 0.5rem 0 0;
+  color: #334155;
+  font-size: 0.92rem;
+}
+
 .variants-grid {
   display: grid;
   gap: 1rem;
@@ -58,5 +71,9 @@
 
   .story-badge {
     color: #93c5fd;
+  }
+
+  .event-log {
+    color: #cbd5e1;
   }
 }

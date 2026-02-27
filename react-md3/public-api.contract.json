@@ -5,13 +5,16 @@
     "componentBarrel": "src/components/index.ts",
     "allowDeepImports": false,
     "exports": [
+      "AlertDialog",
       "Button",
       "Checkbox",
+      "Dialog",
       "M3ReferenceCard",
       "M3_REFERENCE_FALLBACK_TEXT",
       "NavigationDrawer",
       "NavigationRail",
       "RadioGroup",
+      "Snackbar",
       "Surface",
       "TextField",
       "TopAppBar"
@@ -44,22 +47,25 @@
     ],
     "currentRelease": {
       "affectedExports": [
+        "AlertDialog",
         "Button",
         "Checkbox",
+        "Dialog",
         "M3ReferenceCard",
         "M3_REFERENCE_FALLBACK_TEXT",
         "NavigationDrawer",
         "NavigationRail",
         "RadioGroup",
+        "Snackbar",
         "Surface",
         "TextField",
         "TopAppBar"
       ],
       "changeType": "minor",
       "riskLevel": "low",
-      "migrationGuide": "Additive Aenderung: `TopAppBar`, `NavigationRail`, `NavigationDrawer` und `Surface` erweitern die Public API ohne Breaking Change.",
-      "changelogToken": "[api-contract-hash:37b8630777bef891a320c12904d7367dfd0c91fa3c18f630f54ea3d0389e05e2]"
+      "migrationGuide": "Additive Aenderung: `Snackbar`, `Dialog` und `AlertDialog` erweitern die Public API ohne Breaking Change.",
+      "changelogToken": "[api-contract-hash:76d2934e6e76b9eda31e4c51ef716d11978bac4c0c9dc3913fe0047b3759be83]"
     }
   },
-  "contractHash": "37b8630777bef891a320c12904d7367dfd0c91fa3c18f630f54ea3d0389e05e2"
+  "contractHash": "76d2934e6e76b9eda31e4c51ef716d11978bac4c0c9dc3913fe0047b3759be83"
 }

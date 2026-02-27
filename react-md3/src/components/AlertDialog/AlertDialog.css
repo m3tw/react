@@ -1,0 +1,25 @@
+.m3-dialog.m3-alert-dialog--warning {
+  border-color: #d97706;
+}
+
+.m3-dialog.m3-alert-dialog--error {
+  border-color: #dc2626;
+}
+
+.m3-dialog.m3-alert-dialog .m3-dialog__title {
+  color: #7f1d1d;
+}
+
+.m3-dialog.m3-alert-dialog--warning .m3-dialog__title {
+  color: #78350f;
+}
+
+@media (prefers-color-scheme: dark) {
+  .m3-dialog.m3-alert-dialog .m3-dialog__title {
+    color: #fecaca;
+  }
+
+  .m3-dialog.m3-alert-dialog--warning .m3-dialog__title {
+    color: #fed7aa;
+  }
+}
