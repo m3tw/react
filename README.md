@@ -221,6 +221,17 @@ Verbindliches Rezeptformat fuer alle Team-Setups: **Voraussetzungen -> Schritte 
 - **Troubleshooting**
   - Setup-/Build-/Theming-Probleme ueber bestehende Troubleshooting-Abschnitte eskalieren, ohne parallele Shadow-Doku aufzubauen.
 
+## Story 3.3 Migrationspfad fuer API-Aenderungen
+
+### Welche Aenderung betrifft mich?
+
+1. Oeffne zuerst `react-md3/CHANGELOG.md` und identifiziere den neuesten Eintrag.
+2. Vergleiche `affectedExports` mit deinen verwendeten Public-API-Imports.
+3. Wechsle danach direkt in das passende Playbook unter `react-md3/README.md`:
+   - [Story 3.3 Migrationspfad fuer API-Aenderungen](react-md3/README.md#675-story-33-migrationspfad-fuer-api-aenderungen)
+
+**Pflicht-Nachweis fuer jede Migration:** `cd react-md3 && npm run quality:gate`
+
 ## Initialisierung und Verifikation (Story 1.1)
 
 ```bash

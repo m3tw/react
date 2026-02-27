@@ -318,6 +318,106 @@ Verbindliches Rezeptformat: **Voraussetzungen -> Schritte -> Verifikation -> Tro
 - **Troubleshooting**
   - Fehlerbehebung ueber bestehende Troubleshooting-Abschnitte, ohne alternative Shadow-Standards einzufuehren.
 
+## 6.75) Story 3.3 Migrationspfad fuer API-Aenderungen
+
+### Welche Aenderung betrifft mich?
+
+1. Neueste Release-Section in `react-md3/CHANGELOG.md` lesen.
+2. `affectedExports` mit deinen verwendeten Imports abgleichen.
+3. Bei Treffer das passende Playbook unten anwenden und anschliessend verifizieren.
+
+### Trigger: Wann ist ein Migrationseintrag Pflicht?
+
+| Trigger | Pflicht | Minimum im Eintrag |
+| --- | --- | --- |
+| Deprecation einer Public API | ja | `Alt -> Neu`, betroffene Exports/Pfade, Verifikation |
+| Breaking Change (Major) | ja | `Alt -> Neu`, betroffene Exports/Pfade, Verifikation |
+| Relevante Verhaltensaenderung mit Nutzerwirkung | ja | `Alt -> Neu`, betroffene Exports/Pfade, Verifikation |
+
+### Einheitliches Mapping pro Aenderung
+
+- `Alt -> Neu`: was ersetzt/erweitert den alten Nutzungsfall.
+- Betroffene Exports/Pfade: immer Public API (`src/index.ts` bzw. Paket-Entry `react-md3`).
+- `riskLevel`: operative Risiko-Einstufung fuer Teams.
+- Verifikation: reproduzierbarer Nachweis mit `cd react-md3 && npm run quality:gate`.
+
+### changeType -> Migrationstiefe
+
+| changeType | Migrationsaufwand | Erwartete Migrationstiefe |
+| --- | --- | --- |
+| `patch` | `none` | in der Regel kein Codewechsel, nur Verifikation |
+| `minor` | `low` | additive Uebernahme, bestehender Code bleibt lauffaehig |
+| `major` | `high` | aktive Umstellung erforderlich, vor Rollout vollstaendig validieren |
+
+### Playbook A: Additive API-Aenderung (Minor)
+
+**Vorher**
+
+```tsx
+import { TopAppBar } from 'react-md3'
+
+export function HeaderOnly() {
+  return <TopAppBar title="Dashboard" />
+}
+```
+
+**Nachher**
+
+```tsx
+import { Snackbar, TopAppBar } from 'react-md3'
+
+export function HeaderWithFeedback({
+  onOpenChange,
+  open,
+}: {
+  onOpenChange: (open: boolean) => void
+  open: boolean
+}) {
+  return (
+    <>
+      <TopAppBar title="Dashboard" />
+      <Snackbar message="Aenderung gespeichert." onOpenChange={onOpenChange} open={open} />
+    </>
+  )
+}
+```
+
+### Playbook B: Breaking-Change-Szenario (Major, Beispielpfad)
+
+> Beispiel fuer den Fall, dass eine zukuenftige Major-Version `defaultOpen` entfernt und nur noch controlled Nutzung erlaubt.
+
+**Vorher**
+
+```tsx
+import { Snackbar } from 'react-md3'
+
+export function LegacyFeedback() {
+  return <Snackbar defaultOpen message="Aenderung gespeichert." />
+}
+```
+
+**Nachher**
+
+```tsx
+import { useState } from 'react'
+import { Snackbar } from 'react-md3'
+
+export function ControlledFeedback() {
+  const [open, setOpen] = useState(true)
+  return <Snackbar message="Aenderung gespeichert." onOpenChange={setOpen} open={open} />
+}
+```
+
+### Verifikation fuer Integrations-Teams
+
+```bash
+cd react-md3
+npm run quality:gate
+```
+
+- Fehlerklassifikation aus Story 3.1/3.2 wiederverwenden: Setup-Fehler, Toolchain-Drift, API-Regression.
+- Bei API-Regression immer `public-api.contract.json` und `CHANGELOG.md` gemeinsam nachziehen.
+
 ## 7) Troubleshooting (Schema: Symptom -> Diagnose -> Fix -> Verifikation)
 
 ### Package-Manager-Konflikte

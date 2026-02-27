@@ -1,13 +1,26 @@
 # Changelog
 
+## Migrationsschema (Pflicht bei API-Aenderungen)
+
+- Trigger fuer Pflicht-Migrationseintraege: Deprecation, Breaking Change, relevante Verhaltensaenderung mit Nutzerwirkung.
+- Pflichtstruktur je Eintrag:
+  - `changeType`
+  - `affectedExports`
+  - `riskLevel`
+  - `migrationGuide` mit Markern `Trigger`, `Migrationsaufwand`, `Alt -> Neu`, `Betroffene Exports/Pfade`, `Verifikation`
+- Mapping `changeType -> Migrationstiefe`:
+  - `patch`: `Migrationsaufwand: none`
+  - `minor`: `Migrationsaufwand: low`
+  - `major`: `Migrationsaufwand: high`
+
 ## 2026-02-27 - Story 2.5 Feedback & Overlay Slice D
 
-[api-contract-hash:76d2934e6e76b9eda31e4c51ef716d11978bac4c0c9dc3913fe0047b3759be83]
+[api-contract-hash:51a4e9a56afcc93d35924793c84cca4eff8b0ced36001649a0368e82fa6dfb71]
 
 - changeType: minor
 - affectedExports: AlertDialog, Button, Checkbox, Dialog, M3ReferenceCard, M3_REFERENCE_FALLBACK_TEXT, NavigationDrawer, NavigationRail, RadioGroup, Snackbar, Surface, TextField, TopAppBar
 - riskLevel: low
-- migrationGuide: Additive Aenderung; `Snackbar`, `Dialog` und `AlertDialog` stehen zusaetzlich zur Verfuegung. Bestehende Imports bleiben unveraendert.
+- migrationGuide: Trigger: additive API-Aenderung; Migrationsaufwand: low; Alt -> Neu: kein Ersatz erforderlich -> `Snackbar`, `Dialog`, `AlertDialog` sind zusaetzlich verfuegbar; Betroffene Exports/Pfade: `AlertDialog`, `Dialog`, `Snackbar` ueber `src/index.ts`; Verifikation: `cd react-md3 && npm run quality:gate`
 
 ## 2026-02-27 - Story 2.4 Navigation & Surfaces Slice C
 

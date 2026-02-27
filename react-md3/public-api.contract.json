@@ -63,9 +63,9 @@
       ],
       "changeType": "minor",
       "riskLevel": "low",
-      "migrationGuide": "Additive Aenderung: `Snackbar`, `Dialog` und `AlertDialog` erweitern die Public API ohne Breaking Change.",
-      "changelogToken": "[api-contract-hash:76d2934e6e76b9eda31e4c51ef716d11978bac4c0c9dc3913fe0047b3759be83]"
+      "migrationGuide": "Trigger: additive API-Aenderung; Migrationsaufwand: low; Alt -> Neu: kein Ersatz erforderlich -> `Snackbar`, `Dialog`, `AlertDialog` sind zusaetzlich verfuegbar; Betroffene Exports/Pfade: `AlertDialog`, `Dialog`, `Snackbar` ueber `src/index.ts`; Verifikation: `cd react-md3 && npm run quality:gate`",
+      "changelogToken": "[api-contract-hash:51a4e9a56afcc93d35924793c84cca4eff8b0ced36001649a0368e82fa6dfb71]"
     }
   },
-  "contractHash": "76d2934e6e76b9eda31e4c51ef716d11978bac4c0c9dc3913fe0047b3759be83"
+  "contractHash": "51a4e9a56afcc93d35924793c84cca4eff8b0ced36001649a0368e82fa6dfb71"
 }

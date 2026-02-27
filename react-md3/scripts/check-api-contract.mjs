@@ -208,6 +208,38 @@ for (const metadataField of releaseTraceability.requiredMetadata ?? []) {
   }
 }
 
+const migrationGuide = release.migrationGuide?.trim()
+if (!migrationGuide) {
+  fail('migrationGuide ist leer; Migrationshinweise sind verpflichtend.')
+}
+
+const requiredMigrationGuideMarkers = [
+  'Trigger:',
+  'Alt -> Neu:',
+  'Betroffene Exports/Pfade:',
+  'Verifikation:',
+]
+for (const marker of requiredMigrationGuideMarkers) {
+  if (!migrationGuide.includes(marker)) {
+    fail(`migrationGuide muss den Marker "${marker}" enthalten.`)
+  }
+}
+
+const migrationDepthByChangeType = {
+  patch: 'Migrationsaufwand: none',
+  minor: 'Migrationsaufwand: low',
+  major: 'Migrationsaufwand: high',
+}
+const expectedMigrationDepth = migrationDepthByChangeType[release.changeType]
+if (!expectedMigrationDepth) {
+  fail(`Unbekannter changeType in currentRelease: ${release.changeType}`)
+}
+if (!migrationGuide.includes(expectedMigrationDepth)) {
+  fail(
+    `migrationGuide muss fuer changeType=${release.changeType} den Hinweis "${expectedMigrationDepth}" enthalten.`,
+  )
+}
+
 const releaseExports = [...(release.affectedExports ?? [])].sort()
 if (JSON.stringify(releaseExports) !== JSON.stringify(documentedExports)) {
   fail('affectedExports stimmt nicht mit dem dokumentierten Public Surface ueberein.')
@@ -253,13 +285,21 @@ if (!changelog.includes(expectedToken)) {
 }
 
 for (const metadataField of releaseTraceability.requiredMetadata ?? []) {
-  if (!changelog.includes(`${metadataField}:`)) {
-    fail(`CHANGELOG.md enthaelt das Pflichtmetadatum nicht: ${metadataField}`)
+  if (release[metadataField] === undefined) {
+    fail(`releaseTraceability.currentRelease.${metadataField} fehlt.`)
   }
 }
 
-if (!release.migrationGuide || release.migrationGuide.trim() === '') {
-  fail('migrationGuide ist leer; Migrationshinweise sind verpflichtend.')
+const expectedMetadataLines = [
+  `- changeType: ${release.changeType}`,
+  `- affectedExports: ${release.affectedExports.join(', ')}`,
+  `- riskLevel: ${release.riskLevel}`,
+  `- migrationGuide: ${migrationGuide}`,
+]
+for (const line of expectedMetadataLines) {
+  if (!changelog.includes(line)) {
+    fail(`CHANGELOG.md enthaelt nicht den erwarteten Metadaten-Eintrag: ${line}`)
+  }
 }
 
 console.log(`API contract check passed (${expectedHash}).`)
