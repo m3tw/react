@@ -4,7 +4,7 @@ Kompakter Einstieg vom frischen Setup bis zu produktiven Komponenten (`Snackbar`
 
 ## 1) Voraussetzungen
 
-- Node.js 24.x LTS
+- Node.js 22.x LTS oder 24.x (Current)
 - npm 11.x, pnpm 10.x, Yarn 4.x oder Bun 1.3.x
 - Pro Working Copy genau einen Package-Manager verwenden
 - Fuer pnpm/yarn vorab: `corepack enable`
@@ -204,6 +204,56 @@ Fuer einen kompletten Maintainer-Check in einem Schritt:
 ```bash
 npm run quality:gate
 ```
+
+### Story 3.1 Kompatibilitaetsmatrix (CI + lokal)
+
+#### Verbindliche Matrix (supported)
+
+| Node.js | npm | pnpm | yarn | bun | CI-Status |
+| --- | --- | --- | --- | --- | --- |
+| 22.x LTS | ja | ja | ja | ja | supported |
+| 24.x (Current) | ja | ja | ja | ja | supported |
+
+#### Explizit nicht unterstuetzte Kombinationen
+
+| Kombination | Matrix-Handling | Grund |
+| --- | --- | --- |
+| Node 20.x + npm/pnpm/yarn/bun | `exclude` in `.github/workflows/compatibility-matrix.yml` | Nicht Teil des aktuellen Support-Fensters (22.x/24.x LTS). |
+| Node < 20 + beliebiger Manager | nicht in Matrix | Nicht kompatibel mit der Toolchain-Basis (`vitest` erfordert Node >= 20). |
+
+#### Lokale Reproduktion (pro Matrix-Zelle)
+
+> Vor jedem Lauf zuerst auf die Zielversion wechseln (`nvm use 22` oder `nvm use 24`).
+
+```bash
+cd react-md3
+
+# npm
+npm ci && npm run quality:gate
+
+# pnpm
+corepack enable
+corepack prepare pnpm@10.28.2 --activate
+pnpm install --frozen-lockfile=false
+pnpm run quality:gate
+
+# yarn
+corepack enable
+corepack prepare yarn@4.6.0 --activate
+yarn install --mode=skip-build
+yarn run quality:gate
+
+# bun
+bun install
+bun run quality:gate
+```
+
+#### Interpretationsleitfaden fuer Matrix-Fehler
+
+- **Setup-Fehler:** Install-Step faellt, z. B. Manager nicht verfuegbar oder inkonsistente lokale Toolchain.
+- **Toolchain-Drift:** `lint`, `test` oder `build` schlagen fehl, obwohl Install erfolgreich war.
+- **API-Regression:** `api:contract:check` faellt, weil Public API, Contract-Datei und Changelog nicht synchron sind.
+- **Governance-Regel:** Matrix-Definition und API-Governance (`public-api.contract.json` + `CHANGELOG.md`) bei Tooling/API-Aenderungen immer synchron pflegen.
 
 ## 7) Troubleshooting (Schema: Symptom -> Diagnose -> Fix -> Verifikation)
 

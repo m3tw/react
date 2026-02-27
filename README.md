@@ -127,6 +127,49 @@ npm run dev
 - Release-Traceability fuer API-Aenderungen liegt in `react-md3/CHANGELOG.md` (inkl. `api-contract-hash` Token).
 - Public API wird ausschliesslich ueber `react-md3/src/index.ts` konsumiert (keine Deep-Import-Vertraege).
 
+## Story 3.1 Kompatibilitaetsmatrix und CI-Absicherung
+
+### Verbindliche Matrix (supported)
+
+| Node.js | npm | pnpm | yarn | bun | CI-Status |
+| --- | --- | --- | --- | --- | --- |
+| 22.x LTS | ja | ja | ja | ja | supported |
+| 24.x (Current) | ja | ja | ja | ja | supported |
+
+### Explizit nicht unterstuetzte Kombinationen
+
+| Kombination | Matrix-Handling | Grund |
+| --- | --- | --- |
+| Node 20.x + npm/pnpm/yarn/bun | `exclude` in `.github/workflows/compatibility-matrix.yml` | Nicht Teil des aktuellen Support-Fensters (Story-3.1-Policy = 22.x/24.x LTS). |
+| Node < 20 + beliebiger Manager | nicht in Matrix | Toolchain-Basis verletzt (Vitest benoetigt mindestens Node 20). |
+
+### Lokale Reproduktion der CI-Matrix
+
+> Node-Version jeweils vorher mit deinem Versionsmanager setzen (z. B. `nvm use 22` oder `nvm use 24`).
+
+```bash
+# Node 22
+cd react-md3
+npm ci && npm run quality:gate
+corepack enable && corepack prepare pnpm@10.28.2 --activate && pnpm install --frozen-lockfile=false && pnpm run quality:gate
+corepack enable && corepack prepare yarn@4.6.0 --activate && yarn install --mode=skip-build && yarn run quality:gate
+bun install && bun run quality:gate
+
+# Node 24
+cd react-md3
+npm ci && npm run quality:gate
+corepack enable && corepack prepare pnpm@10.28.2 --activate && pnpm install --frozen-lockfile=false && pnpm run quality:gate
+corepack enable && corepack prepare yarn@4.6.0 --activate && yarn install --mode=skip-build && yarn run quality:gate
+bun install && bun run quality:gate
+```
+
+### Interpretationsleitfaden fuer Matrix-Fehler
+
+- **Setup-Fehler:** Install-Step scheitert (fehlender Manager/inkonsistente Toolchain) -> zuerst Manager-Version, Corepack-Setup und Install-Command pruefen.
+- **Toolchain-Drift:** `lint`, `test` oder `build` schlagen fehl -> Node- und Paketmanager-Versionen gegen die Matrix-Baselines abgleichen.
+- **API-Regression:** `npm run api:contract:check` faellt -> Public API + `public-api.contract.json` + `CHANGELOG.md` synchronisieren.
+- **Governance-Regel:** Bei API-/Tooling-Aenderungen Matrix-Definition, Changelog und API-Contract-Checks immer gemeinsam aktualisieren.
+
 ## Initialisierung und Verifikation (Story 1.1)
 
 ```bash
