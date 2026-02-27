@@ -1,0 +1,183 @@
+name: Release Gate Pipeline
+
+on:
+  push:
+    branches:
+      - "release/**"
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  quality-gate:
+    name: quality:gate (react-md3)
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v5
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: "24"
+          cache: npm
+          cache-dependency-path: react-md3/package-lock.json
+
+      - name: Run required quality gate
+        working-directory: react-md3
+        run: |
+          npm ci
+          npm run quality:gate
+
+  compatibility-gate:
+    name: compatibility-matrix (Node 22/24)
+    uses: ./.github/workflows/compatibility-matrix.yml
+
+  reference-integration-gate:
+    name: reference-integration (Node 22/24)
+    uses: ./.github/workflows/reference-integration.yml
+
+  release-evidence-pack:
+    name: Release Evidence Pack + Decision
+    runs-on: ubuntu-latest
+    if: always()
+    needs:
+      - quality-gate
+      - compatibility-gate
+      - reference-integration-gate
+    steps:
+      - name: Build machine-readable gate summary
+        id: summary
+        env:
+          QUALITY_RESULT: ${{ needs.quality-gate.result }}
+          COMPATIBILITY_RESULT: ${{ needs.compatibility-gate.result }}
+          REFERENCE_RESULT: ${{ needs.reference-integration-gate.result }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          REFERENCE_ARTIFACT_PATTERN: reference-integration-logs-node-{22,24}-${{ github.run_id }}-${{ github.run_attempt }}
+        run: |
+          set -euo pipefail
+          mkdir -p release-evidence
+
+          gate_status() {
+            case "$1" in
+              success) echo "PASS" ;;
+              failure) echo "FAIL" ;;
+              cancelled|skipped) echo "NO_EVIDENCE" ;;
+              *) echo "NO_EVIDENCE" ;;
+            esac
+          }
+
+          QUALITY_STATUS="$(gate_status "${QUALITY_RESULT}")"
+          COMPATIBILITY_STATUS="$(gate_status "${COMPATIBILITY_RESULT}")"
+          REFERENCE_STATUS="$(gate_status "${REFERENCE_RESULT}")"
+
+          decision="go"
+          no_go_reasons=()
+
+          if [ "${QUALITY_STATUS}" != "PASS" ]; then
+            decision="no-go"
+            if [ "${QUALITY_STATUS}" = "NO_EVIDENCE" ]; then
+              no_go_reasons+=("quality-gate: Pflicht-Evidenz fehlt (${QUALITY_RESULT})")
+            else
+              no_go_reasons+=("quality-gate: rotes Gate (${QUALITY_RESULT})")
+            fi
+          fi
+
+          if [ "${COMPATIBILITY_STATUS}" != "PASS" ]; then
+            decision="no-go"
+            if [ "${COMPATIBILITY_STATUS}" = "NO_EVIDENCE" ]; then
+              no_go_reasons+=("compatibility-matrix: Pflicht-Evidenz fehlt (${COMPATIBILITY_RESULT})")
+            else
+              no_go_reasons+=("compatibility-matrix: rotes Gate (${COMPATIBILITY_RESULT})")
+            fi
+          fi
+
+          if [ "${REFERENCE_STATUS}" != "PASS" ]; then
+            decision="no-go"
+            if [ "${REFERENCE_STATUS}" = "NO_EVIDENCE" ]; then
+              no_go_reasons+=("reference-integration: Pflicht-Evidenz fehlt (${REFERENCE_RESULT})")
+            else
+              no_go_reasons+=("reference-integration: rotes Gate (${REFERENCE_RESULT})")
+            fi
+          fi
+
+          if [ "${decision}" = "go" ]; then
+            verdict="GO"
+          else
+            verdict="NO-GO"
+          fi
+
+          {
+            echo "{"
+            echo "  \"generatedAt\": \"$(date -u +%Y-%m-%dT%H:%M:%SZ)\","
+            echo "  \"workflowRun\": \"${RUN_URL}\","
+            echo "  \"decision\": \"${decision}\","
+            echo "  \"gates\": ["
+            echo "    {\"name\": \"quality-gate\", \"result\": \"${QUALITY_RESULT}\", \"status\": \"${QUALITY_STATUS}\", \"evidence\": \"${RUN_URL}\"},"
+            echo "    {\"name\": \"compatibility-matrix\", \"result\": \"${COMPATIBILITY_RESULT}\", \"status\": \"${COMPATIBILITY_STATUS}\", \"evidence\": \"${RUN_URL}\"},"
+            echo "    {\"name\": \"reference-integration\", \"result\": \"${REFERENCE_RESULT}\", \"status\": \"${REFERENCE_STATUS}\", \"evidence\": \"${RUN_URL}\", \"artifactPattern\": \"${REFERENCE_ARTIFACT_PATTERN}\"}"
+            echo "  ]"
+            echo "}"
+          } > release-evidence/gates.json
+
+          if [ "${#no_go_reasons[@]}" -eq 0 ]; then
+            printf "none\n" > release-evidence/no-go-reasons.txt
+          else
+            printf "%s\n" "${no_go_reasons[@]}" > release-evidence/no-go-reasons.txt
+          fi
+
+          {
+            echo "# Release Gate Evidence Pack"
+            echo ""
+            echo "- Workflow-Run: ${RUN_URL}"
+            echo "- Entscheidung: **${verdict}**"
+            echo ""
+            echo "| Gate | Job-Result | Status | Evidence |"
+            echo "| --- | --- | --- | --- |"
+            echo "| quality:gate | ${QUALITY_RESULT} | ${QUALITY_STATUS} | [Run Logs](${RUN_URL}) |"
+            echo "| compatibility-matrix (Node 22/24) | ${COMPATIBILITY_RESULT} | ${COMPATIBILITY_STATUS} | [Run Logs](${RUN_URL}) |"
+            echo "| reference-integration (Node 22/24) | ${REFERENCE_RESULT} | ${REFERENCE_STATUS} | [Run Logs + Artefakte](${RUN_URL}) |"
+            echo ""
+            echo "Referenzintegrations-Artefaktmuster: \`${REFERENCE_ARTIFACT_PATTERN}\`"
+            if [ "${decision}" = "no-go" ]; then
+              echo ""
+              echo "## No-Go Gruende"
+              for reason in "${no_go_reasons[@]}"; do
+                echo "- ${reason}"
+              done
+            fi
+          } | tee release-evidence/evidence-pack.md >> "$GITHUB_STEP_SUMMARY"
+
+          echo "decision=${decision}" >> "$GITHUB_OUTPUT"
+
+      - name: Upload release evidence pack
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-evidence-pack-${{ github.run_id }}-${{ github.run_attempt }}
+          path: release-evidence/*
+          if-no-files-found: error
+
+      - name: Enforce hard release gate
+        if: always()
+        env:
+          DECISION: ${{ steps.summary.outputs.decision }}
+        run: |
+          if [ "${DECISION}" != "go" ]; then
+            echo "No-Go: fehlende oder rote Gate-Evidenz blockiert Stable-Publish." >&2
+            exit 1
+          fi
+
+  stable-publish-unlock:
+    name: Stable publish unlock
+    runs-on: ubuntu-latest
+    needs:
+      - release-evidence-pack
+    if: needs.release-evidence-pack.result == 'success'
+    steps:
+      - name: Confirm green gates for publish path
+        run: echo "Alle Pflicht-Gates sind gruen. Publish-Schritte duerfen jetzt folgen."

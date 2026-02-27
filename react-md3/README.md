@@ -477,6 +477,7 @@ Erwartung: Explizites `[api-regression]`-Signal und Exit-Code != 0.
   - `.github/workflows/compatibility-matrix.yml` (Node 22/24, Node 20 ausgeschlossen)
   - `.github/workflows/reference-integration.yml`
   - API-Contract-Governance aus Story 3.3 (`migrationGuide`-Marker + Changelog-Token-Synchronitaet)
+- Technische Durchsetzung (Story 4.2): `.github/workflows/release-gate.yml` orchestriert diese Pflicht-Gates automatisiert und blockiert Stable-Publish bei fehlender/roter Evidenz.
 
 ### Verbindliche Gate-Checkliste (Pass/Fail)
 

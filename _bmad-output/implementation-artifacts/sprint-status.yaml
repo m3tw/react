@@ -61,7 +61,7 @@ development_status:
   epic-3-retrospective: optional
   epic-4: in-progress
   4-1-release-checkliste-und-harte-quality-gates-definieren: done
-  4-2-automatisierte-release-gate-pipeline-umsetzen: backlog
+  4-2-automatisierte-release-gate-pipeline-umsetzen: done
   4-3-go-no-go-entscheidungsprozess-fuer-phasenwechsel-verankern: backlog
   epic-4-retrospective: optional
   epic-5: backlog

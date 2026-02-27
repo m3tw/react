@@ -283,6 +283,7 @@ Erwartung: Der Lauf bricht mit einem expliziten `[api-regression]`-Signal ab.
 - Verbindliche operative Checkliste (Single Source of Truth): [`react-md3/README.md` Abschnitt 6.10](react-md3/README.md#610-story-41-release-checkliste-und-harte-quality-gates).
 - Harte Regel fuer Stable-Releases: fehlende oder rote Gate-Evidenz => **No-Go**.
 - Pflicht-Evidenz basiert auf bestehenden Guardrails (`quality:gate`, Kompatibilitaetsmatrix Node 22/24, Referenzintegration, API-Contract-Governance) und nutzt die gleichen Fehlerklassen (`setup-fehler`, `toolchain-drift`, `api-regression`).
+- Story 4.2 setzt die technische Durchsetzung ueber `.github/workflows/release-gate.yml` um (orchestrierte Pflicht-Gates + Evidence-Pack + automatisches Go/No-Go).
 - Pflegeprozess: pro Release-Kandidat aktualisieren; finale Freigabe wird ueber ein standardisiertes Go/No-Go-Protokoll dokumentiert.
 
 ## Initialisierung und Verifikation (Story 1.1)

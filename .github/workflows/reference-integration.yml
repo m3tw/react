@@ -1,6 +1,7 @@
 name: Reference Integration
 
 on:
+  workflow_call:
   pull_request:
     paths:
       - ".github/workflows/reference-integration.yml"
