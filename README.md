@@ -286,6 +286,13 @@ Erwartung: Der Lauf bricht mit einem expliziten `[api-regression]`-Signal ab.
 - Story 4.2 setzt die technische Durchsetzung ueber `.github/workflows/release-gate.yml` um (orchestrierte Pflicht-Gates + Evidence-Pack + automatisches Go/No-Go).
 - Pflegeprozess: pro Release-Kandidat aktualisieren; finale Freigabe wird ueber ein standardisiertes Go/No-Go-Protokoll dokumentiert.
 
+## Story 4.3 Go/No-Go-Entscheidungsprozess fuer Phasenwechsel
+
+- Verbindlicher Phasenwechselprozess (Single Source of Truth): [`react-md3/README.md` Abschnitt 6.11](react-md3/README.md#611-story-43-go-no-go-entscheidungsprozess-fuer-phasenwechsel).
+- Pflichtinput fuer jede Phasenentscheidung: Story-4.1-Checkliste (Abschnitt 6.10), Story-4.2-Evidence-Pack (`release-evidence/gates.json`, `no-go-reasons.txt`, `evidence-pack.md`) plus Metrik-/Risikosnapshot.
+- Harte Blocker bleiben unveraendert (`setup-fehler`, `toolchain-drift`, `api-regression`, fehlende Pflicht-Evidenz) und erzwingen `no-go`.
+- Entscheidungsstatus ist konsistent als `go`/`no-go` dokumentiert; kritische Entscheidungen erfordern 2-Augen-Freigabe ohne Self-Approval.
+
 ## Initialisierung und Verifikation (Story 1.1)
 
 ```bash

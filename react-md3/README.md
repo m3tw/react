@@ -535,6 +535,95 @@ Negativbeispiel (zwingendes No-Go):
 - Pflegezyklus: mindestens je Release-Kandidat, zusaetzlich nach jedem Blocker-Vorfall.
 - Gate-Owner pflegen ihre Evidenzquellen; Release Owner verantwortet die finale Go/No-Go-Dokumentation.
 
+## 6.11) Story 4.3 Go/No-Go-Entscheidungsprozess fuer Phasenwechsel
+
+### Zielbild und Pflichtinput (ohne Shadow-Prozess)
+
+- Diese Section erweitert die Release-Governance aus 6.10 auf verbindliche **Phasenwechsel**.
+- Es gibt keinen separaten Shadow-Prozess: Story-4.1-Checkliste und Story-4.2-Evidence-Pack bleiben Pflichtinput.
+- Pflichtinput pro Entscheid:
+  1. Story-4.1-Gate-Checkliste (Section 6.10) inklusive aktueller Gate-Owner-Nachweise.
+  2. Story-4.2-Evidence-Pack (`release-evidence/gates.json`, `release-evidence/no-go-reasons.txt`, `release-evidence/evidence-pack.md`).
+  3. Metrik-Snapshot (Qualitaet + Nutzung) und offene Risiken mit Gegenmassnahmen/Owner.
+
+### Phasenmodell und Trigger-Ereignisse
+
+| Aktuelle Phase | Naechste Phase | Trigger-Ereignis | Pflichtnachweis |
+| --- | --- | --- | --- |
+| `release-readiness` | `stable-candidate` | Release-Kandidat (`release/**` oder `v*`) liegt vor | Vollstaendiges Story-4.2-Evidence-Pack |
+| `stable-candidate` | `controlled-rollout` | Entscheidung fuer Kandidat liegt als `go` vor | Signiertes Phasenprotokoll + 2-Augen-Freigabe |
+| `controlled-rollout` | `broad-rollout` | Beobachtungsfenster abgeschlossen | Qualitaets- und Nutzungsmetriken oberhalb Schwelle |
+
+### Messbare Gate-Kriterien fuer `go`/`no-go`
+
+| Kriterium | `go`-Schwellwert | Datenquelle | Owner | Aktualisierungsrhythmus |
+| --- | --- | --- | --- | --- |
+| Release-Gates | `quality-gate`, `compatibility-matrix`, `reference-integration` jeweils `PASS` | `release-evidence/gates.json` | Release Owner | pro Kandidat |
+| Fehlerklassifikation | Keine ungeklaerte rote Klassifikation (`setup-fehler`, `toolchain-drift`, `api-regression`) | CI-Logs + Artefakte aus Gate-Workflows | technischer Reviewer | pro Kandidat |
+| Kritische Defekte/Risiken | 0 offene High/Critical-Blocker ohne freigegebene Gegenmassnahme | Issue-/Risk-Backlog | Security Contact + Product Owner | taeglich waehrend Phase |
+| Setup-Erfolg (Nutzer) | >= 95% erfolgreicher Erstsetup im Bewertungsfenster | Produkt-/Support-Auswertung fuer Zielphase | Product Owner | mindestens woechentlich |
+| Evidence-Vollstaendigkeit | 100% Pflichtlinks im Protokoll vorhanden und pruefbar | Phasenprotokoll + Evidence-Pack | Release Owner | bei jedem Entscheid |
+
+### Rollenmodell und Freigaberegeln
+
+- **Release Owner:** konsolidiert Evidenz, erstellt Protokoll, initiiert Entscheidung.
+- **Product Owner:** verantwortet Scope- und Nutzungsmetriken.
+- **Technischer Reviewer:** validiert Guardrails, Fehlerklassen und technische Risiken.
+- **Security Contact (optional, bei Security-Impact Pflicht):** bewertet Security-Risiken und Ausnahmen.
+- **2-Augen-Freigabe:** kritische Entscheidungen sind nur gueltig, wenn Release Owner und technischer Reviewer unterschiedlich sind.
+- **Self-Approval ist unzulaessig:** derselbe Account darf Vorbereitung und finale Freigabe nicht alleine durchfuehren.
+
+### Standardisierte Phasen-Go/No-Go-Protokollvorlage
+
+```md
+## Phase Decision Record
+- Phase: <aktuell -> naechste>
+- Trigger-Ereignis: <Release-Kandidat / Beobachtungsfenster / anderes>
+- Scope: <betroffener Umfang>
+- Evidenzlinks:
+  - quality:gate:
+  - compatibility-matrix:
+  - reference-integration:
+  - zusaetzliche Produkt-/Nutzungsmetriken:
+- Metrik-Snapshot:
+  - Qualitaet: <Ist vs. Schwelle>
+  - Nutzung: <Ist vs. Schwelle>
+- Offene Risiken und Gegenmassnahmen:
+  - Risiko:
+  - Gegenmassnahme:
+  - Owner:
+  - Zieltermin:
+- Entscheidung: <go|no-go>
+- Begruendung: <kurz, auditierbar>
+- Sign-off:
+  - Release Owner:
+  - Product Owner:
+  - Technischer Reviewer:
+  - Security Contact (falls relevant):
+- Zeitstempel:
+```
+
+### Harte No-Go-Trigger, Gegenmassnahmen und Re-Entry
+
+| No-Go-Trigger (hart) | Gegenmassnahme | Eskalation | Re-Entry-Kriterium |
+| --- | --- | --- | --- |
+| Pflicht-Evidenz fehlt oder ist nicht pruefbar | fehlende Nachweise nachziehen, Links verifizieren | Release Owner -> Maintainer-Kreis | aktualisiertes Evidence-Pack liegt vollstaendig vor |
+| Mindestens ein rotes Gate (`setup-fehler`, `toolchain-drift`, `api-regression`) | Root Cause beheben, Gate erneut ausfuehren | technischer Reviewer -> zustaendiger Gate-Owner | alle Pflicht-Gates wieder `PASS` |
+| Offene High/Critical-Risiken ohne akzeptierte Gegenmassnahme | Risikominderung oder explizite, befristete Ausnahme mit Owner | Product Owner + Security Contact | Risiko geschlossen oder Ausnahme dokumentiert und freigegeben |
+| Nutzungsmetriken unter Schwellwert | Rollout begrenzen, Onboarding-/Support-Massnahmen umsetzen | Product Owner -> Maintainer-Kreis | Schwellwerte in zwei aufeinanderfolgenden Reports erreicht |
+
+### Beispielentscheidungen (Verifikation)
+
+Negativbeispiel (`no-go` trotz Teilgruen):
+
+- `quality:gate` ist gruen, aber der Node-24-Nachweis aus der Kompatibilitaetsmatrix fehlt.
+- Ergebnis: `no-go`, da Pflicht-Evidenz unvollstaendig; Gegenmassnahme = Matrix-Lauf nachziehen und Protokoll neu aufsetzen.
+
+Positivbeispiel (`go` bei vollstaendiger Evidenz):
+
+- Alle Story-4.2-Gates stehen auf `PASS`, Pflichtlinks sind vollstaendig, keine offenen High/Critical-Risiken, Nutzungsmetriken liegen ueber Schwellwert.
+- Ergebnis: `go`, Sign-off durch Release Owner + Product Owner + technischer Reviewer (verschiedene Personen).
+
 ## 7) Troubleshooting (Schema: Symptom -> Diagnose -> Fix -> Verifikation)
 
 ### Package-Manager-Konflikte
