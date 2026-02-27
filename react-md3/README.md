@@ -307,14 +307,17 @@ Verbindliches Rezeptformat: **Voraussetzungen -> Schritte -> Verifikation -> Tro
 
 - **Voraussetzungen**
   - CI-Matrix entspricht `.github/workflows/compatibility-matrix.yml`.
+  - Referenznachweis laeuft ueber `.github/workflows/reference-integration.yml`.
   - Node 20 bleibt ausgeschlossen; unterstuetzt sind nur Node 22/24.
 - **Schritte**
   1. Matrix-Lauf lokal pro Teamzelle reproduzieren (siehe "Lokale Reproduktion (pro Matrix-Zelle)").
   2. Pro Zelle `quality:gate` ausfuehren und Ergebnis klassifizieren.
-  3. Klassifikation dokumentieren: Setup-Fehler, Toolchain-Drift oder API-Regression.
+  3. Referenzintegration lokal ausfuehren: `cd react-md3/reference-integration && npm install && npm run ci:smoke`.
+  4. Klassifikation dokumentieren: Setup-Fehler, Toolchain-Drift oder API-Regression.
 - **Verifikation**
   - Mindestens ein reproduzierter Teamlauf ist nachweisbar.
   - Guardrail-Check `cd react-md3 && npm run quality:gate` ist erfolgreich dokumentiert.
+  - Referenzlauf (`install -> build -> test`) ist als Team-Nachweis reproduzierbar.
 - **Troubleshooting**
   - Fehlerbehebung ueber bestehende Troubleshooting-Abschnitte, ohne alternative Shadow-Standards einzufuehren.
 
@@ -417,6 +420,51 @@ npm run quality:gate
 
 - Fehlerklassifikation aus Story 3.1/3.2 wiederverwenden: Setup-Fehler, Toolchain-Drift, API-Regression.
 - Bei API-Regression immer `public-api.contract.json` und `CHANGELOG.md` gemeinsam nachziehen.
+
+## 6.9) Story 3.4 Referenzintegration in CI als Nachweis
+
+### Referenz-Target
+
+- Pfad: `react-md3/reference-integration`
+- Die Referenz-App nutzt ausschliesslich den Public Entry `react-md3`.
+- Deep-Imports auf `src/components/*` sind nicht erlaubt.
+
+### Reproduzierbarer Integrationslauf (lokal)
+
+```bash
+cd react-md3/reference-integration
+npm install
+npm run ci:smoke
+```
+
+`ci:smoke` fuehrt Build + Test aus und ordnet Fehler klar zu:
+
+- Build-Fehler -> `toolchain-drift`
+- Test-Fehler -> `api-regression`
+- Install-Fehler werden im CI-Lauf als `setup-fehler` markiert
+
+### Bewusstes Fehlerbild fuer Diagnoseprobe
+
+```bash
+cd react-md3/reference-integration
+REFERENCE_FAIL_MODE=api-regression npm run ci:smoke
+```
+
+Erwartung: Explizites `[api-regression]`-Signal und Exit-Code != 0.
+
+### CI-Nachweisworkflow
+
+- Datei: `.github/workflows/reference-integration.yml`
+- Trigger: `pull_request`, `push`, optional `workflow_dispatch`
+- Matrix: Node 22/24 (Node 20 ausgeschlossen)
+- Steps: `setup-fehler` (Install), `toolchain-drift` (Build), `api-regression` (Test)
+- Artefakte: eindeutige Log-Bundles pro Matrix-Zelle (`reference-integration-logs-node-...`)
+
+### Guardrails ohne Shadow-Prozess
+
+1. Referenznachweis (`reference-integration`)
+2. Maintainer-Gate (`cd react-md3 && npm run quality:gate`)
+3. API-Governance-Pfad aus Story 3.3 (`public-api.contract.json` + `CHANGELOG.md`)
 
 ## 7) Troubleshooting (Schema: Symptom -> Diagnose -> Fix -> Verifikation)
 

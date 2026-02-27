@@ -209,14 +209,16 @@ Verbindliches Rezeptformat fuer alle Team-Setups: **Voraussetzungen -> Schritte 
 ### Rezept C: Team-Workflow mit CI-Reproduktion
 
 - **Voraussetzungen**
-  - CI orientiert sich an `.github/workflows/compatibility-matrix.yml`.
+  - CI orientiert sich an `.github/workflows/compatibility-matrix.yml` und `.github/workflows/reference-integration.yml`.
   - Supportfenster bleibt explizit: Node 22/24 supported, Node 20 ausgeschlossen.
 - **Schritte**
   1. Matrix-Zelle lokal mit dem jeweiligen Manager reproduzieren (siehe Story-3.1-Abschnitt "Lokale Reproduktion der CI-Matrix").
   2. In jeder relevanten Zelle `quality:gate` ausfuehren.
-  3. Ergebnis je Fehlerklasse dokumentieren (Setup-Fehler, Toolchain-Drift, API-Regression) und passenden Recovery-Pfad anwenden.
+  3. Referenzintegration lokal ausfuehren: `cd react-md3/reference-integration && npm install && npm run ci:smoke`.
+  4. Ergebnis je Fehlerklasse dokumentieren (Setup-Fehler, Toolchain-Drift, API-Regression) und passenden Recovery-Pfad anwenden.
 - **Verifikation**
   - Mindestens ein reproduzierter Teamlauf mit `cd react-md3 && npm run quality:gate` ist dokumentiert.
+  - Referenzlauf (`install -> build -> test`) im Referenzprojekt ist reproduzierbar bestaetigt.
   - Fehlerklassifikation und Gegenmassnahmen sind fuer das Team nachvollziehbar.
 - **Troubleshooting**
   - Setup-/Build-/Theming-Probleme ueber bestehende Troubleshooting-Abschnitte eskalieren, ohne parallele Shadow-Doku aufzubauen.
@@ -231,6 +233,50 @@ Verbindliches Rezeptformat fuer alle Team-Setups: **Voraussetzungen -> Schritte 
    - [Story 3.3 Migrationspfad fuer API-Aenderungen](react-md3/README.md#675-story-33-migrationspfad-fuer-api-aenderungen)
 
 **Pflicht-Nachweis fuer jede Migration:** `cd react-md3 && npm run quality:gate`
+
+## Story 3.4 Referenzintegration als CI-Nachweis
+
+### Referenzprojekt (Public API only)
+
+- Zielpfad: `react-md3/reference-integration`
+- Die Referenz-App importiert ausschliesslich aus `react-md3` (kein Deep-Import auf `src/components/*`).
+- Smoke-Pfad lokal:
+
+```bash
+cd react-md3/reference-integration
+npm install
+npm run ci:smoke
+```
+
+### CI-Workflow und Supportfenster
+
+- Workflow: `.github/workflows/reference-integration.yml`
+- Trigger: `pull_request`, `push`, optional `workflow_dispatch`
+- Node-Support bleibt Story-3.1-konform:
+  - supported: 22.x, 24.x
+  - excluded: 20.x
+
+### Fehlerklassifikation und Diagnose-Signale
+
+- `setup-fehler` -> Install-Step
+- `toolchain-drift` -> Build-Step
+- `api-regression` -> Test-Step
+- CI laedt pro Matrix-Zelle Diagnose-Logs als Artefakt hoch (`reference-integration-logs-node-<version>-<run>`).
+
+### Bewusst provoziertes Fehlerbild (lokale Diagnoseprobe)
+
+```bash
+cd react-md3/reference-integration
+REFERENCE_FAIL_MODE=api-regression npm run ci:smoke
+```
+
+Erwartung: Der Lauf bricht mit einem expliziten `[api-regression]`-Signal ab.
+
+### Guardrail-Kette fuer Teams
+
+1. Referenzintegration nachweisen (`npm run ci:smoke`).
+2. Library-Guardrail pruefen (`cd react-md3 && npm run quality:gate`).
+3. Bei API-Regression zusaetzlich Contract/Changelog synchronisieren (Story 3.3 Governance-Pfad).
 
 ## Initialisierung und Verifikation (Story 1.1)
 

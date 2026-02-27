@@ -1,0 +1,80 @@
+name: Reference Integration
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/reference-integration.yml"
+      - "README.md"
+      - "react-md3/**"
+  push:
+    paths:
+      - ".github/workflows/reference-integration.yml"
+      - "README.md"
+      - "react-md3/**"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  reference-integration:
+    name: Reference Integration (Node ${{ matrix.node-version }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: ["22", "24"]
+
+    defaults:
+      run:
+        working-directory: react-md3/reference-integration
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v5
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: npm
+          cache-dependency-path: react-md3/reference-integration/package-lock.json
+
+      - name: setup-fehler | Install reference integration dependencies
+        run: |
+          set -eo pipefail
+          mkdir -p ci-logs
+          npm ci 2>&1 | tee ci-logs/install.log
+
+      - name: toolchain-drift | Build reference integration
+        run: |
+          set -eo pipefail
+          npm run build 2>&1 | tee ci-logs/build.log
+
+      - name: api-regression | Test public API smoke
+        run: |
+          set -eo pipefail
+          npm run test 2>&1 | tee ci-logs/test.log
+
+      - name: Upload reference integration logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: reference-integration-logs-node-${{ matrix.node-version }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: react-md3/reference-integration/ci-logs/*.log
+          if-no-files-found: warn
+
+      - name: Publish reference integration summary
+        if: always()
+        run: |
+          {
+            echo "## Reference integration diagnostics"
+            echo ""
+            echo "- setup-fehler -> \`setup-fehler | Install reference integration dependencies\`"
+            echo "- toolchain-drift -> \`toolchain-drift | Build reference integration\`"
+            echo "- api-regression -> \`api-regression | Test public API smoke\`"
+            echo ""
+            echo "Node policy: supported 22.x and 24.x; Node 20.x is intentionally excluded."
+            echo "Artifact: \`reference-integration-logs-node-${{ matrix.node-version }}-${{ github.run_id }}-${{ github.run_attempt }}\`"
+          } >> "$GITHUB_STEP_SUMMARY"
