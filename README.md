@@ -170,6 +170,57 @@ bun install && bun run quality:gate
 - **API-Regression:** `npm run api:contract:check` faellt -> Public API + `public-api.contract.json` + `CHANGELOG.md` synchronisieren.
 - **Governance-Regel:** Bei API-/Tooling-Aenderungen Matrix-Definition, Changelog und API-Contract-Checks immer gemeinsam aktualisieren.
 
+## Story 3.2 Integrationsrezepte fuer gaengige Team-Setups
+
+Verbindliches Rezeptformat fuer alle Team-Setups: **Voraussetzungen -> Schritte -> Verifikation -> Troubleshooting**.
+
+### Rezept A: Bestehende Vite-React-App
+
+- **Voraussetzungen**
+  - Support-Guardrail aus Story 3.1: nur Node 22.x/24.x plus `npm|pnpm|yarn|bun`.
+  - Pro Working Copy genau ein Package-Manager; fuer `pnpm`/`yarn` vorher `corepack enable`.
+  - Integration nur ueber Public API (`react-md3/src/index.ts`), keine Deep-Imports.
+- **Schritte**
+  1. Paket in der Ziel-App mit dem aktiven Package-Manager integrieren und Imports ueber den Public Barrel setzen.
+  2. Build und Theming in der Ziel-App pruefen (Komponente sichtbar, M3-Styling vorhanden, kein ungestylter Fallback).
+  3. In diesem Repository die Guardrail-Verifikation ausfuehren: `cd react-md3 && npm run quality:gate`.
+- **Verifikation**
+  - Integration laeuft reproduzierbar: Install ok, Build ok, Theming sichtbar korrekt.
+  - Quality-Gates sind gruen (`lint`, `test`, `build`, `api:contract:check` via `quality:gate`).
+- **Troubleshooting**
+  - Setup-Fehler / Toolchain-Drift / API-Regression nach obiger Fehlerklassifikation einordnen.
+  - Fuer konkrete Fixes die Troubleshooting-Abschnitte in diesem README (Story 1.4) und in `react-md3/README.md` verwenden.
+
+### Rezept B: Vorhandene React-App mit alternativer Toolchain
+
+- **Voraussetzungen**
+  - Gleiche Support-Guardrails wie Rezept A (Node 22.x/24.x, Manager-Matrix aus Story 3.1).
+  - Toolchain muss ESM-Imports ueber den Public Entry unterstuetzen.
+- **Schritte**
+  1. Public-API-Import (`src/index.ts`) als einzige Integrationskante festlegen; keine projektspezifischen Deep-Import-Abkuerzungen.
+  2. Bestehende Build-/Test-Pipeline der Ziel-App ausfuehren und danach Library-Gates gegenpruefen: `cd react-md3 && npm run quality:gate`.
+  3. Theming-Check mit realem UI-Zustand (Surface/Texte/Interaktionen) in Light- und Dark-Mode durchfuehren.
+- **Verifikation**
+  - Ziel-Toolchain baut ohne Sonderpfade.
+  - Theming und Komponentenverhalten sind konsistent mit den Referenzbeispielen.
+- **Troubleshooting**
+  - Toolchain-spezifische Build-Probleme zuerst als Toolchain-Drift behandeln, danach gegen Matrix- und Troubleshooting-Regeln abgleichen.
+
+### Rezept C: Team-Workflow mit CI-Reproduktion
+
+- **Voraussetzungen**
+  - CI orientiert sich an `.github/workflows/compatibility-matrix.yml`.
+  - Supportfenster bleibt explizit: Node 22/24 supported, Node 20 ausgeschlossen.
+- **Schritte**
+  1. Matrix-Zelle lokal mit dem jeweiligen Manager reproduzieren (siehe Story-3.1-Abschnitt "Lokale Reproduktion der CI-Matrix").
+  2. In jeder relevanten Zelle `quality:gate` ausfuehren.
+  3. Ergebnis je Fehlerklasse dokumentieren (Setup-Fehler, Toolchain-Drift, API-Regression) und passenden Recovery-Pfad anwenden.
+- **Verifikation**
+  - Mindestens ein reproduzierter Teamlauf mit `cd react-md3 && npm run quality:gate` ist dokumentiert.
+  - Fehlerklassifikation und Gegenmassnahmen sind fuer das Team nachvollziehbar.
+- **Troubleshooting**
+  - Setup-/Build-/Theming-Probleme ueber bestehende Troubleshooting-Abschnitte eskalieren, ohne parallele Shadow-Doku aufzubauen.
+
 ## Initialisierung und Verifikation (Story 1.1)
 
 ```bash

@@ -55,7 +55,7 @@ development_status:
   epic-2-retrospective: optional
   epic-3: in-progress
   3-1-kompatibilitaetsmatrix-definieren-und-in-ci-absichern: done
-  3-2-integrationsrezepte-fuer-gaengige-team-setups-bereitstellen: backlog
+  3-2-integrationsrezepte-fuer-gaengige-team-setups-bereitstellen: done
   3-3-migrationspfad-fuer-api-aenderungen-operationalisieren: backlog
   3-4-referenzintegration-in-ci-als-nachweis-etablieren: backlog
   epic-3-retrospective: optional
