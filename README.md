@@ -278,6 +278,13 @@ Erwartung: Der Lauf bricht mit einem expliziten `[api-regression]`-Signal ab.
 2. Library-Guardrail pruefen (`cd react-md3 && npm run quality:gate`).
 3. Bei API-Regression zusaetzlich Contract/Changelog synchronisieren (Story 3.3 Governance-Pfad).
 
+## Story 4.1 Release-Checkliste und harte Quality Gates
+
+- Verbindliche operative Checkliste (Single Source of Truth): [`react-md3/README.md` Abschnitt 6.10](react-md3/README.md#610-story-41-release-checkliste-und-harte-quality-gates).
+- Harte Regel fuer Stable-Releases: fehlende oder rote Gate-Evidenz => **No-Go**.
+- Pflicht-Evidenz basiert auf bestehenden Guardrails (`quality:gate`, Kompatibilitaetsmatrix Node 22/24, Referenzintegration, API-Contract-Governance) und nutzt die gleichen Fehlerklassen (`setup-fehler`, `toolchain-drift`, `api-regression`).
+- Pflegeprozess: pro Release-Kandidat aktualisieren; finale Freigabe wird ueber ein standardisiertes Go/No-Go-Protokoll dokumentiert.
+
 ## Initialisierung und Verifikation (Story 1.1)
 
 ```bash

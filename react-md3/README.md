@@ -466,6 +466,74 @@ Erwartung: Explizites `[api-regression]`-Signal und Exit-Code != 0.
 2. Maintainer-Gate (`cd react-md3 && npm run quality:gate`)
 3. API-Governance-Pfad aus Story 3.3 (`public-api.contract.json` + `CHANGELOG.md`)
 
+## 6.10) Story 4.1 Release-Checkliste und harte Quality Gates
+
+### Single Source of Truth + harte Blocker-Regel
+
+- Diese Section ist die verbindliche Release-Checkliste fuer `react-md3` Stable-Releases.
+- Harte Regel: Fehlende Evidenz oder ein rotes Gate fuehrt immer zu **No-Go** (kein Stable-Release).
+- Bestehende Guardrails bleiben Pflicht und werden hier nur gebuendelt (kein Shadow-Prozess):
+  - `cd react-md3 && npm run quality:gate`
+  - `.github/workflows/compatibility-matrix.yml` (Node 22/24, Node 20 ausgeschlossen)
+  - `.github/workflows/reference-integration.yml`
+  - API-Contract-Governance aus Story 3.3 (`migrationGuide`-Marker + Changelog-Token-Synchronitaet)
+
+### Verbindliche Gate-Checkliste (Pass/Fail)
+
+| Gate-Kategorie | Messbare Schwelle (Pass) | Datenquelle | Pflicht-Evidenz | Verantwortlich |
+| --- | --- | --- | --- | --- |
+| Kritische Defekte | 0 offene kritische Bugs (`severity:critical` oder gleichwertiger Blocker-Status) | Issue-/Bug-Tracking fuer Release-Branch | Link auf gefilterte Abfrage + Zeitstempel fuer Release-Kandidat | Maintainer on Duty |
+| API-/Contract-Konsistenz | `npm run quality:gate` gruen inkl. `api:contract:check`; bei API-Aenderung sind `Trigger:`, `Alt -> Neu:`, `Betroffene Exports/Pfade:`, `Verifikation:` und `[api-contract-hash:...]` konsistent | `react-md3/package.json`, `react-md3/scripts/check-api-contract.mjs`, `react-md3/CHANGELOG.md`, `react-md3/public-api.contract.json` | CI-/lokales Run-Log + Verweis auf Changelog-Section | API Owner + Maintainer |
+| Beispiel-/Doku-Konsistenz | Referenzintegration fuer Node 22/24 gruen; Doku verweist auf gleiche Guardrails und Fehlerklassen | `.github/workflows/reference-integration.yml`, `README.md`, `react-md3/README.md` | Workflow-Run-Links + Artefakte mit Klassifikation `setup-fehler`/`toolchain-drift`/`api-regression` | Docs/DX Owner |
+| Security | Keine offenen High/Critical Security-Funde ohne freigegebene, befristete Ausnahme | Security-Advisories, Dependabot-/Issue-Backlog | Advisory- oder Issue-Links; falls Ausnahme: dokumentierte Restlaufzeit + Risk Owner | Security Contact + Maintainer |
+| Freigabeentscheidung | Vollstaendiges Go/No-Go-Protokoll mit allen Pflichtfeldern und 2-Augen-Freigabe | Release-Protokoll (siehe Vorlage unten) | Ausgefuellter Protokolleintrag inkl. Entscheidung und Sign-off | Release Owner + technischer Reviewer |
+
+### Evidence Pack fuer einen Release-Kandidaten
+
+1. `quality:gate` Nachweis (`lint`, `test`, `build`, `api:contract:check`).
+2. Kompatibilitaetsmatrix-Nachweise fuer Node 22 und 24.
+3. Referenzintegrations-Nachweis inkl. Log-Artefakten und Fehlerklassen (`setup-fehler`, `toolchain-drift`, `api-regression`).
+4. API-Governance-Nachweis (falls API beruehrt): Contract-Check-Ausgabe + `CHANGELOG.md` mit passendem `api-contract-hash`.
+5. Security-Nachweis (offene Funde oder explizit dokumentierte Ausnahme).
+6. Signiertes Go/No-Go-Protokoll.
+
+### Pruefablauf fuer Release-Kandidaten
+
+1. Evidence Pack fuer den Kandidaten sammeln und verlinken.
+2. Gate-Tabelle von oben strikt in Reihenfolge pruefen (Kritische Defekte -> API/Contract -> Doku/Beispiele -> Security -> Freigabeentscheidung).
+3. Bei fehlender oder roter Evidenz sofort `No-Go` dokumentieren und Blocker inkl. Owner nachverfolgen.
+4. Nur bei 100% gruener Evidenz das Go/No-Go-Protokoll mit 2-Augen-Freigabe auf `Go` setzen.
+
+### Go/No-Go-Entscheidungsprotokoll (Vorlage)
+
+| Pflichtfeld | Inhalt |
+| --- | --- |
+| Release-Ziel | Version, Ziel-Branch, Scope |
+| Evidenzlinks | Links auf Quality-Gate, Matrix, Referenzintegration, API-/Security-Nachweise |
+| Offene Risiken | Restrisiken, Impact, Gegenmassnahmen, Owner |
+| Entscheidung | `Go` oder `No-Go` |
+| Verantwortliche | Release Owner, technischer Reviewer, Security Contact (falls relevant) |
+| Zeitstempel | Datum/Uhrzeit der Entscheidung |
+
+Regeln fuer Blocker, Ausnahmefall und Eskalation:
+
+- **Sofortiges No-Go:** kritischer Bug, `api-regression`, rotes Security-Gate oder fehlende Pflicht-Evidenz.
+- **Ausnahmefall:** nur bei nicht-kritischen Risiken, mit dokumentierter Restlaufzeit, Owner und Eskalationspfad; rote Gates bleiben nicht uebersteuerbar.
+- **Eskalation:** Bei Blockern Entscheidung an Maintainer-Kreis eskalieren und neue Freigabe erst nach gruener Evidenz erneut bewerten.
+- **Scope-Grenze zu Story 4.3:** Diese Vorlage steuert Release-Freigaben; phasenuebergreifende Go/No-Go-Prozesse folgen separat in Story 4.3.
+
+Negativbeispiel (zwingendes No-Go):
+
+- `quality:gate` ist gruen, aber der Node-24-Lauf aus der Kompatibilitaetsmatrix fehlt im Evidence Pack.
+- Ergebnis: `No-Go`, weil Pflicht-Evidenz unvollstaendig ist (keine Stable-Freigabe trotz gruener Teil-Gates).
+
+### Dokumentationsablage und Pflegeprozess
+
+- Root-Uebersicht: `README.md` (Projektkontext + Verweis auf diese Checkliste).
+- Operative Release-Governance: `react-md3/README.md` (diese Section 6.10 als Single Source of Truth).
+- Pflegezyklus: mindestens je Release-Kandidat, zusaetzlich nach jedem Blocker-Vorfall.
+- Gate-Owner pflegen ihre Evidenzquellen; Release Owner verantwortet die finale Go/No-Go-Dokumentation.
+
 ## 7) Troubleshooting (Schema: Symptom -> Diagnose -> Fix -> Verifikation)
 
 ### Package-Manager-Konflikte
