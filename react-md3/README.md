@@ -1,6 +1,6 @@
 # react-md3 Getting-Started (<= 5 Minuten)
 
-Kompakter Einstieg vom frischen Setup bis zu den ersten produktiven Komponenten (`M3ReferenceCard`, `Button`).
+Kompakter Einstieg vom frischen Setup bis zu produktiven Komponenten (`M3ReferenceCard`, `Button`, `TextField`, `Checkbox`, `RadioGroup`).
 
 ## 1) Voraussetzungen
 
@@ -47,9 +47,9 @@ bun run dev
 
 Oeffne die lokale URL (standardmaessig `http://localhost:5173`) und pruefe:
 
-1. Story-Badge: `Story 1.3 Getting Started`
-2. Headline: `M3 Getting Started ist bereit`
-3. Sichtbare Komponente: `M3 Referenzkomponente`
+1. Story-Badge: `Story 2.3 Form/Selection`
+2. Headline: `M3 Form & Selection sind bereit`
+3. Sichtbare Komponenten inkl. Form-/Selection-Beispiele: `M3 Referenzkomponente`, `TextField`, `Checkbox`, `RadioGroup`
 
 Damit ist mindestens eine produktive M3-Komponente lauffaehig integriert.
 
@@ -59,13 +59,13 @@ Die Komponente wird ueber den Public Barrel genutzt:
 
 - `src/App.tsx` importiert aus `./index`
 - `src/index.ts` exportiert aus `./components`
-- `src/components/index.ts` exportiert `M3ReferenceCard` und `Button`
+- `src/components/index.ts` exportiert `M3ReferenceCard`, `Button`, `TextField`, `Checkbox`, `RadioGroup`
 - Keine Deep-Imports verwenden
 
 ### Importpfad in `src/App.tsx`
 
 ```tsx
-import { Button, M3ReferenceCard } from './index'
+import { Button, Checkbox, M3ReferenceCard, RadioGroup, TextField } from './index'
 ```
 
 ### Standardbeispiele
@@ -73,10 +73,22 @@ import { Button, M3ReferenceCard } from './index'
 ```tsx
 <M3ReferenceCard
   title="M3 Referenzkomponente"
-  supportingText="Diese erste produktive Komponente verifiziert den lauffaehigen 5-Minuten-Flow."
+  supportingText="Slice B erweitert die Basis um robuste Form- und Selection-Komponenten."
 />
 
 <Button>Standard Aktion</Button>
+
+<TextField label="Projektname" supportingText="Standardbeispiel mit kontrolliertem Value." />
+
+<Checkbox label="Newsletter abonnieren" supportingText="Standardbeispiel mit kontrolliertem Checked-State." />
+
+<RadioGroup
+  label="Kontaktkanal"
+  options={[
+    { label: 'E-Mail', value: 'email' },
+    { label: 'Telefon', value: 'phone' },
+  ]}
+/>
 ```
 
 ### Relevante Props
@@ -87,11 +99,29 @@ import { Button, M3ReferenceCard } from './index'
 - `variant?: 'filled' | 'tonal' | 'text'` (optional, Default: `filled`)
 - `loading?: boolean` (optional, Edge Case: setzt `disabled` + `aria-busy`)
 - `disabled?: boolean` (optional)
+- `label: string` (required fuer `TextField`, `Checkbox`, `RadioGroup`)
+- `errorText?: string` (optional fuer validierungsnahe Edge Cases)
+- `supportingText?: string` (optional fuer Hilfetext)
+- `options: { label: string; value: string; disabled?: boolean }[]` (required fuer `RadioGroup`)
+- `onValueChange?: (value: string) => void` (optional fuer kontrollierte `RadioGroup`)
 
 ### Edge-Case-Beispiel (Action Control)
 
 ```tsx
 <Button loading>Loading Edge Case</Button>
+
+<TextField label="API-Schluessel" errorText="Bitte einen gueltigen API-Schluessel eingeben." />
+
+<Checkbox disabled required label="AGB bestaetigen" supportingText="Edge Case: disabled + required." />
+
+<RadioGroup
+  errorText="Bitte Freigabestatus festlegen."
+  label="Freigabestatus"
+  options={[
+    { label: 'Entwurf', value: 'draft' },
+    { label: 'Freigegeben', value: 'released', disabled: true },
+  ]}
+/>
 ```
 
 ## 5) Public-API-Vertrag und Deprecation-Policy
@@ -103,8 +133,11 @@ import { Button, M3ReferenceCard } from './index'
 - Deep-Imports (z. B. `src/components/...`) sind kein oeffentlicher Vertrag.
 - Aktuell freigegebene Exports:
   - `Button`
+  - `Checkbox`
   - `M3ReferenceCard`
   - `M3_REFERENCE_FALLBACK_TEXT`
+  - `RadioGroup`
+  - `TextField`
 
 ### Deprecation-Lifecycle (verbindlich)
 

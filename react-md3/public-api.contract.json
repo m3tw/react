@@ -6,8 +6,11 @@
     "allowDeepImports": false,
     "exports": [
       "Button",
+      "Checkbox",
       "M3ReferenceCard",
-      "M3_REFERENCE_FALLBACK_TEXT"
+      "M3_REFERENCE_FALLBACK_TEXT",
+      "RadioGroup",
+      "TextField"
     ]
   },
   "deprecationPolicy": {
@@ -38,14 +41,17 @@
     "currentRelease": {
       "affectedExports": [
         "Button",
+        "Checkbox",
         "M3ReferenceCard",
-        "M3_REFERENCE_FALLBACK_TEXT"
+        "M3_REFERENCE_FALLBACK_TEXT",
+        "RadioGroup",
+        "TextField"
       ],
       "changeType": "minor",
       "riskLevel": "low",
-      "migrationGuide": "Additive Aenderung: Neuer Export `Button` ergaenzt die Public API ohne Breaking Change.",
-      "changelogToken": "[api-contract-hash:6bf8e565dfb10b0976ab7f5330053d6a817715bfdd6ab61e8c8234005b6207bf]"
+      "migrationGuide": "Additive Aenderung: `TextField`, `Checkbox` und `RadioGroup` erweitern die Public API ohne Breaking Change.",
+      "changelogToken": "[api-contract-hash:bebc80d34c4413c78d271773328a5f1c98b1354618ab4a8812011bc23a07063a]"
     }
   },
-  "contractHash": "6bf8e565dfb10b0976ab7f5330053d6a817715bfdd6ab61e8c8234005b6207bf"
+  "contractHash": "bebc80d34c4413c78d271773328a5f1c98b1354618ab4a8812011bc23a07063a"
 }

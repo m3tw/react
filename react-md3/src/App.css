@@ -51,9 +51,27 @@
   font-size: 1.1rem;
 }
 
+.form-examples,
+.selection-examples {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.form-examples h2,
+.selection-examples h2 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
 .button-row {
   display: flex;
   flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.form-grid,
+.selection-grid {
+  display: grid;
   gap: 0.75rem;
 }
 

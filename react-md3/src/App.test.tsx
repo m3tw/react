@@ -8,11 +8,11 @@ describe('App getting-started flow', () => {
     cleanup()
   })
 
-  it('renders the first productive component in the tutorial path', () => {
+  it('renders story 2.3 form and selection examples including edge cases', () => {
     const { getByRole, getByText } = render(<App />)
 
-    expect(getByText('Story 1.3 Getting Started')).toBeInTheDocument()
-    expect(getByRole('heading', { name: 'M3 Getting Started ist bereit', level: 1 })).toBeInTheDocument()
+    expect(getByText('Story 2.3 Form/Selection')).toBeInTheDocument()
+    expect(getByRole('heading', { name: 'M3 Form & Selection sind bereit', level: 1 })).toBeInTheDocument()
     expect(getByRole('heading', { name: 'M3 Referenzkomponente', level: 2 })).toBeInTheDocument()
     expect(getByRole('button', { name: 'Standard Aktion' })).not.toBeDisabled()
     expect(getByRole('button', { name: 'Disabled Aktion' })).toBeDisabled()
@@ -20,5 +20,12 @@ describe('App getting-started flow', () => {
     const loadingButton = getByRole('button', { name: 'Loading Edge Case' })
     expect(loadingButton).toBeDisabled()
     expect(loadingButton).toHaveAttribute('aria-busy', 'true')
+
+    expect(getByRole('textbox', { name: 'Projektname' })).toHaveValue('M3 Formular')
+    expect(getByRole('textbox', { name: 'API-Schluessel' })).toHaveAttribute('aria-invalid', 'true')
+    expect(getByRole('checkbox', { name: 'Newsletter abonnieren' })).not.toBeDisabled()
+    expect(getByRole('checkbox', { name: 'AGB bestaetigen' })).toBeDisabled()
+    expect(getByRole('radio', { name: 'E-Mail' })).toBeChecked()
+    expect(getByText('Bitte Freigabestatus festlegen.')).toBeInTheDocument()
   })
 })
