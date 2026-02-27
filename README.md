@@ -120,6 +120,13 @@ npm run dev
 5. API-Hinweise und Standardbeispiel direkt im Paket-Guide nutzen:
    - `react-md3/README.md` (Importpfad ueber Public Barrel `src/index.ts`, Props und Beispielcode)
 
+## Story 2.1 Public API Governance
+
+- Verbindliche Public-API-Dokumentation liegt zentral in `react-md3/README.md`.
+- Maschinenlesbarer API-Vertrag liegt in `react-md3/public-api.contract.json`.
+- Release-Traceability fuer API-Aenderungen liegt in `react-md3/CHANGELOG.md` (inkl. `api-contract-hash` Token).
+- Public API wird ausschliesslich ueber `react-md3/src/index.ts` konsumiert (keine Deep-Import-Vertraege).
+
 ## Initialisierung und Verifikation (Story 1.1)
 
 ```bash

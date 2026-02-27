@@ -82,7 +82,40 @@ import { M3ReferenceCard } from './index'
 - `title: string` (required)
 - `supportingText?: string` (optional, Fallbacktext wird automatisch gesetzt)
 
-## 5) Quality Gates
+## 5) Public-API-Vertrag und Deprecation-Policy
+
+### Verbindlicher Public Surface
+
+- Public API nur ueber den Barrel-Entry `src/index.ts` verwenden.
+- `src/components/index.ts` ist eine interne Aggregationsschicht hinter dem Public Barrel.
+- Deep-Imports (z. B. `src/components/...`) sind kein oeffentlicher Vertrag.
+- Aktuell freigegebene Exports:
+  - `M3ReferenceCard`
+  - `M3_REFERENCE_FALLBACK_TEXT`
+
+### Deprecation-Lifecycle (verbindlich)
+
+`active -> deprecated -> removed`
+
+- Deprecated APIs bleiben mindestens eine Minor-Version lauffaehig, bevor sie in einem Major entfernt werden.
+- SemVer-Mapping:
+  - `patch`: keine Public-API-Vertragsaenderung
+  - `minor`: additive API oder Deprecation-Markierung ohne Breaking Change
+  - `major`: API-Removal oder sonstiger Breaking Change
+- Jede Aenderung mit Nutzerwirkung braucht Migrationshinweise (mindestens `alt -> neu`, betroffene Exports/Pfade, Verifikationsschritt).
+
+### Release-Traceability (Pflicht fuer API-Aenderungen)
+
+- Single Source of Truth: `public-api.contract.json` + `CHANGELOG.md`.
+- Vor Release muss `npm run api:contract:check` erfolgreich sein.
+- Pflichtmetadaten je API-Aenderung:
+  - `affectedExports`
+  - `changeType`
+  - `riskLevel`
+  - `migrationGuide`
+- Changelog-Eintrag muss den Contract-Token `[api-contract-hash:...]` enthalten.
+
+## 6) Quality Gates
 
 Pflicht-Gates fuer diese Story:
 
@@ -90,9 +123,16 @@ Pflicht-Gates fuer diese Story:
 npm run lint
 npm run test
 npm run build
+npm run api:contract:check
 ```
 
-## 6) Troubleshooting (Schema: Symptom -> Diagnose -> Fix -> Verifikation)
+Fuer einen kompletten Maintainer-Check in einem Schritt:
+
+```bash
+npm run quality:gate
+```
+
+## 7) Troubleshooting (Schema: Symptom -> Diagnose -> Fix -> Verifikation)
 
 ### Package-Manager-Konflikte
 

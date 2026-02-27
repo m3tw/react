@@ -1,0 +1,49 @@
+{
+  "contractVersion": "1.0.0",
+  "publicSurface": {
+    "entrypoint": "src/index.ts",
+    "componentBarrel": "src/components/index.ts",
+    "allowDeepImports": false,
+    "exports": [
+      "M3ReferenceCard",
+      "M3_REFERENCE_FALLBACK_TEXT"
+    ]
+  },
+  "deprecationPolicy": {
+    "lifecycle": [
+      "active",
+      "deprecated",
+      "removed"
+    ],
+    "minimumAdvanceNoticeMinorReleases": 1,
+    "communicationChannels": [
+      "react-md3/README.md",
+      "react-md3/CHANGELOG.md"
+    ],
+    "semverMapping": {
+      "patch": "Keine Public-API-Vertragsaenderung.",
+      "minor": "Neue additive API oder Deprecation-Markierung ohne Breaking Change.",
+      "major": "Entfernung deprecated APIs oder andere Breaking Changes."
+    },
+    "migrationGuidanceRequired": true
+  },
+  "releaseTraceability": {
+    "requiredMetadata": [
+      "affectedExports",
+      "changeType",
+      "riskLevel",
+      "migrationGuide"
+    ],
+    "currentRelease": {
+      "affectedExports": [
+        "M3ReferenceCard",
+        "M3_REFERENCE_FALLBACK_TEXT"
+      ],
+      "changeType": "minor",
+      "riskLevel": "low",
+      "migrationGuide": "Keine Migration erforderlich: initiale Vertragsbasis in Story 2.1.",
+      "changelogToken": "[api-contract-hash:0e9bc4205d8c576bc7e4ed68f908b741438831e30f30ec7a973705509dc53bde]"
+    }
+  },
+  "contractHash": "0e9bc4205d8c576bc7e4ed68f908b741438831e30f30ec7a973705509dc53bde"
+}
