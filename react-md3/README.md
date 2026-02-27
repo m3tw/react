@@ -1,6 +1,6 @@
 # react-md3 Getting-Started (<= 5 Minuten)
 
-Kompakter Einstieg vom frischen Setup bis zur ersten produktiven Komponente (`M3ReferenceCard`).
+Kompakter Einstieg vom frischen Setup bis zu den ersten produktiven Komponenten (`M3ReferenceCard`, `Button`).
 
 ## 1) Voraussetzungen
 
@@ -59,28 +59,40 @@ Die Komponente wird ueber den Public Barrel genutzt:
 
 - `src/App.tsx` importiert aus `./index`
 - `src/index.ts` exportiert aus `./components`
-- `src/components/index.ts` exportiert `M3ReferenceCard`
+- `src/components/index.ts` exportiert `M3ReferenceCard` und `Button`
 - Keine Deep-Imports verwenden
 
 ### Importpfad in `src/App.tsx`
 
 ```tsx
-import { M3ReferenceCard } from './index'
+import { Button, M3ReferenceCard } from './index'
 ```
 
-### Standardbeispiel
+### Standardbeispiele
 
 ```tsx
 <M3ReferenceCard
   title="M3 Referenzkomponente"
   supportingText="Diese erste produktive Komponente verifiziert den lauffaehigen 5-Minuten-Flow."
 />
+
+<Button>Standard Aktion</Button>
 ```
 
 ### Relevante Props
 
 - `title: string` (required)
 - `supportingText?: string` (optional, Fallbacktext wird automatisch gesetzt)
+- `children: ReactNode` (required)
+- `variant?: 'filled' | 'tonal' | 'text'` (optional, Default: `filled`)
+- `loading?: boolean` (optional, Edge Case: setzt `disabled` + `aria-busy`)
+- `disabled?: boolean` (optional)
+
+### Edge-Case-Beispiel (Action Control)
+
+```tsx
+<Button loading>Loading Edge Case</Button>
+```
 
 ## 5) Public-API-Vertrag und Deprecation-Policy
 
@@ -90,6 +102,7 @@ import { M3ReferenceCard } from './index'
 - `src/components/index.ts` ist eine interne Aggregationsschicht hinter dem Public Barrel.
 - Deep-Imports (z. B. `src/components/...`) sind kein oeffentlicher Vertrag.
 - Aktuell freigegebene Exports:
+  - `Button`
   - `M3ReferenceCard`
   - `M3_REFERENCE_FALLBACK_TEXT`
 

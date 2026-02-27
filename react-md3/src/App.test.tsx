@@ -14,5 +14,11 @@ describe('App getting-started flow', () => {
     expect(getByText('Story 1.3 Getting Started')).toBeInTheDocument()
     expect(getByRole('heading', { name: 'M3 Getting Started ist bereit', level: 1 })).toBeInTheDocument()
     expect(getByRole('heading', { name: 'M3 Referenzkomponente', level: 2 })).toBeInTheDocument()
+    expect(getByRole('button', { name: 'Standard Aktion' })).not.toBeDisabled()
+    expect(getByRole('button', { name: 'Disabled Aktion' })).toBeDisabled()
+
+    const loadingButton = getByRole('button', { name: 'Loading Edge Case' })
+    expect(loadingButton).toBeDisabled()
+    expect(loadingButton).toHaveAttribute('aria-busy', 'true')
   })
 })

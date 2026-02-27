@@ -41,6 +41,22 @@
   color: #334155;
 }
 
+.button-examples {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.button-examples h2 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.button-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
 @media (prefers-color-scheme: dark) {
   #root {
     color: #f8fafc;

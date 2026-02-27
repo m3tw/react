@@ -1,4 +1,4 @@
-import { M3ReferenceCard } from './index'
+import { Button, M3ReferenceCard } from './index'
 import './App.css'
 
 function App() {
@@ -12,6 +12,14 @@ function App() {
         title="M3 Referenzkomponente"
         supportingText="Diese erste produktive Komponente verifiziert den lauffaehigen 5-Minuten-Flow."
       />
+      <section className="button-examples" aria-label="Button Beispiele">
+        <h2>Action Controls: Button</h2>
+        <div className="button-row">
+          <Button>Standard Aktion</Button>
+          <Button disabled>Disabled Aktion</Button>
+          <Button loading>Loading Edge Case</Button>
+        </div>
+      </section>
     </main>
   )
 }

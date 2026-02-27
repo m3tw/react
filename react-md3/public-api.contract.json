@@ -5,6 +5,7 @@
     "componentBarrel": "src/components/index.ts",
     "allowDeepImports": false,
     "exports": [
+      "Button",
       "M3ReferenceCard",
       "M3_REFERENCE_FALLBACK_TEXT"
     ]
@@ -36,14 +37,15 @@
     ],
     "currentRelease": {
       "affectedExports": [
+        "Button",
         "M3ReferenceCard",
         "M3_REFERENCE_FALLBACK_TEXT"
       ],
       "changeType": "minor",
       "riskLevel": "low",
-      "migrationGuide": "Keine Migration erforderlich: initiale Vertragsbasis in Story 2.1.",
-      "changelogToken": "[api-contract-hash:0e9bc4205d8c576bc7e4ed68f908b741438831e30f30ec7a973705509dc53bde]"
+      "migrationGuide": "Additive Aenderung: Neuer Export `Button` ergaenzt die Public API ohne Breaking Change.",
+      "changelogToken": "[api-contract-hash:6bf8e565dfb10b0976ab7f5330053d6a817715bfdd6ab61e8c8234005b6207bf]"
     }
   },
-  "contractHash": "0e9bc4205d8c576bc7e4ed68f908b741438831e30f30ec7a973705509dc53bde"
+  "contractHash": "6bf8e565dfb10b0976ab7f5330053d6a817715bfdd6ab61e8c8234005b6207bf"
 }
