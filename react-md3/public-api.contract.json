@@ -9,8 +9,12 @@
       "Checkbox",
       "M3ReferenceCard",
       "M3_REFERENCE_FALLBACK_TEXT",
+      "NavigationDrawer",
+      "NavigationRail",
       "RadioGroup",
-      "TextField"
+      "Surface",
+      "TextField",
+      "TopAppBar"
     ]
   },
   "deprecationPolicy": {
@@ -44,14 +48,18 @@
         "Checkbox",
         "M3ReferenceCard",
         "M3_REFERENCE_FALLBACK_TEXT",
+        "NavigationDrawer",
+        "NavigationRail",
         "RadioGroup",
-        "TextField"
+        "Surface",
+        "TextField",
+        "TopAppBar"
       ],
       "changeType": "minor",
       "riskLevel": "low",
-      "migrationGuide": "Additive Aenderung: `TextField`, `Checkbox` und `RadioGroup` erweitern die Public API ohne Breaking Change.",
-      "changelogToken": "[api-contract-hash:bebc80d34c4413c78d271773328a5f1c98b1354618ab4a8812011bc23a07063a]"
+      "migrationGuide": "Additive Aenderung: `TopAppBar`, `NavigationRail`, `NavigationDrawer` und `Surface` erweitern die Public API ohne Breaking Change.",
+      "changelogToken": "[api-contract-hash:37b8630777bef891a320c12904d7367dfd0c91fa3c18f630f54ea3d0389e05e2]"
     }
   },
-  "contractHash": "bebc80d34c4413c78d271773328a5f1c98b1354618ab4a8812011bc23a07063a"
+  "contractHash": "37b8630777bef891a320c12904d7367dfd0c91fa3c18f630f54ea3d0389e05e2"
 }

@@ -1,83 +1,74 @@
 import { useState } from 'react'
 
-import { Button, Checkbox, M3ReferenceCard, RadioGroup, TextField } from './index'
+import { NavigationDrawer, NavigationRail, Surface, TopAppBar } from './index'
 import './App.css'
 
+const navigationDestinations = [
+  { label: 'Dashboard', value: 'dashboard' },
+  { label: 'Projekte', value: 'projekte' },
+  { label: 'Reports', value: 'reports', disabled: true },
+  { label: 'Archiv', value: 'archiv', hidden: true },
+]
+
+const secondaryDestinations = [
+  { label: 'Dokumentation', value: 'docs' },
+  { label: 'Roadmap', value: 'roadmap' },
+  { label: 'Release Notes', value: 'release-notes' },
+]
+
 function App() {
-  const [projectName, setProjectName] = useState('M3 Formular')
-  const [newsletter, setNewsletter] = useState(false)
-  const [contactMethod, setContactMethod] = useState('email')
+  const [activeDestination, setActiveDestination] = useState('dashboard')
 
   return (
-    <main className="app-shell">
-      <header className="app-header">
-        <p className="story-badge">Story 2.3 Form/Selection</p>
-        <h1>M3 Form &amp; Selection sind bereit</h1>
-      </header>
-      <M3ReferenceCard
-        title="M3 Referenzkomponente"
-        supportingText="Slice B erweitert die Basis um robuste Form- und Selection-Komponenten."
+    <div className="app-shell">
+      <p className="story-badge">Story 2.4 Navigation/Surfaces</p>
+      <TopAppBar
+        actions={[
+          { label: 'Suche' },
+          { label: 'Sync pausiert', disabled: true },
+          { label: 'Versteckte Aktion', hidden: true },
+        ]}
+        ariaLabel="Produktkopfzeile"
+        supportingText="AppBar, Navigation und Surface folgen einem konsistenten M3-Muster."
+        title="M3 Navigation & Surfaces sind bereit"
       />
-      <section className="button-examples" aria-label="Button Beispiele">
-        <h2>Action Controls: Button</h2>
-        <div className="button-row">
-          <Button>Standard Aktion</Button>
-          <Button disabled>Disabled Aktion</Button>
-          <Button loading>Loading Edge Case</Button>
-        </div>
+      <section aria-label="Referenzlayout" className="layout-grid">
+        <NavigationRail
+          ariaLabel="Hauptnavigation kompakt"
+          compact
+          destinations={navigationDestinations}
+          onValueChange={setActiveDestination}
+          value={activeDestination}
+        />
+        <NavigationDrawer
+          ariaLabel="Hauptnavigation erweitert"
+          destinations={navigationDestinations}
+          heading="Projektbereiche"
+          onValueChange={setActiveDestination}
+          value={activeDestination}
+        />
+        <Surface aria-label="Hauptinhalt" as="main" elevation={2} tonal>
+          <h1>Navigation Surface Referenzlayout</h1>
+          <p>Aktive Destination: {activeDestination}</p>
+          <p>Disabled + Hidden Eintraege bleiben sichtbar steuerbar und ohne Deep-Import-Abhaengigkeit.</p>
+        </Surface>
       </section>
-      <section aria-label="Form Beispiele" className="form-examples">
-        <h2>Form Controls: TextField</h2>
-        <div className="form-grid">
-          <TextField
-            label="Projektname"
-            onChange={(event) => setProjectName(event.target.value)}
-            supportingText="Standardbeispiel mit kontrolliertem Value."
-            value={projectName}
-          />
-          <TextField
-            errorText="Bitte einen gueltigen API-Schluessel eingeben."
-            label="API-Schluessel"
-            placeholder="api_..."
-          />
-        </div>
+      <section aria-label="Navigation Varianten" className="variants-grid">
+        <NavigationRail
+          ariaLabel="Sekundaernavigation erweitert"
+          destinations={secondaryDestinations}
+          value="docs"
+        />
+        <Surface aria-label="Hinweise" as="aside" elevation={1}>
+          <h2>API-Hinweise</h2>
+          <ul>
+            <li>Compact vs. erweitert: ueber `compact` bei `NavigationRail` steuerbar.</li>
+            <li>Aktive Destination: ueber `value` + `onValueChange` kontrolliert.</li>
+            <li>Disabled/Hidden: Eintraege ueber `disabled` bzw. `hidden` absichern.</li>
+          </ul>
+        </Surface>
       </section>
-      <section aria-label="Selection Beispiele" className="selection-examples">
-        <h2>Selection Controls: Checkbox &amp; RadioGroup</h2>
-        <div className="selection-grid">
-          <Checkbox
-            checked={newsletter}
-            label="Newsletter abonnieren"
-            onChange={(event) => setNewsletter(event.target.checked)}
-            supportingText="Standardbeispiel mit kontrolliertem Checked-State."
-          />
-          <Checkbox
-            disabled
-            label="AGB bestaetigen"
-            required
-            supportingText="Edge Case: disabled + required."
-          />
-          <RadioGroup
-            label="Kontaktkanal"
-            onValueChange={setContactMethod}
-            options={[
-              { label: 'E-Mail', value: 'email' },
-              { label: 'Telefon', value: 'phone' },
-            ]}
-            supportingText={`Aktuell gewaehlt: ${contactMethod}`}
-            value={contactMethod}
-          />
-          <RadioGroup
-            errorText="Bitte Freigabestatus festlegen."
-            label="Freigabestatus"
-            options={[
-              { label: 'Entwurf', value: 'draft' },
-              { label: 'Freigegeben', value: 'released', disabled: true },
-            ]}
-          />
-        </div>
-      </section>
-    </main>
+    </div>
   )
 }
 

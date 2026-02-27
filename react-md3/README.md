@@ -1,6 +1,6 @@
 # react-md3 Getting-Started (<= 5 Minuten)
 
-Kompakter Einstieg vom frischen Setup bis zu produktiven Komponenten (`M3ReferenceCard`, `Button`, `TextField`, `Checkbox`, `RadioGroup`).
+Kompakter Einstieg vom frischen Setup bis zu produktiven Komponenten (`TopAppBar`, `NavigationRail`, `NavigationDrawer`, `Surface` plus bestehende Basis-Komponenten).
 
 ## 1) Voraussetzungen
 
@@ -47,9 +47,9 @@ bun run dev
 
 Oeffne die lokale URL (standardmaessig `http://localhost:5173`) und pruefe:
 
-1. Story-Badge: `Story 2.3 Form/Selection`
-2. Headline: `M3 Form & Selection sind bereit`
-3. Sichtbare Komponenten inkl. Form-/Selection-Beispiele: `M3 Referenzkomponente`, `TextField`, `Checkbox`, `RadioGroup`
+1. Story-Badge: `Story 2.4 Navigation/Surfaces`
+2. Headline: `M3 Navigation & Surfaces sind bereit`
+3. Sichtbare Komponenten inkl. Varianten: `TopAppBar`, `NavigationRail` (kompakt/erweitert), `NavigationDrawer`, `Surface`
 
 Damit ist mindestens eine produktive M3-Komponente lauffaehig integriert.
 
@@ -59,69 +59,85 @@ Die Komponente wird ueber den Public Barrel genutzt:
 
 - `src/App.tsx` importiert aus `./index`
 - `src/index.ts` exportiert aus `./components`
-- `src/components/index.ts` exportiert `M3ReferenceCard`, `Button`, `TextField`, `Checkbox`, `RadioGroup`
+- `src/components/index.ts` exportiert alle freigegebenen UI-Bausteine inkl. Navigation/Surface-Slice
 - Keine Deep-Imports verwenden
 
 ### Importpfad in `src/App.tsx`
 
 ```tsx
-import { Button, Checkbox, M3ReferenceCard, RadioGroup, TextField } from './index'
+import { NavigationDrawer, NavigationRail, Surface, TopAppBar } from './index'
 ```
 
 ### Standardbeispiele
 
 ```tsx
-<M3ReferenceCard
-  title="M3 Referenzkomponente"
-  supportingText="Slice B erweitert die Basis um robuste Form- und Selection-Komponenten."
+<TopAppBar
+  actions={[{ label: 'Suche' }, { label: 'Sync pausiert', disabled: true }]}
+  title="M3 Navigation & Surfaces sind bereit"
 />
 
-<Button>Standard Aktion</Button>
-
-<TextField label="Projektname" supportingText="Standardbeispiel mit kontrolliertem Value." />
-
-<Checkbox label="Newsletter abonnieren" supportingText="Standardbeispiel mit kontrolliertem Checked-State." />
-
-<RadioGroup
-  label="Kontaktkanal"
-  options={[
-    { label: 'E-Mail', value: 'email' },
-    { label: 'Telefon', value: 'phone' },
+<NavigationRail
+  compact
+  destinations={[
+    { label: 'Dashboard', value: 'dashboard' },
+    { label: 'Projekte', value: 'projekte' },
   ]}
+  onValueChange={setActiveDestination}
+  value={activeDestination}
 />
+
+<NavigationDrawer
+  destinations={[
+    { label: 'Dashboard', value: 'dashboard' },
+    { label: 'Projekte', value: 'projekte' },
+  ]}
+  heading="Projektbereiche"
+  onValueChange={setActiveDestination}
+  value={activeDestination}
+/>
+
+<Surface as="main" elevation={2} tonal>
+  <h1>Navigation Surface Referenzlayout</h1>
+</Surface>
 ```
 
 ### Relevante Props
 
-- `title: string` (required)
-- `supportingText?: string` (optional, Fallbacktext wird automatisch gesetzt)
-- `children: ReactNode` (required)
-- `variant?: 'filled' | 'tonal' | 'text'` (optional, Default: `filled`)
-- `loading?: boolean` (optional, Edge Case: setzt `disabled` + `aria-busy`)
-- `disabled?: boolean` (optional)
-- `label: string` (required fuer `TextField`, `Checkbox`, `RadioGroup`)
-- `errorText?: string` (optional fuer validierungsnahe Edge Cases)
-- `supportingText?: string` (optional fuer Hilfetext)
-- `options: { label: string; value: string; disabled?: boolean }[]` (required fuer `RadioGroup`)
-- `onValueChange?: (value: string) => void` (optional fuer kontrollierte `RadioGroup`)
+- `title: string` (required fuer `TopAppBar`)
+- `actions?: { label: string; onClick?: () => void; disabled?: boolean; hidden?: boolean }[]`
+- `destinations: { label: string; value: string; disabled?: boolean; hidden?: boolean }[]` (required fuer `NavigationRail`/`NavigationDrawer`)
+- `value?: string`, `defaultValue?: string`, `onValueChange?: (value: string) => void` (controlled/uncontrolled Navigation)
+- `compact?: boolean` (optional fuer kompakte `NavigationRail`)
+- `heading: string` (required fuer `NavigationDrawer`)
+- `as?: 'div' | 'section' | 'article' | 'main' | 'aside'` (optional fuer `Surface`)
+- `elevation?: 0 | 1 | 2 | 3` (optional, Default: `1`)
+- `tonal?: boolean` (optional, Default: `false`)
+- Bestehende Slice-A/B APIs (`Button`, `TextField`, `Checkbox`, `RadioGroup`, `M3ReferenceCard`) bleiben unveraendert verfuegbar.
 
 ### Edge-Case-Beispiel (Action Control)
 
 ```tsx
-<Button loading>Loading Edge Case</Button>
-
-<TextField label="API-Schluessel" errorText="Bitte einen gueltigen API-Schluessel eingeben." />
-
-<Checkbox disabled required label="AGB bestaetigen" supportingText="Edge Case: disabled + required." />
-
-<RadioGroup
-  errorText="Bitte Freigabestatus festlegen."
-  label="Freigabestatus"
-  options={[
-    { label: 'Entwurf', value: 'draft' },
-    { label: 'Freigegeben', value: 'released', disabled: true },
+<TopAppBar
+  actions={[
+    { label: 'Sync pausiert', disabled: true },
+    { label: 'Versteckte Aktion', hidden: true },
   ]}
+  title="M3 Navigation"
 />
+
+<NavigationRail
+  destinations={[
+    { label: 'Dashboard', value: 'dashboard' },
+    { label: 'Reports', value: 'reports', disabled: true },
+    { label: 'Archiv', value: 'archiv', hidden: true },
+  ]}
+  onValueChange={setActiveDestination}
+  value={activeDestination}
+/>
+
+<Surface as="aside" elevation={1}>
+  Disabled/Hidden Destination bleibt fuer Nutzer klar nachvollziehbar.
+</Surface>
 ```
 
 ## 5) Public-API-Vertrag und Deprecation-Policy
@@ -136,8 +152,12 @@ import { Button, Checkbox, M3ReferenceCard, RadioGroup, TextField } from './inde
   - `Checkbox`
   - `M3ReferenceCard`
   - `M3_REFERENCE_FALLBACK_TEXT`
+  - `NavigationDrawer`
+  - `NavigationRail`
   - `RadioGroup`
+  - `Surface`
   - `TextField`
+  - `TopAppBar`
 
 ### Deprecation-Lifecycle (verbindlich)
 

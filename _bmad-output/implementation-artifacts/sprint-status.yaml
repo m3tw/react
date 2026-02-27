@@ -50,7 +50,7 @@ development_status:
   2-1-public-api-vertrag-und-deprecation-policy-etablieren: done
   2-2-komponenten-slice-a-action-primary-controls-liefern: done
   2-3-komponenten-slice-b-form-selection-liefern: done
-  2-4-komponenten-slice-c-navigation-surfaces-liefern: ready-for-dev
+  2-4-komponenten-slice-c-navigation-surfaces-liefern: done
   2-5-komponenten-slice-d-feedback-overlay-liefern: backlog
   epic-2-retrospective: optional
   epic-3: backlog

@@ -1,5 +1,14 @@
 # Changelog
 
+## 2026-02-27 - Story 2.4 Navigation & Surfaces Slice C
+
+[api-contract-hash:37b8630777bef891a320c12904d7367dfd0c91fa3c18f630f54ea3d0389e05e2]
+
+- changeType: minor
+- affectedExports: Button, Checkbox, M3ReferenceCard, M3_REFERENCE_FALLBACK_TEXT, NavigationDrawer, NavigationRail, RadioGroup, Surface, TextField, TopAppBar
+- riskLevel: low
+- migrationGuide: Additive Aenderung; `TopAppBar`, `NavigationRail`, `NavigationDrawer` und `Surface` stehen zusaetzlich zur Verfuegung. Bestehende Imports bleiben unveraendert.
+
 ## 2026-02-27 - Story 2.3 Form & Selection Slice B
 
 [api-contract-hash:bebc80d34c4413c78d271773328a5f1c98b1354618ab4a8812011bc23a07063a]

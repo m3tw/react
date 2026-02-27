@@ -9,8 +9,12 @@ describe('public API barrel', () => {
       'Checkbox',
       'M3ReferenceCard',
       'M3_REFERENCE_FALLBACK_TEXT',
+      'NavigationDrawer',
+      'NavigationRail',
       'RadioGroup',
+      'Surface',
       'TextField',
+      'TopAppBar',
     ])
   })
 })

@@ -1,17 +1,12 @@
 #root {
-  max-width: 720px;
+  max-width: 1120px;
   margin: 0 auto;
   padding: 2rem 1rem;
 }
 
 .app-shell {
   display: grid;
-  gap: 1.25rem;
-}
-
-.app-header h1 {
-  margin: 0.25rem 0 0;
-  font-size: 2rem;
+  gap: 1rem;
 }
 
 .story-badge {
@@ -23,56 +18,37 @@
   text-transform: uppercase;
 }
 
-.m3-reference-card {
-  border: 1px solid #d0d7de;
-  border-radius: 16px;
-  padding: 1.25rem;
-  background: #ffffff;
-  box-shadow: 0 4px 16px rgb(15 23 42 / 8%);
-}
-
-.m3-reference-card h2 {
-  margin: 0;
-  font-size: 1.4rem;
-}
-
-.m3-reference-card p {
-  margin: 0.75rem 0 0;
-  color: #334155;
-}
-
-.button-examples {
+.layout-grid {
   display: grid;
-  gap: 0.75rem;
+  gap: 1rem;
+  grid-template-columns: minmax(8rem, 11rem) minmax(12rem, 14rem) minmax(0, 1fr);
 }
 
-.button-examples h2 {
-  margin: 0;
-  font-size: 1.1rem;
+.layout-grid main h1 {
+  margin-top: 0;
 }
 
-.form-examples,
-.selection-examples {
+.variants-grid {
   display: grid;
-  gap: 0.75rem;
+  gap: 1rem;
+  grid-template-columns: minmax(12rem, 14rem) minmax(0, 1fr);
 }
 
-.form-examples h2,
-.selection-examples h2 {
+.variants-grid aside h2 {
+  margin-top: 0;
+  font-size: 1rem;
+}
+
+.variants-grid ul {
   margin: 0;
-  font-size: 1.1rem;
+  padding-left: 1.25rem;
 }
 
-.button-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-}
-
-.form-grid,
-.selection-grid {
-  display: grid;
-  gap: 0.75rem;
+@media (max-width: 960px) {
+  .layout-grid,
+  .variants-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (prefers-color-scheme: dark) {
@@ -82,15 +58,5 @@
 
   .story-badge {
     color: #93c5fd;
-  }
-
-  .m3-reference-card {
-    border-color: #334155;
-    background: #111827;
-    box-shadow: none;
-  }
-
-  .m3-reference-card p {
-    color: #cbd5e1;
   }
 }
