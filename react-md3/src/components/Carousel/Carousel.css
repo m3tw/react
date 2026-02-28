@@ -1,10 +1,11 @@
 .m3-carousel {
   display: grid;
   gap: 0.5rem;
-  border: 1px solid #cbd5e1;
+  border: 1px solid var(--md-sys-color-outline-variant, #cbd5e1);
   border-radius: 0.75rem;
   padding: 0.75rem;
-  background: #f8fafc;
+  background: var(--md-sys-color-surface-container-low, #f8fafc);
+  color: var(--md-sys-color-on-surface, #0f172a);
 }
 
 .m3-carousel__item {
@@ -15,4 +16,31 @@
 .m3-carousel__actions {
   display: flex;
   gap: 0.5rem;
+}
+
+.m3-carousel__actions button {
+  background: transparent;
+  border: 1px solid var(--md-sys-color-outline, #64748b);
+  border-radius: 0.5rem;
+  color: inherit;
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  font-family: inherit;
+  font-weight: 500;
+}
+
+.m3-carousel__actions button:hover {
+  background: var(--md-sys-color-surface-container-highest, #e2e8f0);
+}
+
+@media (prefers-color-scheme: dark) {
+  .m3-carousel {
+    border-color: var(--md-sys-color-outline-variant, #334155);
+    background: var(--md-sys-color-surface-container-low, #1e293b);
+    color: var(--md-sys-color-on-surface, #f8fafc);
+  }
+  
+  .m3-carousel__actions button:hover {
+    background: var(--md-sys-color-surface-container-highest, #334155);
+  }
 }

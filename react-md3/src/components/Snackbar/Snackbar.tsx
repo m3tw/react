@@ -79,7 +79,7 @@ export function Snackbar({
     return () => {
       window.clearTimeout(timeout)
     }
-  }, [autoHideDuration, closeSnackbar, isOpen])
+  }, [autoHideDuration, closeSnackbar, isOpen, message, tone])
 
   if (!isOpen) {
     return null

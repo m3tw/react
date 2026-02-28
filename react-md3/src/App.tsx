@@ -6,6 +6,7 @@ import {
   Button,
   ButtonGroup,
   Carousel,
+  Checkbox,
   Chip,
   DateTimePicker,
   Dialog,
@@ -13,11 +14,13 @@ import {
   Fab,
   IconButton,
   List,
+  M3ReferenceCard,
   Menu,
   NavigationBar,
   NavigationDrawer,
   NavigationRail,
   ProgressIndicator,
+  RadioGroup,
   SearchBar,
   Sheet,
   Slider,
@@ -25,6 +28,7 @@ import {
   Surface,
   Switch,
   Tabs,
+  TextField,
   Tooltip,
   TopAppBar,
 } from './index'
@@ -34,287 +38,332 @@ const navigationDestinations = [
   { label: 'Dashboard', value: 'dashboard' },
   { label: 'Projekte', value: 'projekte' },
   { label: 'Reports', value: 'reports', disabled: true },
-  { label: 'Archiv', value: 'archiv', hidden: true },
-]
-
-const secondaryDestinations = [
-  { label: 'Dokumentation', value: 'docs' },
-  { label: 'Roadmap', value: 'roadmap' },
-  { label: 'Release Notes', value: 'release-notes' },
-]
-
-const feedbackMessages = {
-  success: 'Aenderungen wurden gespeichert.',
-  warning: 'Warnung: Offline-Modus aktiv.',
-  error: 'Fehler beim Speichern. Bitte erneut versuchen.',
-} as const
-
-const buttonFamilyOptions = [
-  { label: 'Tag', value: 'day' },
-  { label: 'Woche', value: 'week' },
-  { label: 'Monat', value: 'month' },
-]
-
-const splitActionOptions = [
-  { label: 'Speichern', value: 'save' },
-  { label: 'Als Vorlage', value: 'template' },
-  { label: 'Archiv', value: 'archive', disabled: true },
 ]
 
 const listItems = [
   { label: 'Inbox', value: 'inbox' },
   { label: 'Review', value: 'review' },
-  { label: 'Archive', value: 'archive', disabled: true },
+  { label: 'Archive', value: 'archive' },
 ]
 
-const menuItems = [
-  { label: 'Bearbeiten', value: 'edit' },
-  { label: 'Loeschen', value: 'delete' },
+const buttonGroupOptions = [
+  { label: 'Tag', value: 'day' },
+  { label: 'Woche', value: 'week' },
+  { label: 'Monat', value: 'month' },
 ]
 
-const barDestinations = [
-  { label: 'Home', value: 'home' },
-  { label: 'Explore', value: 'explore' },
-  { label: 'Saved', value: 'saved' },
+const radioOptions = [
+  { label: 'Option A', value: 'a' },
+  { label: 'Option B', value: 'b' },
+  { label: 'Option C', value: 'c' },
 ]
 
-const tabItems = [
-  { label: 'Overview', value: 'overview' },
-  { label: 'A11y', value: 'a11y' },
-  { label: 'Blocked', value: 'blocked', disabled: true },
-]
-
-const carouselItems = ['Karte 1', 'Karte 2', 'Karte 3']
-
-type SnackbarTone = keyof typeof feedbackMessages
+const carouselItems = ['Slide 1', 'Slide 2', 'Slide 3']
 
 function App() {
+  // Navigation & Tabs
   const [activeDestination, setActiveDestination] = useState('dashboard')
-  const [snackbarOpen, setSnackbarOpen] = useState(false)
-  const [snackbarTone, setSnackbarTone] = useState<SnackbarTone>('success')
-  const [snackbarMessage, setSnackbarMessage] = useState<string>(feedbackMessages.success)
+  const [tabValue, setTabValue] = useState('overview')
+
+  // Overlays & Feedback
   const [dialogOpen, setDialogOpen] = useState(false)
   const [alertDialogOpen, setAlertDialogOpen] = useState(false)
-  const [eventMessage, setEventMessage] = useState('Keine kritischen Ereignisse.')
-
-  const [buttonGroupValue, setButtonGroupValue] = useState('day')
-  const [listValue, setListValue] = useState('inbox')
-  const [navigationBarValue, setNavigationBarValue] = useState('home')
-  const [tabValue, setTabValue] = useState('overview')
+  const [snackbarOpen, setSnackbarOpen] = useState(false)
+  
+  // Inputs & Selections
+  const [checkboxChecked, setCheckboxChecked] = useState(false)
+  const [radioValue, setRadioValue] = useState('a')
   const [switchChecked, setSwitchChecked] = useState(false)
   const [sliderValue, setSliderValue] = useState(35)
-  const [carouselIndex, setCarouselIndex] = useState(0)
-  const [coverageEvent, setCoverageEvent] = useState('Kein Coverage-Ereignis.')
-  const [searchResult, setSearchResult] = useState('Noch keine Suche ausgefuehrt.')
+  const [searchValue, setSearchValue] = useState('')
+  const [textValue, setTextValue] = useState('')
 
-  const openFeedback = (tone: SnackbarTone) => {
-    setSnackbarTone(tone)
-    setSnackbarMessage(feedbackMessages[tone])
-    setSnackbarOpen(true)
-  }
+  // Other components
+  const [buttonGroupValue, setButtonGroupValue] = useState('day')
+  const [listValue, setListValue] = useState('inbox')
+  const [carouselIndex, setCarouselIndex] = useState(0)
 
   return (
     <div className="app-shell">
-      <p className="story-badge">Story 2.6 42/42 Coverage</p>
       <TopAppBar
         actions={[
-          { label: 'Suche' },
-          { label: 'Sync pausiert', disabled: true },
-          { label: 'Versteckte Aktion', hidden: true },
+          { label: 'Profile' },
+          { label: 'Settings' }
         ]}
-        ariaLabel="Produktkopfzeile"
-        supportingText="FR1, FR14 und FR15 werden ueber Matrix, Demo und Tests gemeinsam nachgewiesen."
-        title="M3 42/42 Coverage ist verifizierbar"
+        ariaLabel="App Header"
+        title="Material 3 Kitchen Sink"
+        supportingText="React Components Demo"
       />
-      <section aria-label="Referenzlayout" className="layout-grid">
+
+      <div className="main-layout">
         <NavigationRail
-          ariaLabel="Hauptnavigation kompakt"
-          compact
+          ariaLabel="Main Navigation"
           destinations={navigationDestinations}
           onValueChange={setActiveDestination}
           value={activeDestination}
         />
-        <NavigationDrawer
-          ariaLabel="Hauptnavigation erweitert"
-          destinations={navigationDestinations}
-          heading="Projektbereiche"
-          onValueChange={setActiveDestination}
-          value={activeDestination}
-        />
-        <Surface aria-label="Hauptinhalt" as="main" elevation={2} tonal>
-          <h1>Feedback Overlay Referenzlayout</h1>
-          <p>Aktive Destination: {activeDestination}</p>
-          <p>Disabled + Hidden Eintraege bleiben sichtbar steuerbar und ohne Deep-Import-Abhaengigkeit.</p>
-          <div className="feedback-controls">
-            <Button onClick={() => openFeedback('success')}>Success zeigen</Button>
-            <Button onClick={() => openFeedback('warning')} variant="tonal">
-              Warning zeigen
-            </Button>
-            <Button onClick={() => openFeedback('error')} variant="text">
-              Error zeigen
-            </Button>
+
+        <main className="content-container">
+          <header className="page-header">
+            <h1>Component Overview</h1>
+            <p>A comprehensive showcase of all implemented M3 components.</p>
+          </header>
+
+          <div className="component-grid">
+
+            {/* Buttons & Actions */}
+            <Surface as="section" elevation={1} className="component-section">
+              <h2>Buttons & Actions</h2>
+              <Divider />
+              <div className="component-row">
+                <Button>Filled Button</Button>
+                <Button variant="tonal">Tonal Button</Button>
+                <Button variant="text">Text Button</Button>
+                <Button disabled>Disabled Button</Button>
+              </div>
+              <div className="component-row">
+                <ButtonGroup
+                  options={buttonGroupOptions}
+                  value={buttonGroupValue}
+                  onValueChange={setButtonGroupValue}
+                />
+              </div>
+              <div className="component-row">
+                <Fab label="Add" />
+                <Fab label="Create new" variant="extended" />
+                <IconButton selected={true} ariaLabel="Favorite" />
+                <IconButton ariaLabel="Bookmark" />
+                <IconButton disabled ariaLabel="Disabled" />
+              </div>
+            </Surface>
+
+            {/* Inputs & Selections */}
+            <Surface as="section" elevation={1} className="component-section">
+              <h2>Inputs & Selections</h2>
+              <Divider />
+              <div className="component-row">
+                <TextField 
+                  label="Standard Text Field" 
+                  value={textValue} 
+                  onChange={(e) => setTextValue(e.target.value)} 
+                />
+                <TextField 
+                  label="Text Field Error" 
+                  value="Invalid Input" 
+                  onChange={() => {}} 
+                  errorText="This is an error message."
+                />
+                <TextField 
+                  label="Disabled Text Field" 
+                  value="Disabled" 
+                  disabled
+                />
+              </div>
+              <div className="component-row">
+                <SearchBar 
+                  onSearch={(q) => setSearchValue(q)} 
+                />
+                {searchValue && <p style={{ margin: 0, fontSize: '0.85rem' }}>Search: {searchValue}</p>}
+              </div>
+              <div className="component-col">
+                <div className="component-row">
+                  <Checkbox 
+                    label="Checkbox Item" 
+                    checked={checkboxChecked} 
+                    onChange={(e) => setCheckboxChecked(e.target.checked)} 
+                  />
+                  <Checkbox 
+                    label="Disabled Checkbox" 
+                    checked={true} 
+                    disabled 
+                  />
+                  <Checkbox 
+                    label="Error Checkbox" 
+                    checked={false} 
+                    errorText="Must check to proceed."
+                  />
+                </div>
+                <div className="component-row">
+                  <Switch 
+                    label="Switch Item" 
+                    checked={switchChecked} 
+                    onCheckedChange={setSwitchChecked} 
+                  />
+                  <Switch 
+                    label="Disabled Switch" 
+                    checked={false} 
+                    disabled
+                  />
+                </div>
+                <RadioGroup 
+                  label="Options"
+                  options={radioOptions} 
+                  value={radioValue} 
+                  onValueChange={setRadioValue} 
+                />
+                <RadioGroup 
+                  label="Disabled Options"
+                  options={[
+                    { label: 'Disabled A', value: 'a' },
+                    { label: 'Disabled B', value: 'b', disabled: true }
+                  ]}
+                  value="a" 
+                  disabled
+                />
+                <div className="slider-container">
+                  <Slider 
+                    label="Volume" 
+                    value={sliderValue} 
+                    onValueChange={setSliderValue} 
+                  />
+                </div>
+              </div>
+            </Surface>
+
+            {/* Data Display & Indicators */}
+            <Surface as="section" elevation={1} className="component-section">
+              <h2>Data Display & Indicators</h2>
+              <Divider />
+              <div className="component-row">
+                <Badge label="New" tone="success" />
+                <Badge label="Warning" tone="warning" />
+                <Badge label="Error" tone="error" />
+                <Badge label="Neutral" tone="neutral" />
+                <Chip label="Filter Chip" selected />
+                <Chip label="Input Chip" dismissible onDismiss={() => {}} />
+                <Chip label="Disabled Chip" disabled />
+                <Tooltip label="Hover me" content="This is a tooltip message!" />
+              </div>
+              <div className="component-row">
+                <ProgressIndicator label="Determinate (72%)" value={72} />
+                <ProgressIndicator label="Indeterminate" indeterminate />
+              </div>
+              <div className="component-col">
+                <List 
+                  items={listItems} 
+                  value={listValue} 
+                  onValueChange={setListValue} 
+                />
+              </div>
+            </Surface>
+
+            {/* Pickers & Complex */}
+            <Surface as="section" elevation={1} className="component-section">
+              <h2>Pickers & Complex</h2>
+              <Divider />
+              <div className="component-col">
+                <div className="component-row">
+                  <DateTimePicker label="Select Date" mode="date" />
+                  <DateTimePicker label="Select Time" mode="time" />
+                  <DateTimePicker label="Disabled Picker" mode="date" disabled />
+                </div>
+                <Tabs 
+                  tabs={[
+                    { label: 'Overview', value: 'overview' },
+                    { label: 'A11y', value: 'a11y' },
+                    { label: 'Blocked (Disabled)', value: 'blocked', disabled: true },
+                  ]} 
+                  value={tabValue} 
+                  onValueChange={setTabValue} 
+                />
+                <div className="carousel-container">
+                  <Carousel 
+                    items={carouselItems} 
+                    activeIndex={carouselIndex} 
+                    onActiveIndexChange={setCarouselIndex} 
+                  />
+                </div>
+                <M3ReferenceCard 
+                  title="M3 Reference Card" 
+                  supportingText="An example of a composed card component." 
+                />
+              </div>
+            </Surface>
+
+            {/* Overlays & Feedback */}
+            <Surface as="section" elevation={1} className="component-section">
+              <h2>Overlays & Feedback</h2>
+              <Divider />
+              <div className="component-row">
+                <Button onClick={() => setDialogOpen(true)}>Open Dialog</Button>
+                <Button onClick={() => setAlertDialogOpen(true)} variant="tonal">Open Alert Dialog</Button>
+                <Button onClick={() => setSnackbarOpen(true)} variant="text">Show Snackbar</Button>
+                <Menu 
+                  items={[
+                    { label: 'Action 1', value: '1' }, 
+                    { label: 'Action 2', value: '2' },
+                    { label: 'Disabled Action', value: '3', disabled: true }
+                  ]} 
+                  onSelect={() => {}} 
+                />
+              </div>
+
+              {/* Overlays rendering */}
+              <Dialog 
+                open={dialogOpen} 
+                onOpenChange={setDialogOpen}
+                title="Standard Dialog"
+                description="This is a standard dialog overlay for general information or choices."
+                onConfirm={() => setDialogOpen(false)}
+                onCancel={() => setDialogOpen(false)}
+              >
+                <p>Additional custom content can go here.</p>
+              </Dialog>
+
+              <AlertDialog
+                open={alertDialogOpen}
+                onOpenChange={setAlertDialogOpen}
+                title="Action Required"
+                description="Are you sure you want to perform this destructive action?"
+                confirmLabel="Delete"
+                cancelLabel="Cancel"
+                onConfirm={() => setAlertDialogOpen(false)}
+                onCancel={() => setAlertDialogOpen(false)}
+              />
+
+              <Snackbar
+                open={snackbarOpen}
+                onOpenChange={setSnackbarOpen}
+                message="Operation completed successfully."
+                tone="success"
+                actionLabel="Undo"
+                onAction={() => setSnackbarOpen(false)}
+              />
+            </Surface>
+
+            {/* Additional Navigation */}
+            <Surface as="section" elevation={1} className="component-section">
+              <h2>Additional Navigation</h2>
+              <Divider />
+              <div className="component-col">
+                <NavigationBar 
+                  destinations={navigationDestinations} 
+                  value={activeDestination} 
+                  onValueChange={setActiveDestination} 
+                />
+              </div>
+              <div className="component-col sheet-demo">
+                <h3>Sheets & Drawers (inline preview)</h3>
+                <div className="sheet-row">
+                  <NavigationDrawer 
+                    destinations={navigationDestinations} 
+                    value={activeDestination} 
+                    onValueChange={setActiveDestination} 
+                    heading="Drawer Nav"
+                  />
+                  <Sheet placement="side" title="Side Sheet">
+                    <p>Information goes here.</p>
+                  </Sheet>
+                </div>
+              </div>
+            </Surface>
+
           </div>
-          <div className="feedback-controls">
-            <Button onClick={() => setDialogOpen(true)}>Dialog oeffnen</Button>
-            <Button onClick={() => setAlertDialogOpen(true)} variant="text">
-              Kritischen AlertDialog oeffnen
-            </Button>
-          </div>
-          <p className="event-log">{eventMessage}</p>
-        </Surface>
-      </section>
-      <section aria-label="Navigation Varianten" className="variants-grid">
-        <NavigationRail
-          ariaLabel="Sekundaernavigation erweitert"
-          destinations={secondaryDestinations}
-          value="docs"
-        />
-        <Surface aria-label="Hinweise" as="aside" elevation={1}>
-          <h2>API-Hinweise</h2>
-          <ul>
-            <li>Compact vs. erweitert: ueber `compact` bei `NavigationRail` steuerbar.</li>
-            <li>Aktive Destination: ueber `value` + `onValueChange` kontrolliert.</li>
-            <li>Disabled/Hidden: Eintraege ueber `disabled` bzw. `hidden` absichern.</li>
-            <li>Snackbar: non-blocking Status + optionale Retry-Action.</li>
-            <li>Dialog/AlertDialog: modales Overlay mit Fokusfuehrung und klaren Aktionen.</li>
-          </ul>
-        </Surface>
-      </section>
-      <section aria-label="Story 2.6 Coverage Matrix Demo" className="coverage-grid">
-        <Surface aria-label="FR14 Standardbeispiele" as="section" elevation={1}>
-          <h2>Story 2.6 Coverage Matrix</h2>
-          <p>
-            FR1 (vollstaendige Referenznutzung), FR14 (Standardbeispiele) und FR15 (Edge-Cases) sind
-            fuer jede Referenzgruppe dokumentiert.
-          </p>
-          <div className="coverage-row">
-            <Badge label="Done" tone="success" />
-            <Badge label="Gap" tone="warning" />
-            <IconButton ariaLabel="Favorit markieren" selected />
-            <Fab label="+" menuItems={[{ label: 'Notiz', value: 'note' }]} onMenuSelect={setCoverageEvent} />
-            <Fab label="Schnell erstellen" variant="extended" />
-          </div>
-          <div className="coverage-row">
-            <ButtonGroup
-              ariaLabel="Button-Familie"
-              onValueChange={setButtonGroupValue}
-              options={buttonFamilyOptions}
-              value={buttonGroupValue}
-              variant="segmented"
-            />
-            <ButtonGroup
-              ariaLabel="Split Aktionen"
-              onValueChange={setCoverageEvent}
-              options={splitActionOptions}
-              variant="split"
-            />
-          </div>
-          <p>Button-Familie aktiv: {buttonGroupValue}</p>
-          <div className="coverage-row coverage-row--three">
-            <DateTimePicker label="Date & Time" mode="datetime" />
-            <DateTimePicker label="Date" mode="date" />
-            <DateTimePicker disabled label="Time (Edge)" mode="time" />
-          </div>
-          <div className="coverage-row coverage-row--three">
-            <Chip label="Assist Chip" selected />
-            <Chip dismissible label="Filter Chip" onDismiss={() => setCoverageEvent('Chip entfernt')} />
-            <Tooltip content="Kontext-Hinweis fuer Edge Cases" label="Tooltip Nachweis" />
-          </div>
-          <div className="coverage-row coverage-row--three">
-            <ProgressIndicator label="Loading & progress" value={72} />
-            <ProgressIndicator indeterminate label="Loading indicator" />
-            <Divider />
-          </div>
-          <div className="coverage-row coverage-row--three">
-            <List
-              ariaLabel="Listen Beispiel"
-              onValueChange={(nextValue) => {
-                setListValue(nextValue)
-                setCoverageEvent(`List Select: ${nextValue}`)
-              }}
-              items={listItems}
-              value={listValue}
-            />
-            <Menu
-              items={menuItems}
-              onSelect={(nextValue) => setCoverageEvent(`Menu Select: ${nextValue}`)}
-            />
-            <Carousel
-              activeIndex={carouselIndex}
-              items={carouselItems}
-              onActiveIndexChange={setCarouselIndex}
-            />
-          </div>
-          <p>Carousel Index: {carouselIndex + 1} / {carouselItems.length}</p>
-          <p className="coverage-event-log">{coverageEvent}</p>
-        </Surface>
-        <Surface aria-label="FR15 Edge Cases" as="aside" elevation={1} tonal>
-          <h2>Edge-Case- und Fehlerfall-Nachweise</h2>
-          <NavigationBar
-            destinations={barDestinations}
-            onValueChange={setNavigationBarValue}
-            value={navigationBarValue}
-          />
-          <p>Navigation Bar aktiv: {navigationBarValue}</p>
-          <SearchBar onSearch={(query) => setSearchResult(`Search fuer: ${query}`)} />
-          <p>{searchResult}</p>
-          <Tabs onValueChange={setTabValue} tabs={tabItems} value={tabValue} />
-          <p>Aktiver Tab: {tabValue}</p>
-          <div className="coverage-row coverage-row--two">
-            <Switch checked={switchChecked} label="M3 Switch" onCheckedChange={setSwitchChecked} />
-            <Slider
-              label="Abdeckung"
-              onValueChange={(nextValue) => setSliderValue(nextValue)}
-              value={sliderValue}
-            />
-          </div>
-          <p>
-            Switch aktiv: {switchChecked ? 'ja' : 'nein'} | Slider: {sliderValue}
-          </p>
-          <Sheet placement="bottom" title="Bottom Sheet">
-            <p>Bottom-Sheet-Standardbeispiel</p>
-          </Sheet>
-          <Sheet placement="side" title="Side Sheet">
-            <p>Side-Sheet-Edge-Case mit gleichem API-Muster</p>
-          </Sheet>
-          <Divider orientation="vertical" />
-        </Surface>
-      </section>
-      <Dialog
-        description="Aenderungen werden sofort veroeffentlicht."
-        onCancel={() => setEventMessage('Dialog geschlossen ohne Uebernahme.')}
-        onConfirm={() => setEventMessage('Dialog bestaetigt und Status aktualisiert.')}
-        onOpenChange={setDialogOpen}
-        open={dialogOpen}
-        title="Aenderung speichern?"
-      >
-        <p>Nutze den Dialog fuer prioritaere Entscheidungen mit klarer Action-Hierarchie.</p>
-      </Dialog>
-      <AlertDialog
-        cancelLabel="Abbrechen"
-        confirmLabel="Loeschen"
-        description="Dieser Schritt entfernt den Eintrag dauerhaft und kann nicht rueckgaengig gemacht werden."
-        onCancel={() => setEventMessage('Destructive Confirm abgebrochen.')}
-        onConfirm={() => setEventMessage('Destructive Confirm ausgefuehrt.')}
-        onOpenChange={setAlertDialogOpen}
-        open={alertDialogOpen}
-        title="Destruktive Aktion bestaetigen"
-      />
-      <Snackbar
-        actionLabel={snackbarTone === 'error' ? 'Erneut versuchen' : undefined}
-        message={snackbarMessage}
-        onAction={
-          snackbarTone === 'error'
-            ? () => setEventMessage('Retry fuer fehlgeschlagenen Vorgang gestartet.')
-            : undefined
-        }
-        onDismiss={() => setEventMessage('Statusmeldung geschlossen.')}
-        onOpenChange={setSnackbarOpen}
-        open={snackbarOpen}
-        tone={snackbarTone}
-      />
+        </main>
+      </div>
     </div>
   )
 }
 
 export default App
+
