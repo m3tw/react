@@ -5,6 +5,7 @@ import {
   Badge,
   Button,
   ButtonGroup,
+  Card,
   Carousel,
   Checkbox,
   Chip,
@@ -15,7 +16,6 @@ import {
   Fab,
   IconButton,
   List,
-  M3ReferenceCard,
   Menu,
   NavigationBar,
   NavigationDrawer,
@@ -396,10 +396,41 @@ function App() {
                     onActiveIndexChange={setCarouselIndex} 
                   />
                 </div>
-                <M3ReferenceCard 
-                  title="M3 Reference Card" 
-                  supportingText="An example of a composed card component." 
-                />
+              </div>
+            </Surface>
+
+            {/* Cards */}
+            <Surface as="section" elevation={1} className="component-section">
+              <h2>Cards</h2>
+              <Divider />
+              
+              <div className="component-row" style={{ alignItems: 'flex-start', flexWrap: 'wrap', gap: '24px' }}>
+                <Card style={{ width: '240px' }}>
+                  <h3 style={{ margin: '0 0 8px 0', fontSize: '1.25rem' }}>Elevated Card</h3>
+                  <p style={{ margin: 0, opacity: 0.8 }}>Default card variant. Provides shadow for emphasis and depth.</p>
+                </Card>
+
+                <Card variant="filled" style={{ width: '240px' }}>
+                  <h3 style={{ margin: '0 0 8px 0', fontSize: '1.25rem' }}>Filled Card</h3>
+                  <p style={{ margin: 0, opacity: 0.8 }}>Relies on contrast against the background instead of shadows.</p>
+                </Card>
+
+                <Card variant="outlined" style={{ width: '240px' }}>
+                  <h3 style={{ margin: '0 0 8px 0', fontSize: '1.25rem' }}>Outlined Card</h3>
+                  <p style={{ margin: 0, opacity: 0.8 }}>Clean styling with a pronounced border but no default elevation.</p>
+                </Card>
+              </div>
+              
+              <div className="component-row" style={{ alignItems: 'flex-start', flexWrap: 'wrap', gap: '24px', marginTop: '16px' }}>
+                <Card interactive style={{ width: '240px', minHeight: '140px' }} onClick={() => console.log('Clicked elevated!')}>
+                  <h3 style={{ margin: '0 0 8px 0', fontSize: '1.25rem' }}>Interactive Elevated</h3>
+                  <p style={{ margin: 0, opacity: 0.8 }}>Click or press space/enter. Notice the elevation increases on hover!</p>
+                </Card>
+
+                <Card interactive variant="filled" style={{ width: '240px', minHeight: '140px' }} onClick={() => console.log('Clicked filled!')}>
+                  <h3 style={{ margin: '0 0 8px 0', fontSize: '1.25rem' }}>Interactive Filled</h3>
+                  <p style={{ margin: 0, opacity: 0.8 }}>This filled card gains an elevation shadow when hovered.</p>
+                </Card>
               </div>
             </Surface>
 

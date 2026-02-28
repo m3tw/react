@@ -1,0 +1,116 @@
+.m3-card {
+  --m3-card-bg: var(--md-sys-color-surface-container-low);
+  --m3-card-color: var(--md-sys-color-on-surface);
+  --m3-card-elevation: var(--md-sys-elevation-level1);
+  --m3-card-border: none;
+  --md-ripple-color: var(--md-sys-color-primary);
+
+  position: relative; /* for ripple and content */
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  min-width: 180px; /* recommended minimum width */
+  border-radius: 12px;
+  background-color: var(--m3-card-bg);
+  color: var(--m3-card-color);
+  box-shadow: var(--m3-card-elevation);
+  border: var(--m3-card-border);
+  
+  /* Use surface typography by default since cards are containers */
+  font-family: var(--md-sys-typescale-body-medium-font-family);
+  font-weight: var(--md-sys-typescale-body-medium-font-weight);
+  font-size: var(--md-sys-typescale-body-medium-font-size);
+  line-height: var(--md-sys-typescale-body-medium-line-height);
+  letter-spacing: var(--md-sys-typescale-body-medium-letter-spacing);
+
+  /* Contain the ripple effect */
+  overflow: hidden;
+  transition: box-shadow var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard),
+              background-color var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.m3-card__content {
+  position: relative;
+  z-index: 1; /* Keep content above the ripple */
+  padding: 16px; /* standard padding for simple cards */
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+/* =========================
+   Variants & Elevations
+   ========================= */
+
+/* Elevated (Default) */
+.m3-card--elevated {
+  /* Enabled state */
+  --m3-card-bg: var(--md-sys-color-surface-container-low);
+  --m3-card-elevation: var(--md-sys-elevation-level1);
+}
+.m3-card--elevated.m3-card--interactive:hover {
+  /* Hover elevates from 1 to 2 */
+  --m3-card-elevation: var(--md-sys-elevation-level2);
+}
+.m3-card--elevated.m3-card--interactive:focus-visible,
+.m3-card--elevated.m3-card--interactive:active {
+  /* Focus/Pressed drop back down */
+  --m3-card-elevation: var(--md-sys-elevation-level1);
+}
+
+/* Filled */
+.m3-card--filled {
+  /* Enabled state */
+  --m3-card-bg: var(--md-sys-color-surface-container-highest);
+  --m3-card-elevation: none; /* level 0 */
+}
+.m3-card--filled.m3-card--interactive:hover {
+  /* Hover elevates from 0 to 1 */
+  --m3-card-elevation: var(--md-sys-elevation-level1);
+}
+.m3-card--filled.m3-card--interactive:focus-visible,
+.m3-card--filled.m3-card--interactive:active {
+  /* Focus/Pressed drop back down */
+  --m3-card-elevation: none;
+}
+
+/* Outlined */
+.m3-card--outlined {
+  /* Enabled state */
+  --m3-card-bg: var(--md-sys-color-surface);
+  --m3-card-elevation: none; /* level 0 */
+  --m3-card-border: 1px solid var(--md-sys-color-outline-variant);
+}
+.m3-card--outlined.m3-card--interactive:hover {
+  /* Hover elevates from 0 to 1 and drops the border visually */
+  --m3-card-elevation: var(--md-sys-elevation-level1);
+}
+.m3-card--outlined.m3-card--interactive:focus-visible {
+  /* Focus thickens border (via state layer logic below typically) or just uses outline */
+  --m3-card-elevation: none;
+}
+.m3-card--outlined.m3-card--interactive:active {
+  --m3-card-elevation: none;
+}
+
+/* =========================
+   Interactive States
+   ========================= */
+.m3-card--interactive {
+  cursor: pointer;
+}
+
+.m3-card--interactive:focus-visible {
+  outline: 2px solid var(--md-sys-color-secondary);
+  outline-offset: 2px;
+}
+
+/* Dragged disabled states usually aren't implemented on raw div containers 
+   unless wrapped in a draggable context, but for completeness */
+.m3-card--interactive[aria-disabled="true"] {
+  cursor: not-allowed;
+  box-shadow: none;
+  --md-ripple-color: transparent;
+  opacity: 0.38; /* rough disabled visual */
+}
