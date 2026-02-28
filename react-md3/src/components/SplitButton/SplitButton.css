@@ -7,64 +7,85 @@
   --m3-split-color: var(--md-sys-color-on-primary);
   --m3-split-divider: color-mix(in srgb, var(--m3-split-color) 20%, transparent);
   --md-ripple-color: var(--m3-split-color);
+  /* Default = small (S) per M3 spec */
   --m3-split-height: 40px;
-  --m3-split-radius: 20px;
-  --m3-split-toggle-width: 40px;
-  --m3-split-padding: 16px;
-  --m3-split-icon-size: 24px;
+  --m3-split-inner-radius: 4px;
+  --m3-split-between: 2px;
+  --m3-split-icon-size: 22px;
+  --m3-split-leading-lead: 16px;
+  --m3-split-leading-trail: 12px;
+  --m3-split-trailing-lead: 13px;
+  --m3-split-trailing-trail: 13px;
   --m3-split-font-size: 14px;
 
   display: inline-flex;
   align-items: stretch;
-  border-radius: var(--m3-split-radius);
+  border-radius: calc(var(--m3-split-height) / 2); /* Outer = 50% pill */
+  gap: var(--m3-split-between);
   position: relative;
   overflow: visible;
 }
 
-/* === Sizes === */
-.m3-split-button--xs {
-  --m3-split-height: 24px;
-  --m3-split-radius: 12px;
-  --m3-split-toggle-width: 24px;
-  --m3-split-padding: 8px;
-  --m3-split-icon-size: 16px;
-  --m3-split-font-size: 11px;
-}
+/* === Sizes (M3 spec values) === */
 
-.m3-split-button--s {
+/* XSmall: 32dp height */
+.m3-split-button--xs {
   --m3-split-height: 32px;
-  --m3-split-radius: 16px;
-  --m3-split-toggle-width: 32px;
-  --m3-split-padding: 12px;
-  --m3-split-icon-size: 18px;
+  --m3-split-inner-radius: 4px;
+  --m3-split-icon-size: 22px;
+  --m3-split-leading-lead: 12px;
+  --m3-split-leading-trail: 10px;
+  --m3-split-trailing-lead: 13px;
+  --m3-split-trailing-trail: 13px;
   --m3-split-font-size: 12px;
 }
 
-.m3-split-button--m {
+/* Small: 40dp height (default) */
+.m3-split-button--s {
   --m3-split-height: 40px;
-  --m3-split-radius: 20px;
-  --m3-split-toggle-width: 40px;
-  --m3-split-padding: 16px;
-  --m3-split-icon-size: 24px;
+  --m3-split-inner-radius: 4px;
+  --m3-split-icon-size: 22px;
+  --m3-split-leading-lead: 16px;
+  --m3-split-leading-trail: 12px;
+  --m3-split-trailing-lead: 13px;
+  --m3-split-trailing-trail: 13px;
   --m3-split-font-size: 14px;
 }
 
-.m3-split-button--l {
-  --m3-split-height: 48px;
-  --m3-split-radius: 24px;
-  --m3-split-toggle-width: 48px;
-  --m3-split-padding: 20px;
-  --m3-split-icon-size: 24px;
-  --m3-split-font-size: 15px;
+/* Medium: 56dp height */
+.m3-split-button--m {
+  --m3-split-height: 56px;
+  --m3-split-inner-radius: 4px;
+  --m3-split-icon-size: 26px;
+  --m3-split-leading-lead: 24px;
+  --m3-split-leading-trail: 24px;
+  --m3-split-trailing-lead: 15px;
+  --m3-split-trailing-trail: 15px;
+  --m3-split-font-size: 14px;
 }
 
-.m3-split-button--xl {
-  --m3-split-height: 56px;
-  --m3-split-radius: 28px;
-  --m3-split-toggle-width: 56px;
-  --m3-split-padding: 24px;
-  --m3-split-icon-size: 28px;
+/* Large: 96dp height */
+.m3-split-button--l {
+  --m3-split-height: 96px;
+  --m3-split-inner-radius: 8px;
+  --m3-split-icon-size: 38px;
+  --m3-split-leading-lead: 48px;
+  --m3-split-leading-trail: 48px;
+  --m3-split-trailing-lead: 29px;
+  --m3-split-trailing-trail: 29px;
   --m3-split-font-size: 16px;
+}
+
+/* XLarge: 136dp height */
+.m3-split-button--xl {
+  --m3-split-height: 136px;
+  --m3-split-inner-radius: 12px;
+  --m3-split-icon-size: 50px;
+  --m3-split-leading-lead: 64px;
+  --m3-split-leading-trail: 64px;
+  --m3-split-trailing-lead: 43px;
+  --m3-split-trailing-trail: 43px;
+  --m3-split-font-size: 18px;
 }
 
 /* === Shared button base === */
@@ -94,28 +115,16 @@
 /* Primary action */
 .m3-split-button__primary {
   gap: 8px;
-  padding: 0 var(--m3-split-padding) 0 var(--m3-split-padding);
+  padding: 0 var(--m3-split-leading-trail) 0 var(--m3-split-leading-lead);
   height: var(--m3-split-height);
-  border-radius: var(--m3-split-radius) 0 0 var(--m3-split-radius);
-}
-
-.m3-split-button__primary:has(.m3-split-button__icon) {
-  padding-left: 12px;
+  border-radius: calc(var(--m3-split-height) / 2) var(--m3-split-inner-radius) var(--m3-split-inner-radius) calc(var(--m3-split-height) / 2);
 }
 
 /* Dropdown toggle */
 .m3-split-button__toggle {
-  width: var(--m3-split-toggle-width);
+  padding: 0 var(--m3-split-trailing-trail) 0 var(--m3-split-trailing-lead);
   height: var(--m3-split-height);
-  border-radius: 0 var(--m3-split-radius) var(--m3-split-radius) 0;
-}
-
-/* Divider between primary and toggle */
-.m3-split-button__divider {
-  width: 1px;
-  align-self: stretch;
-  background-color: var(--m3-split-divider);
-  flex-shrink: 0;
+  border-radius: var(--m3-split-inner-radius) calc(var(--m3-split-height) / 2) calc(var(--m3-split-height) / 2) var(--m3-split-inner-radius);
 }
 
 /* Icon and arrow */
@@ -175,9 +184,7 @@
 .m3-split-button--outlined {
   --m3-split-bg: transparent;
   --m3-split-color: var(--md-sys-color-primary);
-  --m3-split-divider: var(--md-sys-color-outline);
   border: 1px solid var(--md-sys-color-outline);
-  border-radius: var(--m3-split-radius);
 }
 
 .m3-split-button--outlined .m3-split-button__primary,
@@ -187,11 +194,11 @@
 }
 
 .m3-split-button--outlined .m3-split-button__primary {
-  border-radius: calc(var(--m3-split-radius) - 1px) 0 0 calc(var(--m3-split-radius) - 1px);
+  border-radius: calc(var(--m3-split-height) / 2 - 1px) var(--m3-split-inner-radius) var(--m3-split-inner-radius) calc(var(--m3-split-height) / 2 - 1px);
 }
 
 .m3-split-button--outlined .m3-split-button__toggle {
-  border-radius: 0 calc(var(--m3-split-radius) - 1px) calc(var(--m3-split-radius) - 1px) 0;
+  border-radius: var(--m3-split-inner-radius) calc(var(--m3-split-height) / 2 - 1px) calc(var(--m3-split-height) / 2 - 1px) var(--m3-split-inner-radius);
 }
 
 /* === Variant: Elevated === */
@@ -215,9 +222,7 @@
 
 /* === Dropdown Menu === */
 .m3-split-button__menu {
-  position: absolute;
-  top: calc(100% + 4px);
-  right: 0;
+  position: fixed;
   margin: 0;
   padding: 4px 0;
   list-style: none;
@@ -225,19 +230,21 @@
   background: var(--md-sys-color-surface-container);
   border-radius: 12px;
   box-shadow: var(--md-sys-elevation-level2);
-  z-index: 100;
+  z-index: 1000;
   animation: split-menu-in 200ms cubic-bezier(0.05, 0.7, 0.1, 1) forwards;
   transform-origin: top right;
+  /* left is set to right-edge of button; translate back to right-align */
+  transform: translateX(-100%);
 }
 
 @keyframes split-menu-in {
   from {
     opacity: 0;
-    transform: scaleY(0.8);
+    transform: translateX(-100%) scaleY(0.8);
   }
   to {
     opacity: 1;
-    transform: scaleY(1);
+    transform: translateX(-100%) scaleY(1);
   }
 }
 

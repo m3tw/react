@@ -1,4 +1,5 @@
-import { useState, useRef, useEffect, type ReactNode } from 'react'
+import { useState, useRef, useEffect, useCallback, type ReactNode } from 'react'
+import { createPortal } from 'react-dom'
 import { Ripple } from '../Ripple'
 
 import './SplitButton.css'
@@ -47,18 +48,37 @@ export function SplitButton({
   menuItems,
   onMenuSelect,
   variant = 'filled',
-  size = 'm',
+  size = 's',
   disabled = false,
   dropdownAriaLabel = 'Show more options',
 }: SplitButtonProps) {
   const [menuOpen, setMenuOpen] = useState(false)
+  const [menuPos, setMenuPos] = useState({ top: 0, left: 0 })
   const containerRef = useRef<HTMLDivElement>(null)
+
+  const updateMenuPos = useCallback(() => {
+    if (!containerRef.current) return
+    const rect = containerRef.current.getBoundingClientRect()
+    setMenuPos({
+      top: rect.bottom + 4,
+      left: rect.right,
+    })
+  }, [])
+
+  // Position menu on open
+  useEffect(() => {
+    if (!menuOpen) return
+    updateMenuPos()
+  }, [menuOpen, updateMenuPos])
 
   // Close menu on outside click
   useEffect(() => {
     if (!menuOpen) return
     const handleClick = (e: MouseEvent) => {
-      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+      const target = e.target as HTMLElement
+      const inContainer = containerRef.current?.contains(target)
+      const inMenu = target.closest?.('.m3-split-button__menu')
+      if (!inContainer && !inMenu) {
         setMenuOpen(false)
       }
     }
@@ -95,9 +115,6 @@ export function SplitButton({
         <span className="m3-split-button__label">{label}</span>
       </button>
 
-      {/* Divider */}
-      <span className="m3-split-button__divider" aria-hidden="true" />
-
       {/* Dropdown toggle */}
       <button
         className={`m3-split-button__toggle ${menuOpen ? 'm3-split-button__toggle--open' : ''}`}
@@ -112,9 +129,13 @@ export function SplitButton({
         <span className="m3-split-button__arrow" aria-hidden="true">{ArrowDropDownIcon}</span>
       </button>
 
-      {/* Dropdown menu */}
-      {menuOpen && (
-        <ul className="m3-split-button__menu" role="menu">
+      {/* Dropdown menu — portal to body to avoid overflow clipping */}
+      {menuOpen && createPortal(
+        <ul
+          className="m3-split-button__menu"
+          role="menu"
+          style={{ top: menuPos.top, left: menuPos.left }}
+        >
           {menuItems.map((item) => (
             <li key={item.value}>
               <button
@@ -130,7 +151,8 @@ export function SplitButton({
               </button>
             </li>
           ))}
-        </ul>
+        </ul>,
+        document.body,
       )}
     </div>
   )
