@@ -1,4 +1,5 @@
 import { useId, useState } from 'react'
+import { Ripple } from "../Ripple";
 
 import './Slider.css'
 
@@ -35,17 +36,37 @@ export function Slider({
   }
 
   return (
-    <label className="m3-slider" htmlFor={id}>
-      <span>{label}</span>
-      <input
-        disabled={disabled}
-        id={id}
-        max={max}
-        min={min}
-        onChange={(event) => updateValue(Number(event.target.value))}
-        type="range"
-        value={currentValue}
-      />
-    </label>
+    <div className={['m3-slider', disabled ? 'm3-slider--disabled' : ''].filter(Boolean).join(' ')}>
+      <span className="m3-slider__label">{label}</span>
+      <div className="m3-slider__container">
+        <input
+          aria-label={label}
+          disabled={disabled}
+          id={id}
+          max={max}
+          min={min}
+          onChange={(event) => updateValue(Number(event.target.value))}
+          type="range"
+          value={currentValue}
+          className="m3-slider__input"
+        />
+        <div className="m3-slider__track-container">
+          <div className="m3-slider__track" />
+          <div 
+            className="m3-slider__track--active" 
+            style={{ width: `${((currentValue - min) / (max - min)) * 100}%` }} 
+          />
+        </div>
+        <div 
+          className="m3-slider__thumb-container"
+          style={{ left: `${((currentValue - min) / (max - min)) * 100}%` }}
+        >
+          <div className="m3-slider__ripple">
+            <Ripple />
+          </div>
+          <div className="m3-slider__thumb" />
+        </div>
+      </div>
+    </div>
   )
 }

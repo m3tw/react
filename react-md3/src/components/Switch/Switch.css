@@ -1,26 +1,186 @@
 .m3-switch {
-  width: 2.6rem;
-  height: 1.5rem;
-  border-radius: 999px;
-  border: 0;
-  background: #cbd5e1;
+  /* M3 Switch Dimensions */
+  --m3-switch-track-width: 52px;
+  --m3-switch-track-height: 32px;
+  --m3-switch-thumb-size-off: 16px;
+  --m3-switch-thumb-size-on: 24px;
+  --m3-switch-thumb-size-pressed: 28px;
+  
+  /* Unselected Colors */
+  --m3-switch-track-color-off: var(--md-sys-color-surface-container-highest);
+  --m3-switch-track-outline-color-off: var(--md-sys-color-outline);
+  --m3-switch-thumb-color-off: var(--md-sys-color-outline);
+  --m3-switch-icon-color-off: var(--md-sys-color-surface-container-highest);
+  
+  /* Selected Colors */
+  --m3-switch-track-color-on: var(--md-sys-color-primary);
+  --m3-switch-track-outline-color-on: transparent;
+  --m3-switch-thumb-color-on: var(--md-sys-color-on-primary);
+  --m3-switch-icon-color-on: var(--md-sys-color-on-primary-container);
+
+  /* Hover/Ripple Colors */
+  --md-ripple-color: var(--md-sys-color-on-surface); /* Unselected ripple */
+
   display: inline-flex;
   align-items: center;
-  padding: 0.16rem;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  position: relative;
+  /* Touch target is 48x48 */
+  width: 48px;
+  height: 48px;
+}
+
+.m3-switch__track {
+  position: relative;
+  width: var(--m3-switch-track-width);
+  height: var(--m3-switch-track-height);
+  border-radius: calc(var(--m3-switch-track-height) / 2);
+  background-color: var(--m3-switch-track-color-off);
+  box-shadow: inset 0 0 0 2px var(--m3-switch-track-outline-color-off);
+  transition: background-color var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard),
+              box-shadow var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard);
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+/* Container for thumb and ripple to manage positioning */
+.m3-switch__thumb-container {
+  position: absolute;
+  /* Left alignment for off state */
+  left: 0;
+  /* 40x40 ripple touch area */
+  width: 40px; 
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transform: translateX(0);
+  transition: transform var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-standard);
+}
+
+.m3-switch__ripple {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
 }
 
 .m3-switch__thumb {
-  width: 1.15rem;
-  height: 1.15rem;
+  position: relative;
+  z-index: 1;
+  width: var(--m3-switch-thumb-size-off);
+  height: var(--m3-switch-thumb-size-off);
   border-radius: 50%;
-  background: #ffffff;
-  transform: translateX(0);
+  background-color: var(--m3-switch-thumb-color-off);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: width var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard),
+              height var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard),
+              background-color var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard);
 }
 
+.m3-switch__icon {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+  opacity: 0;
+  transform: scale(0.5);
+  transition: opacity var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard),
+              transform var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard),
+              color var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard);
+}
+
+.m3-switch__icon--off {
+  color: var(--m3-switch-icon-color-off);
+}
+
+.m3-switch__icon--on {
+  color: var(--m3-switch-icon-color-on);
+}
+
+/* Hover & Focus Interactions */
+.m3-switch:focus-visible .m3-switch__thumb-container {
+  outline: 2px solid var(--md-sys-color-secondary);
+  outline-offset: 2px;
+}
+
+.m3-switch:hover:not(:disabled) .m3-switch__thumb {
+  background-color: var(--md-sys-color-on-surface-variant);
+  /* Unselected Hover thumb is 24x24 */
+}
+
+.m3-switch:active:not(:disabled) .m3-switch__thumb {
+  width: var(--m3-switch-thumb-size-pressed);
+  height: var(--m3-switch-thumb-size-pressed);
+}
+
+/* Checked State */
 .m3-switch--checked {
-  background: #2563eb;
+  --md-ripple-color: var(--md-sys-color-primary); /* Selected ripple */
+}
+
+.m3-switch--checked .m3-switch__track {
+  background-color: var(--m3-switch-track-color-on);
+  box-shadow: inset 0 0 0 2px var(--m3-switch-track-outline-color-on);
+}
+
+.m3-switch--checked .m3-switch__thumb-container {
+  /* Translate to the right side: 52 - 40 (container width) = 12px + 8px padding adjustment = 20px */
+  /* Actually simply calculate offset: (track width - container width) + offset adjustment */
+  transform: translateX(12px); 
 }
 
 .m3-switch--checked .m3-switch__thumb {
-  transform: translateX(1.02rem);
+  width: var(--m3-switch-thumb-size-on);
+  height: var(--m3-switch-thumb-size-on);
+  background-color: var(--m3-switch-thumb-color-on);
+}
+
+/* Switch on hover in checked state */
+.m3-switch--checked:hover:not(:disabled) .m3-switch__thumb {
+  background-color: var(--md-sys-color-primary-container);
+}
+
+.m3-switch--checked .m3-switch__icon--on {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Disabled State */
+.m3-switch--disabled {
+  cursor: not-allowed;
+  --md-ripple-color: transparent;
+}
+
+.m3-switch--disabled:not(.m3-switch--checked) .m3-switch__track {
+  background-color: color-mix(in srgb, var(--md-sys-color-surface-container-highest) 12%, transparent);
+  box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--md-sys-color-on-surface) 12%, transparent);
+}
+
+.m3-switch--disabled:not(.m3-switch--checked) .m3-switch__thumb {
+  background-color: color-mix(in srgb, var(--md-sys-color-on-surface) 38%, transparent);
+}
+
+.m3-switch--disabled.m3-switch--checked .m3-switch__track {
+  background-color: color-mix(in srgb, var(--md-sys-color-on-surface) 12%, transparent);
+  box-shadow: inset 0 0 0 2px transparent;
+}
+
+.m3-switch--disabled.m3-switch--checked .m3-switch__thumb {
+  background-color: var(--md-sys-color-surface);
+}
+
+.m3-switch--disabled.m3-switch--checked .m3-switch__icon--on {
+  color: color-mix(in srgb, var(--md-sys-color-on-surface) 38%, transparent);
 }

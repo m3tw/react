@@ -1,69 +1,179 @@
 .m3-radio-group {
-  border: 1px solid #d0d7de;
-  border-radius: 0.75rem;
+  border: none;
   margin: 0;
-  padding: 0.75rem;
-  display: grid;
-  gap: 0.5rem;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px; /* M3 radio group gap */
 }
 
 .m3-radio-group__legend {
-  font-weight: 600;
-  padding: 0 0.25rem;
+  font-family: var(--md-sys-typescale-title-medium-font-family);
+  font-weight: var(--md-sys-typescale-title-medium-font-weight);
+  font-size: var(--md-sys-typescale-title-medium-font-size);
+  line-height: var(--md-sys-typescale-title-medium-line-height);
+  letter-spacing: var(--md-sys-typescale-title-medium-letter-spacing);
+  color: var(--md-sys-color-on-surface);
+  padding: 0;
+  margin-bottom: 8px;
 }
 
 .m3-radio-group__options {
-  display: grid;
-  gap: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
+/* Base Radio Option Layout */
 .m3-radio-group__option {
+  --m3-radio-size: 40px; /* Touch target size */
+  --m3-radio-icon-size: 20px; /* Outer circle size */
+  --m3-radio-border: var(--md-sys-color-on-surface-variant);
+  --m3-radio-fill: transparent;
+  --md-ripple-color: var(--md-sys-color-primary);
+
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 16px; /* Space between radio and text */
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
 }
 
-.m3-radio-group__option input {
-  accent-color: #3554d1;
+.m3-radio__label-text {
+  color: var(--md-sys-color-on-surface);
+  font-family: var(--md-sys-typescale-body-large-font-family);
+  font-weight: var(--md-sys-typescale-body-large-font-weight);
+  font-size: var(--md-sys-typescale-body-large-font-size);
+  line-height: var(--md-sys-typescale-body-large-line-height);
+  letter-spacing: var(--md-sys-typescale-body-large-letter-spacing);
 }
 
-.m3-radio-group__option input:focus-visible {
-  outline: 2px solid #3554d1;
+.m3-radio__container {
+  position: relative;
+  width: var(--m3-radio-size);
+  height: var(--m3-radio-size);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%; /* For the ripple/state layer */
+  flex-shrink: 0;
+}
+
+/* Hide the actual native input but keep it accessible for focus */
+.m3-radio__input {
+  appearance: none;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: inherit;
+  z-index: 1;
+}
+
+.m3-radio__visual {
+  position: relative;
+  width: var(--m3-radio-size);
+  height: var(--m3-radio-size);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+/* The actual 20x20 outer circle */
+.m3-radio__background {
+  position: relative;
+  z-index: 1; /* Above ripple */
+  width: var(--m3-radio-icon-size);
+  height: var(--m3-radio-icon-size);
+  border: 2px solid var(--m3-radio-border);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard);
+  box-sizing: border-box;
+}
+
+/* The inner solid circle */
+.m3-radio__mark {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: var(--m3-radio-fill);
+  transform: scale(0); /* Hidden by default */
+  transition: background-color var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard),
+              transform var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard);
+}
+
+/* Base Interactions & Focus */
+.m3-radio__input:focus-visible ~ .m3-radio__visual {
+  outline: 2px solid var(--md-sys-color-secondary);
   outline-offset: 2px;
 }
 
-.m3-radio-group__supporting-text {
-  margin: 0;
-  color: #334155;
-  font-size: 0.875rem;
+.m3-radio__input:hover:not(:disabled) ~ .m3-radio__visual {
+  --m3-radio-border: var(--md-sys-color-on-surface);
 }
 
-.m3-radio-group--error {
-  border-color: #dc2626;
+/* Checked state */
+.m3-radio__input:checked ~ .m3-radio__visual {
+  --m3-radio-border: var(--md-sys-color-primary);
+  --m3-radio-fill: var(--md-sys-color-primary);
+}
+
+.m3-radio__input:checked ~ .m3-radio__visual .m3-radio__mark {
+  transform: scale(1);
+}
+
+/* Overall Error State */
+.m3-radio-group--error .m3-radio-group__option {
+  --m3-radio-border: var(--md-sys-color-error);
+  --md-ripple-color: var(--md-sys-color-error);
+}
+
+.m3-radio-group--error .m3-radio__input:checked ~ .m3-radio__visual {
+  --m3-radio-border: var(--md-sys-color-error);
+  --m3-radio-fill: var(--md-sys-color-error);
+}
+
+.m3-radio-group--error .m3-radio__input:hover:not(:disabled) ~ .m3-radio__visual {
+  --m3-radio-border: var(--md-sys-color-on-error-container);
+}
+
+.m3-radio-group--error .m3-radio-group__legend,
+.m3-radio-group--error .m3-radio__label-text {
+  color: var(--md-sys-color-error);
+}
+
+/* Disabled State */
+.m3-radio-group__option--disabled {
+  cursor: not-allowed;
+  --m3-radio-border: color-mix(in srgb, var(--md-sys-color-on-surface) 38%, transparent);
+  --md-ripple-color: transparent;
+}
+
+.m3-radio-group__option--disabled .m3-radio__label-text {
+  color: color-mix(in srgb, var(--md-sys-color-on-surface) 38%, transparent);
+}
+
+.m3-radio-group__option--disabled .m3-radio__input:checked ~ .m3-radio__visual {
+  --m3-radio-fill: color-mix(in srgb, var(--md-sys-color-on-surface) 38%, transparent);
+}
+
+/* Supporting text */
+.m3-radio-group__supporting-text {
+  margin: 0;
+  padding-left: 16px; /* Align with primary content */
+  color: var(--md-sys-color-on-surface-variant);
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0.4px;
 }
 
 .m3-radio-group__supporting-text--error {
-  color: #b91c1c;
-}
-
-@media (prefers-color-scheme: dark) {
-  .m3-radio-group {
-    border-color: #334155;
-  }
-
-  .m3-radio-group__option input {
-    accent-color: #93c5fd;
-  }
-
-  .m3-radio-group__option input:focus-visible {
-    outline-color: #93c5fd;
-  }
-
-  .m3-radio-group__supporting-text {
-    color: #cbd5e1;
-  }
-
-  .m3-radio-group__supporting-text--error {
-    color: #fda4af;
-  }
+  color: var(--md-sys-color-error);
 }

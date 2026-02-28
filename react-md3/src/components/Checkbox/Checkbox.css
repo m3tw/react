@@ -1,54 +1,172 @@
 .m3-checkbox {
-  display: grid;
-  gap: 0.375rem;
+  --m3-checkbox-size: 40px; /* Touch target size */
+  --m3-checkbox-icon-size: 18px; /* Internal icon size */
+  --m3-checkbox-border: var(--md-sys-color-on-surface-variant);
+  --m3-checkbox-fill: transparent;
+  --m3-checkbox-mark: transparent;
+  --md-ripple-color: var(--md-sys-color-primary);
+
+  display: inline-flex;
+  flex-direction: column;
+  gap: 4px;
+  font-family: var(--md-sys-typescale-label-large-font-family);
 }
 
 .m3-checkbox__label {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  font-weight: 500;
+  gap: 16px; /* Space between checkbox and text */
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
 }
 
+.m3-checkbox__label-text {
+  color: var(--md-sys-color-on-surface);
+  font-weight: var(--md-sys-typescale-label-large-font-weight);
+  font-size: var(--md-sys-typescale-label-large-font-size);
+  line-height: var(--md-sys-typescale-label-large-line-height);
+  letter-spacing: var(--md-sys-typescale-label-large-letter-spacing);
+}
+
+.m3-checkbox__container {
+  position: relative;
+  width: var(--m3-checkbox-size);
+  height: var(--m3-checkbox-size);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%; /* For the ripple/state layer */
+  flex-shrink: 0;
+}
+
+/* Hide the actual native input but keep it accessible */
 .m3-checkbox__input {
-  width: 1rem;
-  height: 1rem;
-  accent-color: #3554d1;
+  appearance: none;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: inherit;
+  z-index: 1;
 }
 
-.m3-checkbox__input:focus-visible {
-  outline: 2px solid #3554d1;
+.m3-checkbox__visual {
+  position: relative;
+  width: var(--m3-checkbox-size);
+  height: var(--m3-checkbox-size);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+/* The actual 18x18 box */
+.m3-checkbox__background {
+  position: relative;
+  z-index: 1; /* Above ripple */
+  width: var(--m3-checkbox-icon-size);
+  height: var(--m3-checkbox-icon-size);
+  border: 2px solid var(--m3-checkbox-border);
+  border-radius: 2px;
+  background-color: var(--m3-checkbox-fill);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard),
+              border-color var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard);
+  box-sizing: border-box;
+}
+
+/* The checkmark */
+.m3-checkbox__icon {
+  width: 18px;
+  height: 18px;
+  opacity: 0; /* Hidden by default */
+  transform: scale(0.5); /* Animate scale in */
+  transition: opacity var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard),
+              transform var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard);
+}
+
+.m3-checkbox__mark {
+  stroke: var(--m3-checkbox-mark);
+  stroke-width: 2.5;
+}
+
+/* Base Interactions & Focus */
+.m3-checkbox__input:focus-visible ~ .m3-checkbox__visual {
+  outline: 2px solid var(--md-sys-color-secondary);
   outline-offset: 2px;
 }
 
-.m3-checkbox__input:disabled {
+.m3-checkbox__input:hover:not(:disabled) ~ .m3-checkbox__visual {
+  --m3-checkbox-border: var(--md-sys-color-on-surface);
+}
+
+/* Checked state */
+.m3-checkbox__input:checked ~ .m3-checkbox__visual {
+  --m3-checkbox-border: var(--md-sys-color-primary);
+  --m3-checkbox-fill: var(--md-sys-color-primary);
+  --m3-checkbox-mark: var(--md-sys-color-on-primary);
+}
+
+.m3-checkbox__input:checked ~ .m3-checkbox__visual .m3-checkbox__icon {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Error State */
+.m3-checkbox--error {
+  --m3-checkbox-border: var(--md-sys-color-error);
+  --md-ripple-color: var(--md-sys-color-error);
+}
+
+.m3-checkbox--error .m3-checkbox__input:checked ~ .m3-checkbox__visual {
+  --m3-checkbox-border: var(--md-sys-color-error);
+  --m3-checkbox-fill: var(--md-sys-color-error);
+  --m3-checkbox-mark: var(--md-sys-color-on-error);
+}
+
+.m3-checkbox--error .m3-checkbox__input:hover:not(:disabled) ~ .m3-checkbox__visual {
+  --m3-checkbox-border: var(--md-sys-color-on-error-container);
+}
+
+.m3-checkbox--error .m3-checkbox__label-text {
+  color: var(--md-sys-color-error);
+}
+
+/* Disabled State */
+.m3-checkbox--disabled .m3-checkbox__label {
   cursor: not-allowed;
 }
 
+.m3-checkbox--disabled .m3-checkbox__label-text {
+  color: color-mix(in srgb, var(--md-sys-color-on-surface) 38%, transparent);
+}
+
+.m3-checkbox--disabled {
+  --m3-checkbox-border: color-mix(in srgb, var(--md-sys-color-on-surface) 38%, transparent);
+  --md-ripple-color: transparent;
+}
+
+.m3-checkbox--disabled .m3-checkbox__input:checked ~ .m3-checkbox__visual {
+  --m3-checkbox-border: transparent;
+  --m3-checkbox-fill: color-mix(in srgb, var(--md-sys-color-on-surface) 38%, transparent);
+  --m3-checkbox-mark: var(--md-sys-color-surface);
+}
+
+/* Supporting text */
 .m3-checkbox__supporting-text {
   margin: 0;
-  color: #334155;
-  font-size: 0.875rem;
+  margin-left: calc(var(--m3-checkbox-size) + 16px); /* Align with label */
+  color: var(--md-sys-color-on-surface-variant);
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0.4px;
 }
 
 .m3-checkbox__supporting-text--error {
-  color: #b91c1c;
-}
-
-@media (prefers-color-scheme: dark) {
-  .m3-checkbox__input {
-    accent-color: #93c5fd;
-  }
-
-  .m3-checkbox__input:focus-visible {
-    outline-color: #93c5fd;
-  }
-
-  .m3-checkbox__supporting-text {
-    color: #cbd5e1;
-  }
-
-  .m3-checkbox__supporting-text--error {
-    color: #fda4af;
-  }
+  color: var(--md-sys-color-error);
 }

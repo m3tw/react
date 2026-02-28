@@ -1,4 +1,5 @@
 import { useId } from 'react'
+import { Ripple } from "../Ripple";
 
 import './RadioGroup.css'
 
@@ -77,37 +78,56 @@ export function RadioGroup({
         className="m3-radio-group__options"
         role="radiogroup"
       >
-        {options.map((option, index) => (
-          <label className="m3-radio-group__option" htmlFor={`${groupName}-${index}`} key={option.value}>
-            <input
-              checked={isControlled ? value === option.value : undefined}
-              defaultChecked={!isControlled ? defaultValue === option.value : undefined}
-              disabled={disabled || option.disabled}
-              id={`${groupName}-${index}`}
-              name={groupName}
-                onChange={(event) => {
-                  if (event.target.checked) {
-                    onValueChange?.(event.target.value)
-                  }
-                }}
-                onKeyDown={(event) => {
-                  if (event.key === 'ArrowDown' || event.key === 'ArrowRight') {
-                    event.preventDefault()
-                    moveSelectionWithKeyboard(event.currentTarget.value, 1)
-                  }
+        {options.map((option, index) => {
+          const isOptionChecked = isControlled ? value === option.value : undefined
+          const defaultOptionChecked = !isControlled ? defaultValue === option.value : undefined
+          const optionDisabled = disabled || option.disabled
 
-                  if (event.key === 'ArrowUp' || event.key === 'ArrowLeft') {
-                    event.preventDefault()
-                    moveSelectionWithKeyboard(event.currentTarget.value, -1)
-                  }
-                }}
-                required={required}
-                type="radio"
-                value={option.value}
-            />
-            <span>{option.label}</span>
-          </label>
-        ))}
+          return (
+            <label 
+              className={['m3-radio-group__option', optionDisabled ? 'm3-radio-group__option--disabled' : ''].filter(Boolean).join(' ')} 
+              htmlFor={`${groupName}-${index}`} 
+              key={option.value}
+            >
+              <div className="m3-radio__container">
+                <input
+                  checked={isOptionChecked}
+                  defaultChecked={defaultOptionChecked}
+                  disabled={optionDisabled}
+                  id={`${groupName}-${index}`}
+                  name={groupName}
+                  onChange={(event) => {
+                    if (event.target.checked) {
+                      onValueChange?.(event.target.value)
+                    }
+                  }}
+                  onKeyDown={(event) => {
+                    if (event.key === 'ArrowDown' || event.key === 'ArrowRight') {
+                      event.preventDefault()
+                      moveSelectionWithKeyboard(event.currentTarget.value, 1)
+                    }
+
+                    if (event.key === 'ArrowUp' || event.key === 'ArrowLeft') {
+                      event.preventDefault()
+                      moveSelectionWithKeyboard(event.currentTarget.value, -1)
+                    }
+                  }}
+                  required={required}
+                  type="radio"
+                  value={option.value}
+                  className="m3-radio__input"
+                />
+                <div className="m3-radio__visual">
+                  <Ripple />
+                  <div className="m3-radio__background">
+                    <div className="m3-radio__mark" />
+                  </div>
+                </div>
+              </div>
+              <span className="m3-radio__label-text">{option.label}</span>
+            </label>
+          )
+        })}
       </div>
       {message ? (
         <p
