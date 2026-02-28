@@ -8,6 +8,7 @@ import {
   Carousel,
   Checkbox,
   Chip,
+  DatePickerModal,
   DateTimePicker,
   Dialog,
   Divider,
@@ -86,6 +87,8 @@ function App() {
   const [buttonGroupValue, setButtonGroupValue] = useState('day')
   const [listValue, setListValue] = useState('inbox')
   const [carouselIndex, setCarouselIndex] = useState(0)
+  const [showModalPicker, setShowModalPicker] = useState(false)
+  const [showModalInputPicker, setShowModalInputPicker] = useState(false)
 
   return (
     <div className="app-shell">
@@ -257,10 +260,24 @@ function App() {
               <Divider />
               <div className="component-col">
                 <div className="component-row">
-                  <DateTimePicker label="Select Date" mode="date" />
-                  <DateTimePicker label="Select Time" mode="time" />
-                  <DateTimePicker label="Disabled Picker" mode="date" disabled />
+                  <DateTimePicker label="Select Date" />
+                  <DateTimePicker label="Disabled Picker" disabled />
                 </div>
+                <div className="component-row">
+                  <Button variant="outlined" onClick={() => setShowModalPicker(true)}>Open Modal Date Picker</Button>
+                  <Button variant="outlined" onClick={() => setShowModalInputPicker(true)}>Open Modal Input Picker</Button>
+                </div>
+                <DatePickerModal
+                  open={showModalPicker}
+                  onConfirm={(d) => { console.log('Modal selected:', d); setShowModalPicker(false) }}
+                  onCancel={() => setShowModalPicker(false)}
+                />
+                <DatePickerModal
+                  open={showModalInputPicker}
+                  initialMode="input"
+                  onConfirm={(d) => { console.log('Input selected:', d); setShowModalInputPicker(false) }}
+                  onCancel={() => setShowModalInputPicker(false)}
+                />
                 <Tabs 
                   tabs={[
                     { label: 'Overview', value: 'overview' },

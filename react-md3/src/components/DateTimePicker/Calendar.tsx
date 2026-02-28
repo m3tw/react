@@ -6,8 +6,10 @@ type CalendarProps = {
   value?: Date
   onChange?: (date: Date) => void
   onCancel?: () => void
+  onSelect?: (date: Date) => void
   minDate?: Date
   maxDate?: Date
+  hideActions?: boolean
 }
 
 const getDaysInMonth = (year: number, month: number) => new Date(year, month + 1, 0).getDate()
@@ -20,7 +22,7 @@ const MONTHS = [
 ]
 const SHORT_MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
-export function Calendar({ value, onChange, onCancel, minDate, maxDate }: CalendarProps) {
+export function Calendar({ value, onChange, onCancel, onSelect, minDate, maxDate, hideActions = false }: CalendarProps) {
   const [currentDate, setCurrentDate] = useState(value || new Date())
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(value)
   const [showMonthMenu, setShowMonthMenu] = useState(false)
@@ -81,6 +83,7 @@ export function Calendar({ value, onChange, onCancel, minDate, maxDate }: Calend
     if (isDisabled(day, month, year)) return
     const newDate = new Date(year, month, day)
     setSelectedDate(newDate)
+    onSelect?.(newDate)
     // Navigate to that month if it's a trailing day
     if (month !== currentMonth || year !== currentYear) {
       setCurrentDate(new Date(year, month, 1))
@@ -325,19 +328,21 @@ export function Calendar({ value, onChange, onCancel, minDate, maxDate }: Calend
       </div>
 
       {/* M3 Action Buttons */}
-      <div className="m3-calendar__actions">
-        <button type="button" className="m3-calendar__action-btn" onClick={onCancel}>
-          Cancel
-        </button>
-        <button 
-          type="button" 
-          className="m3-calendar__action-btn m3-calendar__action-btn--confirm" 
-          onClick={handleConfirm}
-          disabled={!selectedDate}
-        >
-          OK
-        </button>
-      </div>
+      {!hideActions && (
+        <div className="m3-calendar__actions">
+          <button type="button" className="m3-calendar__action-btn" onClick={onCancel}>
+            Cancel
+          </button>
+          <button 
+            type="button" 
+            className="m3-calendar__action-btn m3-calendar__action-btn--confirm" 
+            onClick={handleConfirm}
+            disabled={!selectedDate}
+          >
+            OK
+          </button>
+        </div>
+      )}
     </div>
   )
 }

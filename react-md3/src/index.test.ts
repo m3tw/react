@@ -12,6 +12,7 @@ describe('public API barrel', () => {
       'Carousel',
       'Checkbox',
       'Chip',
+      'DatePickerModal',
       'DateTimePicker',
       'Dialog',
       'Divider',
