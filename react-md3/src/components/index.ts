@@ -1,3 +1,4 @@
+export * from "./Ripple";
 export * from './AlertDialog'
 export * from './Badge'
 export * from './Button'

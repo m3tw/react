@@ -1,0 +1,52 @@
+.m3-ripple-container {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 0;
+  contain: strict;
+}
+
+.m3-state-layer {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background-color: var(--md-ripple-color, currentColor);
+  opacity: 0;
+  transition: opacity var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard);
+}
+
+/* Base selectors for handling state layers declaratively based on parent states */
+:where(button, a, [role="button"], [role="menuitem"], [role="tab"], [role="checkbox"], [role="radio"], [role="switch"], .m3-interactive):not(:disabled,[aria-disabled="true"]):hover > .m3-ripple-container > .m3-state-layer {
+  opacity: var(--md-sys-state-hover);
+}
+
+:where(button, a, [role="button"], [role="menuitem"], [role="tab"], [role="checkbox"], [role="radio"], [role="switch"], .m3-interactive):not(:disabled,[aria-disabled="true"]):focus-visible > .m3-ripple-container > .m3-state-layer {
+  opacity: var(--md-sys-state-focus);
+}
+
+/* Active ripples spanning and animations */
+.m3-ripple-wave {
+  position: absolute;
+  border-radius: 50%;
+  background-color: var(--md-ripple-color, currentColor);
+  opacity: var(--md-sys-state-pressed);
+  pointer-events: none;
+  transform: scale(0);
+  animation: m3-ripple-expand var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-standard) forwards;
+}
+
+@keyframes m3-ripple-expand {
+  0% { transform: scale(0); }
+  100% { transform: scale(1); }
+}
+
+.m3-ripple-wave.m3-ripple-fade-out {
+  animation: m3-ripple-expand var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-standard) forwards, m3-ripple-fade var(--md-sys-motion-duration-medium1) linear forwards;
+}
+
+@keyframes m3-ripple-fade {
+  to { opacity: 0; }
+}

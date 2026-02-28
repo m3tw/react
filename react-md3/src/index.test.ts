@@ -26,6 +26,7 @@ describe('public API barrel', () => {
       'NavigationRail',
       'ProgressIndicator',
       'RadioGroup',
+      'Ripple',
       'SearchBar',
       'Sheet',
       'Slider',

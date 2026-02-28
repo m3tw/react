@@ -1,16 +1,126 @@
 .m3-icon-button {
-  border: 0;
-  border-radius: 999px;
-  width: 2.25rem;
-  height: 2.25rem;
+  --m3-icon-button-bg: transparent;
+  --m3-icon-button-color: var(--md-sys-color-on-surface-variant);
+  --m3-icon-button-outline-color: transparent;
+  --md-ripple-color: var(--m3-icon-button-color);
+
+  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: #e2e8f0;
-  color: #0f172a;
+  width: 40px; /* Standard M3 icon button size */
+  height: 40px;
+  border: none;
+  border-radius: 50%; /* Fully rounded */
+  background-color: var(--m3-icon-button-bg);
+  color: var(--m3-icon-button-color);
+  fill: currentColor;
+  
+  cursor: pointer;
+  transition: background-color var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard),
+              color var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard);
+  
+  overflow: hidden; /* Contains the ripple */
+  -webkit-tap-highlight-color: transparent;
+  flex-shrink: 0;
 }
 
-.m3-icon-button--selected {
-  background: #dbeafe;
-  color: #1d4ed8;
+/* Icons are nominally 24x24 px */
+.m3-icon-button span[aria-hidden="true"],
+.m3-icon-button svg,
+.m3-icon-button img {
+  width: 24px;
+  height: 24px;
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+}
+
+/* Base outline logic for outlined variant */
+.m3-icon-button::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  border: 1px solid var(--m3-icon-button-outline-color);
+  pointer-events: none;
+}
+
+/* Standard Variant (default) */
+/* When selected, it behaves similarly to tonal or primary depending on context, we will use primary container */
+.m3-icon-button[data-variant="standard"].m3-icon-button--selected {
+  --m3-icon-button-color: var(--md-sys-color-primary);
+}
+
+/* Filled Variant */
+.m3-icon-button[data-variant="filled"] {
+  --m3-icon-button-bg: var(--md-sys-color-surface-container-highest);
+  --m3-icon-button-color: var(--md-sys-color-primary);
+}
+.m3-icon-button[data-variant="filled"].m3-icon-button--selected {
+  --m3-icon-button-bg: var(--md-sys-color-primary);
+  --m3-icon-button-color: var(--md-sys-color-on-primary);
+}
+
+/* Tonal Variant */
+.m3-icon-button[data-variant="tonal"] {
+  --m3-icon-button-bg: var(--md-sys-color-surface-container-highest);
+  --m3-icon-button-color: var(--md-sys-color-on-surface-variant);
+}
+.m3-icon-button[data-variant="tonal"].m3-icon-button--selected {
+  --m3-icon-button-bg: var(--md-sys-color-secondary-container);
+  --m3-icon-button-color: var(--md-sys-color-on-secondary-container);
+}
+
+/* Outlined Variant */
+.m3-icon-button[data-variant="outlined"] {
+  --m3-icon-button-bg: transparent;
+  --m3-icon-button-color: var(--md-sys-color-on-surface-variant);
+  --m3-icon-button-outline-color: var(--md-sys-color-outline);
+}
+.m3-icon-button[data-variant="outlined"].m3-icon-button--selected {
+  --m3-icon-button-bg: var(--md-sys-color-inverse-surface);
+  --m3-icon-button-color: var(--md-sys-color-inverse-on-surface);
+  --m3-icon-button-outline-color: transparent;
+}
+.m3-icon-button[data-variant="outlined"]:focus-visible:not(:disabled) {
+  --m3-icon-button-outline-color: var(--md-sys-color-primary);
+}
+
+/* Focus indicator */
+.m3-icon-button:focus-visible {
+  outline: 2px solid var(--md-sys-color-secondary);
+  outline-offset: 2px;
+}
+
+/* Disabled state */
+.m3-icon-button:disabled,
+.m3-icon-button[aria-disabled="true"] {
+  cursor: not-allowed;
+  --md-ripple-color: transparent;
+}
+
+/* Disabled - Standard */
+.m3-icon-button[data-variant="standard"]:disabled {
+  --m3-icon-button-color: color-mix(in srgb, var(--md-sys-color-on-surface) 38%, transparent);
+}
+
+/* Disabled - Filled/Tonal */
+.m3-icon-button[data-variant="filled"]:disabled,
+.m3-icon-button[data-variant="tonal"]:disabled {
+  --m3-icon-button-bg: color-mix(in srgb, var(--md-sys-color-on-surface) 12%, transparent);
+  --m3-icon-button-color: color-mix(in srgb, var(--md-sys-color-on-surface) 38%, transparent);
+}
+
+/* Disabled - Outlined */
+.m3-icon-button[data-variant="outlined"]:disabled {
+  --m3-icon-button-outline-color: color-mix(in srgb, var(--md-sys-color-on-surface) 12%, transparent);
+  --m3-icon-button-color: color-mix(in srgb, var(--md-sys-color-on-surface) 38%, transparent);
+}
+.m3-icon-button[data-variant="outlined"].m3-icon-button--selected:disabled {
+  --m3-icon-button-bg: color-mix(in srgb, var(--md-sys-color-on-surface) 12%, transparent);
+  --m3-icon-button-outline-color: transparent;
 }

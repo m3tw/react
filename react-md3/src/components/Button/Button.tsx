@@ -1,10 +1,11 @@
 import type { ButtonHTMLAttributes, ReactNode } from 'react'
+import { Ripple } from '../Ripple'
 
 import './Button.css'
 
-type ButtonVariant = 'filled' | 'tonal' | 'text'
+export type ButtonVariant = 'elevated' | 'filled' | 'tonal' | 'outlined' | 'text'
 
-type ButtonProps = Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'children'> & {
+export type ButtonProps = Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'children'> & {
   children: ReactNode
   loading?: boolean
   variant?: ButtonVariant
@@ -38,6 +39,7 @@ export function Button({
       disabled={isDisabled}
       type={type}
     >
+      <Ripple />
       <span className="m3-button__label">{children}</span>
     </button>
   )

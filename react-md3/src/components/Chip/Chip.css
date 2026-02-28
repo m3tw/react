@@ -1,21 +1,128 @@
 .m3-chip {
+  --m3-chip-bg: transparent;
+  --m3-chip-color: var(--md-sys-color-on-surface-variant);
+  --m3-chip-outline: var(--md-sys-color-outline);
+  --md-ripple-color: var(--md-sys-color-on-surface-variant);
+  
   display: inline-flex;
   align-items: center;
-  border: 1px solid #cbd5e1;
-  border-radius: 999px;
-  overflow: hidden;
+  height: 32px;
+  border-radius: 8px; /* M3 chip corner radius */
+  background-color: var(--m3-chip-bg);
+  box-shadow: inset 0 0 0 1px var(--m3-chip-outline); /* box-shadow as border so inner buttons can stretch and we avoid sizing issues */
+  color: var(--m3-chip-color);
+  
+  font-family: var(--md-sys-typescale-label-large-font-family);
+  font-weight: var(--md-sys-typescale-label-large-font-weight);
+  font-size: var(--md-sys-typescale-label-large-font-size);
+  line-height: var(--md-sys-typescale-label-large-line-height);
+  letter-spacing: var(--md-sys-typescale-label-large-letter-spacing);
+  
+  transition: background-color var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard),
+              color var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard),
+              box-shadow var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard);
 }
 
 .m3-chip__button,
 .m3-chip__dismiss {
-  border: 0;
-  background: #ffffff;
-  color: #0f172a;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  border: none;
+  background: transparent;
+  color: inherit;
   font: inherit;
-  padding: 0.3rem 0.6rem;
+  padding: 0;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
 }
 
-.m3-chip__button--selected {
-  background: #dbeafe;
-  color: #1d4ed8;
+.m3-chip__button {
+  padding: 0 16px;
+  border-radius: 8px; /* For state layer/ripple to mask correctly */
+  overflow: hidden;
+}
+
+/* If dismissible, pad right of main button less */
+.m3-chip:has(.m3-chip__dismiss) .m3-chip__button {
+  padding-right: 8px;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.m3-chip__dismiss {
+  padding: 0 8px;
+  border-radius: 0 8px 8px 0;
+  overflow: hidden;
+}
+
+.m3-chip__icon {
+  position: relative;
+  z-index: 1;
+  font-size: 18px; /* M3 chip trailing icons are usually 18px */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+}
+
+.m3-chip__label {
+  position: relative;
+  z-index: 1;
+}
+
+/* Base focus handling: button handles its own state layer */
+.m3-chip__button:focus-visible,
+.m3-chip__dismiss:focus-visible {
+  outline: 2px solid var(--md-sys-color-secondary);
+  outline-offset: 2px;
+}
+
+/* M3 Variants */
+/* 1. Assist / Suggestion (Outline default) */
+.m3-chip--assist,
+.m3-chip--suggestion {
+  --m3-chip-bg: transparent;
+  --m3-chip-color: var(--md-sys-color-on-surface);
+  --m3-chip-outline: var(--md-sys-color-outline);
+  --md-ripple-color: var(--md-sys-color-on-surface);
+}
+
+/* 2. Filter / Input (with Selection state) */
+.m3-chip--filter,
+.m3-chip--input {
+  --m3-chip-bg: transparent;
+  --m3-chip-color: var(--md-sys-color-on-surface-variant);
+  --m3-chip-outline: var(--md-sys-color-outline);
+  --md-ripple-color: var(--md-sys-color-on-surface-variant);
+}
+
+.m3-chip--selected {
+  --m3-chip-bg: var(--md-sys-color-secondary-container);
+  --m3-chip-color: var(--md-sys-color-on-secondary-container);
+  --m3-chip-outline: transparent;
+  --md-ripple-color: var(--md-sys-color-on-secondary-container);
+}
+
+/* Disabled */
+.m3-chip--disabled {
+  --m3-chip-color: color-mix(in srgb, var(--md-sys-color-on-surface) 38%, transparent) !important;
+  --md-ripple-color: transparent !important;
+}
+
+.m3-chip--disabled:not(.m3-chip--selected) {
+  --m3-chip-outline: color-mix(in srgb, var(--md-sys-color-on-surface) 12%, transparent) !important;
+}
+
+.m3-chip--disabled.m3-chip--selected {
+  --m3-chip-bg: color-mix(in srgb, var(--md-sys-color-on-surface) 12%, transparent) !important;
+  --m3-chip-outline: transparent !important;
+}
+
+.m3-chip__button:disabled,
+.m3-chip__dismiss:disabled {
+  cursor: not-allowed;
 }

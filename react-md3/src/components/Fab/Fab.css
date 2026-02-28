@@ -1,42 +1,142 @@
 .m3-fab-group {
-  display: grid;
-  gap: 0.5rem;
-  justify-items: start;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end; /* Usually FABs group backwards/upwards */
+  gap: 16px;
+  position: relative;
 }
 
 .m3-fab {
-  border: 0;
-  border-radius: 999px;
-  background: #1d4ed8;
-  color: #ffffff;
-  min-width: 3rem;
-  min-height: 3rem;
+  --m3-fab-bg: var(--md-sys-color-primary-container);
+  --m3-fab-color: var(--md-sys-color-on-primary-container);
+  --m3-fab-elevation: var(--md-sys-elevation-level3);
+  --m3-fab-size: 56px;
+  --m3-fab-radius: 16px;
+  --md-ripple-color: var(--m3-fab-color);
+
+  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.35rem;
-  padding: 0 0.9rem;
-  font: inherit;
+  gap: 12px;
+  min-width: var(--m3-fab-size);
+  height: var(--m3-fab-size);
+  padding: 0;
+  border: none;
+  border-radius: var(--m3-fab-radius);
+  background-color: var(--m3-fab-bg);
+  color: var(--m3-fab-color);
+  box-shadow: var(--m3-fab-elevation);
+  
+  font-family: var(--md-sys-typescale-label-large-font-family);
+  font-weight: var(--md-sys-typescale-label-large-font-weight);
+  font-size: var(--md-sys-typescale-label-large-font-size);
+  line-height: var(--md-sys-typescale-label-large-line-height);
+  letter-spacing: var(--md-sys-typescale-label-large-letter-spacing);
+  
+  cursor: pointer;
+  transition: background-color var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard),
+              color var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard),
+              box-shadow var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard),
+              border-radius var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard);
+  
+  overflow: hidden; /* Contains the ripple */
+  -webkit-tap-highlight-color: transparent;
+  flex-shrink: 0;
 }
 
+.m3-fab:hover:not(:disabled) {
+  --m3-fab-elevation: var(--md-sys-elevation-level4);
+}
+.m3-fab:focus-visible:not(:disabled),
+.m3-fab:active:not(:disabled) {
+  --m3-fab-elevation: var(--md-sys-elevation-level3);
+}
+
+/* Base shape and sizes */
+.m3-fab--small {
+  --m3-fab-size: 40px;
+  --m3-fab-radius: 12px;
+}
+.m3-fab--medium {
+  --m3-fab-size: 56px;
+  --m3-fab-radius: 16px;
+}
+.m3-fab--large {
+  --m3-fab-size: 96px;
+  --m3-fab-radius: 28px;
+}
+
+/* Specific inner icon sizes */
 .m3-fab__icon {
-  font-size: 1.1rem;
-  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  width: 24px;
+  height: 24px;
+  position: relative;
+  z-index: 1;
 }
 
+.m3-fab--large .m3-fab__icon {
+  font-size: 36px;
+  width: 36px;
+  height: 36px;
+}
+
+/* Extended variant */
+.m3-fab--extended {
+  width: auto;
+  min-width: 80px;
+  padding: 0 16px;
+}
+.m3-fab__label {
+  position: relative;
+  z-index: 1;
+}
+
+/* Colors */
+.m3-fab--surface {
+  --m3-fab-bg: var(--md-sys-color-surface-container-high);
+  --m3-fab-color: var(--md-sys-color-primary);
+}
+.m3-fab--primary {
+  --m3-fab-bg: var(--md-sys-color-primary-container);
+  --m3-fab-color: var(--md-sys-color-on-primary-container);
+}
+.m3-fab--secondary {
+  --m3-fab-bg: var(--md-sys-color-secondary-container);
+  --m3-fab-color: var(--md-sys-color-on-secondary-container);
+}
+.m3-fab--tertiary {
+  --m3-fab-bg: var(--md-sys-color-tertiary-container);
+  --m3-fab-color: var(--md-sys-color-on-tertiary-container);
+}
+
+/* Focus indicator */
+.m3-fab:focus-visible {
+  outline: 2px solid var(--md-sys-color-secondary);
+  outline-offset: 2px;
+}
+
+/* Disabled state */
+.m3-fab:disabled,
+.m3-fab[aria-disabled="true"] {
+  cursor: not-allowed;
+  box-shadow: none;
+  --md-ripple-color: transparent;
+  --m3-fab-bg: color-mix(in srgb, var(--md-sys-color-on-surface) 12%, transparent);
+  --m3-fab-color: color-mix(in srgb, var(--md-sys-color-on-surface) 38%, transparent);
+}
+
+/* Menu Items */
 .m3-fab__menu {
   margin: 0;
   padding: 0;
   list-style: none;
-  display: grid;
-  gap: 0.25rem;
-}
-
-.m3-fab__menu-item {
-  border: 1px solid #cbd5e1;
-  border-radius: 0.5rem;
-  background: #ffffff;
-  color: #0f172a;
-  font: inherit;
-  padding: 0.3rem 0.6rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 16px;
 }
