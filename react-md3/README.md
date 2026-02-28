@@ -949,6 +949,132 @@ cd react-md3
 npm run quality:gate
 ```
 
+## 6.15) Story 5.4 Feedback-Loop fuer Priorisierung und Roadmap verankern
+
+### Zielbild und Scope
+
+- Diese Section operationalisiert den Feedback-Loop aus Story 5.3 fuer FR32/FR28: von eingehenden Signalen zur priorisierten Produktentscheidung mit Rueckmessung.
+- Scope bleibt dokumentations- und prozessorientiert (kein neuer Runtime-/API-/DB-Scope, keine zusaetzlichen Services).
+- Priorisierungen sind nur gueltig, wenn Evidenz, Bewertungslogik, Entscheidung, Owner und Zielzyklus nachvollziehbar dokumentiert sind.
+
+### Verbindliche Input-Klassen und Eingangskanaele
+
+| Input-Klasse | Primarquelle | Mindest-Evidenz | Ziel |
+| --- | --- | --- | --- |
+| Support-Triage-Fall | `.github/ISSUE_TEMPLATE/support-triage.yml` + Issue-Labels (`triage:*`, `priority:*`, `status:*`) | verlinkter Fall mit `problem_class`, `priority`, `known_issue_ref`, `owner`, `verification_status` | Operative Friktionen aus realen Integrationen priorisierbar machen |
+| KPI-Trigger | KPI-Snapshot aus Abschnitt 6.14 | `kpi_id`, `snapshot_at_utc`, `delta_vs_target`, `proposed_action`, `owner`, `expected_effect_window` | Metrikabweichungen strukturiert in Produktmassnahmen ueberfuehren |
+| Offene Produkt-Issues/Discussions | GitHub Issue/Discussion mit Produktbezug | Referenz auf Nutzerproblem, betroffene Zielgruppe, erwarteter Nutzen, Owner | Qualitatives Produktfeedback in den gleichen Priorisierungspfad einspeisen |
+
+### Minimales Datenschema fuer Priorisierungsentscheidungen (MUSS)
+
+| Feld | Beschreibung |
+| --- | --- |
+| `feedback_id` | Eindeutige Referenz auf den priorisierten Inputfall |
+| `source_type` | `support-triage` \| `kpi-trigger` \| `product-issue` |
+| `problem_class` | `setup-fehler` \| `toolchain-drift` \| `api-regression` \| `product-feedback` |
+| `kpi_id` | Referenz auf ausloesende KPI (`optional` ausser bei KPI-Triggern) |
+| `impact` | Bewertungswert 1-5 (Nutzungs-/Business-Impact) |
+| `urgency` | Bewertungswert 1-5 (Zeitkritikalitaet) |
+| `confidence` | Bewertungswert 1-5 (Evidenzqualitaet) |
+| `owner` | Verantwortliche Rolle/Person fuer Umsetzung oder Entscheidung |
+| `decision_status` | `backlog` \| `roadmap` \| `expedite` \| `deferred` \| `insufficient-data` |
+| `target_cycle` | Zielzeitraum (z. B. `2026-Q2`, `next-sprint`) |
+| `snapshot_at_utc` | UTC-Zeitstempel der Entscheidungsgrundlage |
+
+### Traceability-Regel (MUSS)
+
+- Jede priorisierte Entscheidung muss mindestens auf **eine Evidenzquelle** aus Issue/Known-Issue und (falls vorhanden) KPI-Snapshot verlinken.
+- Bei fehlender Evidenz oder widerspruechlichen Signalen wird `decision_status = insufficient-data` gesetzt; harte Entscheidungen (`roadmap`, `expedite`) sind in diesem Zustand blockiert.
+- Verlinkung bleibt ueber den gesamten Lebenszyklus stabil (Intake -> Priorisierung -> Roadmap/Backlog -> Rueckmessung).
+
+### Priorisierungsraster und Schwellenwerte
+
+Bewertungsskala je Kriterium:
+
+- `impact` (1-5): Effekt auf Adoption, Time-to-Value, Setup-Erfolg, Kundenrisiko
+- `urgency` (1-5): Zeitkritikalitaet, Release-Blocker-Risiko, SLA-Druck
+- `confidence` (1-5): Qualitaet/Vollstaendigkeit der Evidenz
+
+Gewichteter Score:
+
+`priority_score = impact * 0.5 + urgency * 0.3 + confidence * 0.2`
+
+| Entscheidung | Harte Bedingungen | Score-Schwelle | Ergebnisartefakt |
+| --- | --- | --- | --- |
+| `expedite` | `impact >= 4`, `urgency >= 4`, `confidence >= 3`, keine offene `insufficient-data`-Markierung | `>= 4.2` | Sofortmassnahme + priorisierter Fix/Task im aktuellen Zyklus |
+| `roadmap` | keine kritische Evidenzluecke | `>= 3.2` und `< 4.2` | Roadmap-Eintrag im naechsten Planungszyklus |
+| `backlog` | Evidenz ausreichend fuer Problemdefinition | `>= 2.2` und `< 3.2` | Backlog-Item mit klarer Hypothese |
+| `deferred` | niedriger Impact oder geringe Dringlichkeit | `< 2.2` | Dokumentierte Verschiebung inkl. Begruendung |
+| `insufficient-data` | Evidenz unvollstaendig/widerspruechlich | n/a | Nachforderung von Daten vor neuer Bewertung |
+
+### Verbindlicher Entscheidungsablauf
+
+`Beobachtung -> Analyse -> Priorisierung -> Roadmap-Entscheid -> Rueckkopplung`
+
+1. **Beobachtung:** Inputs aus den drei Eingangskanaelen erfassen und klassifizieren.
+2. **Analyse:** Evidenz verlinken, Datenschema vervollstaendigen, Inkonsistenzen offen markieren.
+3. **Priorisierung:** Raster anwenden, `priority_score` dokumentieren, Entscheidungskategorie setzen.
+4. **Roadmap-Entscheid:** Zielartefakt (`backlog`/`roadmap`/`expedite`/`deferred`) mit `owner` und `target_cycle` festlegen.
+5. **Rueckkopplung:** Folgesnapshot und erwarteten Effekt planen, Ergebnis in naechster KPI-Auswertung gegenpruefen.
+
+### Rollen und Freigabeweg (kein Self-Approval bei Eskalationen)
+
+| Entscheidungstyp | Erforderliche Freigabe | Regel |
+| --- | --- | --- |
+| `backlog` / `roadmap` | Product Owner + Maintainer oder DX Owner | 2-Augen-Freigabe verpflichtend |
+| `expedite` oder releasekritische Eskalation | Product Owner + Maintainer/DX Owner + betroffener Fach-Owner | Antragsteller darf Entscheidung nicht allein freigeben |
+| `insufficient-data` | Product Owner + Datenlieferant des Signals | Keine Hochstufung bis Evidenzluecke geschlossen ist |
+
+### Uebergabe in Backlog/Roadmap und KPI-Rueckmessung
+
+Pflichtfelder aus Story 5.3 fuer den Uebergang:
+
+- `kpi_id`
+- `snapshot_at_utc`
+- `delta_vs_target`
+- `proposed_action`
+- `owner`
+- `expected_effect_window`
+
+Zielartefakt pro Entscheidung:
+
+| `decision_status` | Zielartefakt | Mindestinhalt |
+| --- | --- | --- |
+| `backlog` | Backlog-Item | Problemhypothese, Evidenzlinks, Owner, Zielzyklus |
+| `roadmap` | Roadmap-Entry | Priorisierungsgrund, Abhaengigkeiten, erwarteter Effekt, Rueckmessfenster |
+| `expedite` | Sofortmassnahme + Task | Incident-/Risiko-Kontext, Umsetzungspfad, kurzfristiger Verifikationsplan |
+| `deferred` | Dokumentierter Deferred-Eintrag | Begruendung, Re-Evaluationsdatum, benoetigte Zusatzdaten |
+
+### Closure-Kriterien fuer Wirksamkeit
+
+Eine Entscheidung gilt erst als wirksam validiert, wenn:
+
+1. Ein Folgesnapshot innerhalb des `expected_effect_window` vorliegt.
+2. Der erwartete Effekt gegen Zielwert/Delta bewertet wurde (`bleibt`, `nachsteuern`, `eskalieren`).
+3. Die Entscheidung inklusive Ergebnis weiter auf dieselben Evidenzlinks referenziert.
+
+### Reproduzierbare End-to-End-Faelle (Validierungsnachweis)
+
+| Fall | Input-Signal | Bewertung | Entscheidung | Rueckkopplung |
+| --- | --- | --- | --- | --- |
+| E2E-A (support-getrieben) | Wiederholte `api-regression`-Faelle (`P1`) mit KI-003-Referenz | `impact=5`, `urgency=5`, `confidence=4` (`score=4.8`) | `expedite` | Contract-/Changelog-Fix im aktuellen Zyklus, Verifikation im naechsten KPI-Snapshot |
+| E2E-B (KPI-getrieben) | `ttv-setup-hours` ueber Eskalationsschwelle aus Abschnitt 6.14 | `impact=4`, `urgency=3`, `confidence=4` (`score=3.8`) | `roadmap` | Onboarding-/Playbook-Optimierung als Roadmap-Entry mit Effektfenster 30 Tage |
+| E2E-C (gemischte Signale) | `continued-usage-rate` unter Ziel plus gehaeufte `toolchain-drift`-Issues | `impact=3`, `urgency=2`, `confidence=3` (`score=2.7`) | `backlog` | Cluster-Hypothese als Backlog-Item, Re-Evaluierung nach naechstem Release-Snapshot |
+
+### Konsistenzcheck gegen Story 5.1/5.2/5.3 (MUSS)
+
+- Klassen und Labels bleiben kompatibel zu Story 5.1/5.2 (`setup-fehler`, `toolchain-drift`, `api-regression`, `status:*`).
+- KPI-Uebergabefelder aus Story 5.3 sind vollstaendig uebernommen.
+- Jede Entscheidung besitzt nachvollziehbare Evidenzlinks und Owner-Zuordnung.
+- `insufficient-data` bleibt explizit sichtbar und blockiert unbelegte Eskalationen.
+
+Baseline-Guardrail fuer den Priorisierungszyklus:
+
+```bash
+cd react-md3
+npm run quality:gate
+```
+
 ## 7) Troubleshooting (Schema: Symptom -> Diagnose -> Fix -> Verifikation)
 
 ### Package-Manager-Konflikte

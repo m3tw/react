@@ -317,6 +317,14 @@ Erwartung: Der Lauf bricht mit einem expliziten `[api-regression]`-Signal ab.
 - Vergleichbarkeit ueber Releases ist fixiert (UTC-Snapshots, stabile KPI-Versionierung, explizite Definition-Change-Policy ohne stille Defaults).
 - KPI-Abweichungen werden ueber einen klaren Entscheidungspfad in priorisierte Produktmassnahmen ueberfuehrt (Beobachtung -> Analyse -> Massnahme -> Rueckmessung) und direkt als Input fuer Story 5.4 genutzt.
 
+## Story 5.4 Feedback-Loop fuer Priorisierung und Roadmap verankern
+
+- Operativer Feedback-Loop (Single Source of Truth): [`react-md3/README.md` Abschnitt 6.15](react-md3/README.md#615-story-54-feedback-loop-fuer-priorisierung-und-roadmap-verankern).
+- Verbindliche Input-Klassen fuer Priorisierung: Support-Triage-Faelle, KPI-Trigger aus Story 5.3 sowie offene Produkt-Issues/Discussions.
+- Priorisierungsentscheidungen folgen einem transparenten Bewertungsraster (`impact`, `urgency`, `confidence`) mit klaren Schwellen fuer `backlog`, `roadmap` und `expedite`.
+- Jede priorisierte Entscheidung muss auf Evidenz verlinken (Issue/Known-Issue/KPI-Snapshot) und als Zielartefakt (`backlog`, `roadmap`, begruendet `deferred`) mit Owner, Zielzyklus und Rueckmessfenster dokumentiert werden.
+- Prozessnachweis umfasst drei reprasentative End-to-End-Faelle (support-getrieben, KPI-getrieben, gemischte Signale) plus `cd react-md3 && npm run quality:gate`.
+
 ## Initialisierung und Verifikation (Story 1.1)
 
 ```bash
