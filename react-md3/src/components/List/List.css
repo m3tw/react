@@ -1,0 +1,23 @@
+.m3-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.25rem;
+}
+
+.m3-list__item {
+  width: 100%;
+  text-align: left;
+  border: 1px solid #cbd5e1;
+  border-radius: 0.5rem;
+  background: #ffffff;
+  color: #0f172a;
+  padding: 0.45rem 0.65rem;
+  font: inherit;
+}
+
+.m3-list__item--active {
+  border-color: #2563eb;
+  background: #dbeafe;
+}

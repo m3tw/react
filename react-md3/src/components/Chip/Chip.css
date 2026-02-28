@@ -1,0 +1,21 @@
+.m3-chip {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid #cbd5e1;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.m3-chip__button,
+.m3-chip__dismiss {
+  border: 0;
+  background: #ffffff;
+  color: #0f172a;
+  font: inherit;
+  padding: 0.3rem 0.6rem;
+}
+
+.m3-chip__button--selected {
+  background: #dbeafe;
+  color: #1d4ed8;
+}

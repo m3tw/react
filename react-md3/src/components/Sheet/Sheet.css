@@ -1,0 +1,21 @@
+.m3-sheet {
+  border: 1px solid #cbd5e1;
+  border-radius: 0.75rem;
+  background: #ffffff;
+  padding: 0.75rem;
+  display: grid;
+  gap: 0.35rem;
+}
+
+.m3-sheet--bottom {
+  border-bottom-width: 3px;
+}
+
+.m3-sheet--side {
+  border-left-width: 3px;
+}
+
+.m3-sheet__title {
+  margin: 0;
+  font-size: 0.95rem;
+}

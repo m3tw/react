@@ -17,7 +17,9 @@
     "lint": "eslint .",
     "test": "vitest run",
     "api:contract:check": "node ./scripts/check-api-contract.mjs",
-    "quality:gate": "npm run lint && npm run test && npm run build && npm run api:contract:check",
+    "m3:coverage:check": "node ./scripts/check-m3-coverage.mjs",
+    "m3:coverage:report": "node ./scripts/check-m3-coverage.mjs --report ./docs/m3-coverage-baseline.md",
+    "quality:gate": "npm run lint && npm run test && npm run build && npm run api:contract:check && npm run m3:coverage:check",
     "test:watch": "vitest",
     "preview": "vite preview"
   },

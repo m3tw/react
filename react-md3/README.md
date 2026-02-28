@@ -1,6 +1,6 @@
 # react-md3 Getting-Started (<= 5 Minuten)
 
-Kompakter Einstieg vom frischen Setup bis zu produktiven Komponenten (`Snackbar`, `Dialog`, `AlertDialog` plus bestehende Basis-Komponenten).
+Kompakter Einstieg vom frischen Setup bis zur verifizierten 42/42-Komponentenabdeckung inkl. FR1/FR14/FR15-Nachweisen.
 
 ## 1) Voraussetzungen
 
@@ -47,11 +47,11 @@ bun run dev
 
 Oeffne die lokale URL (standardmaessig `http://localhost:5173`) und pruefe:
 
-1. Story-Badge: `Story 2.5 Feedback/Overlay`
-2. Headline: `M3 Feedback & Overlay sind bereit`
-3. Sichtbare Komponenten inkl. Varianten: `Snackbar` (Success/Warning/Error), `Dialog`, `AlertDialog`
+1. Story-Badge: `Story 2.6 42/42 Coverage`
+2. Headline: `M3 42/42 Coverage ist verifizierbar`
+3. Sichtbare Komponenten inkl. Varianten: `Snackbar`, `Dialog`, `AlertDialog` plus Coverage-Demo (`Badge`, `ButtonGroup`, `Fab`, `NavigationBar`, `Tabs`, `Sheet`, `Tooltip`)
 
-Damit ist mindestens eine produktive M3-Komponente lauffaehig integriert.
+Damit ist die 42/42-Coverage-Demo reproduzierbar sichtbar integriert.
 
 ## 4) API-Hinweise + Standardbeispiel
 
@@ -67,11 +67,17 @@ Die Komponenten werden ueber den Public Barrel genutzt:
 ```tsx
 import {
   AlertDialog,
+  Badge,
+  ButtonGroup,
   Dialog,
+  Fab,
+  NavigationBar,
   NavigationDrawer,
   NavigationRail,
   Snackbar,
   Surface,
+  Tabs,
+  Tooltip,
   TopAppBar,
 } from './index'
 ```
@@ -153,17 +159,35 @@ import {
 - Deep-Imports (z. B. `src/components/...`) sind kein oeffentlicher Vertrag.
 - Aktuell freigegebene Exports:
   - `AlertDialog`
+  - `Badge`
   - `Button`
+  - `ButtonGroup`
+  - `Carousel`
   - `Checkbox`
+  - `Chip`
+  - `DateTimePicker`
   - `Dialog`
+  - `Divider`
+  - `Fab`
+  - `IconButton`
+  - `List`
   - `M3ReferenceCard`
   - `M3_REFERENCE_FALLBACK_TEXT`
+  - `Menu`
+  - `NavigationBar`
   - `NavigationDrawer`
   - `NavigationRail`
+  - `ProgressIndicator`
   - `RadioGroup`
+  - `SearchBar`
+  - `Sheet`
+  - `Slider`
   - `Snackbar`
   - `Surface`
+  - `Switch`
+  - `Tabs`
   - `TextField`
+  - `Tooltip`
   - `TopAppBar`
 
 ### Deprecation-Lifecycle (verbindlich)
@@ -197,6 +221,7 @@ npm run lint
 npm run test
 npm run build
 npm run api:contract:check
+npm run m3:coverage:check
 ```
 
 Fuer einen kompletten Maintainer-Check in einem Schritt:
@@ -204,6 +229,8 @@ Fuer einen kompletten Maintainer-Check in einem Schritt:
 ```bash
 npm run quality:gate
 ```
+
+`quality:gate` umfasst damit lint + test + build + api-contract + m3-coverage-check in einem Lauf.
 
 ### Story 3.1 Kompatibilitaetsmatrix (CI + lokal)
 
@@ -1074,6 +1101,59 @@ Baseline-Guardrail fuer den Priorisierungszyklus:
 cd react-md3
 npm run quality:gate
 ```
+
+## 6.16) Story 2.6 42/42 Komponentenabdeckung
+
+- Verbindliche Quelle: `scripts/m3-reference-list.json` (42 verbatim Eintraege aus der PRD-Liste).
+- Verbindliche Matrix: `scripts/m3-coverage-matrix.json` (Mapping-Regeln + Evidence pro Eintrag).
+- Reproduzierbarer Check: `npm run m3:coverage:check` (im `quality:gate` integriert, kein Shadow-Gate).
+- Baseline-Report: `npm run m3:coverage:report` schreibt `docs/m3-coverage-baseline.md`.
+- FR1/FR14/FR15 Nachweis: Jeder Referenzeintrag hat Standardbeispiel + Edge-Case-Evidence.
+
+| # | Referenzeintrag | Status | Mapping |
+| --- | --- | --- | --- |
+| 1 | App bars | Done | top-app-bar-family |
+| 2 | Badges | Done | single-component |
+| 3 | Buttons | Done | button-core |
+| 4 | All buttons | Done | button-family |
+| 5 | Button groups | Done | button-family |
+| 6 | Buttons | Done | button-core |
+| 7 | Extended FABs | Done | fab-family |
+| 8 | FAB menu | Done | fab-family |
+| 9 | FABs | Done | fab-family |
+| 10 | Icon buttons | Done | button-family |
+| 11 | Segmented buttons | Done | button-family |
+| 12 | Split button | Done | button-family |
+| 13 | Cards | Done | single-component |
+| 14 | Carousel | Done | single-component |
+| 15 | Checkbox | Done | single-component |
+| 16 | Chips | Done | single-component |
+| 17 | Date & time pickers | Done | date-time-picker-family |
+| 18 | Date pickers | Done | date-time-picker-family |
+| 19 | Time pickers | Done | date-time-picker-family |
+| 20 | Dialogs | Done | dialog-family |
+| 21 | Divider | Done | single-component |
+| 22 | Lists | Done | single-component |
+| 23 | Loading & progress | Done | progress-family |
+| 24 | Loading indicator | Done | progress-family |
+| 25 | Progress indicators | Done | progress-family |
+| 26 | Menus | Done | single-component |
+| 27 | Navigation | Done | navigation-family |
+| 28 | Navigation bar | Done | single-component |
+| 29 | Navigation drawer | Done | single-component |
+| 30 | Navigation rail | Done | single-component |
+| 31 | Radio button | Done | single-component |
+| 32 | Search | Done | single-component |
+| 33 | Sheets | Done | sheet-family |
+| 34 | Bottom sheets | Done | sheet-family |
+| 35 | Side sheets | Done | sheet-family |
+| 36 | Sliders | Done | single-component |
+| 37 | Snackbar | Done | single-component |
+| 38 | Switch | Done | single-component |
+| 39 | Tabs | Done | single-component |
+| 40 | Text fields | Done | single-component |
+| 41 | Toolbars | Done | top-app-bar-family |
+| 42 | Tooltips | Done | single-component |
 
 ## 7) Troubleshooting (Schema: Symptom -> Diagnose -> Fix -> Verifikation)
 

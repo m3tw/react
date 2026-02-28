@@ -1,11 +1,9 @@
 ---
 stepsCompleted:
-  - step-01-requirements-extracted
   - step-01-validate-prerequisites
   - step-02-design-epics
-  - step-02-epics-approved
   - step-03-create-stories
-  - step-03-stories-approved
+  - step-04-final-validation
 inputDocuments:
   - _bmad-output/planning-artifacts/prd.md
   - _bmad-output/planning-artifacts/architecture.md
@@ -21,7 +19,7 @@ This document provides the complete epic and story breakdown for react, decompos
 
 ### Functional Requirements
 
-FR1: Frontend-Entwickler koennen alle offiziell definierten Material-3-Komponenten in React nutzen.
+FR1: Frontend-Entwickler koennen alle Eintraege der Material-3-Komponenten-Referenzliste in React nutzen.
 FR2: Frontend-Entwickler koennen Komponenten in bestehenden React-Anwendungen ohne Neuaufbau der Anwendung einfuehren.
 FR3: Frontend-Entwickler koennen Komponenten konsistent mit Material-3-Prinzipien einsetzen.
 FR4: Frontend-Entwickler koennen Komponenten fuer produktive Nutzung in realen Features verwenden.
@@ -33,9 +31,9 @@ FR9: Entwickler koennen sich auf eine dokumentierte oeffentliche API verlassen.
 FR10: Entwickler koennen Aenderungen an der oeffentlichen API ueber versionierte Releases nachvollziehen.
 FR11: Entwickler koennen bei relevanten API-Aenderungen auf dokumentierte Migrationshinweise zugreifen.
 FR12: Maintainer koennen API-Aenderungen entlang einer klaren Deprecation-Policy kommunizieren.
-FR13: Entwickler koennen fuer jede Komponente auf eine API-Beschreibung zugreifen.
-FR14: Entwickler koennen pro Komponente mindestens ein praxisnahes Standardbeispiel nutzen.
-FR15: Entwickler koennen pro Komponente mindestens ein Edge-Case- oder Fehlerfall-Beispiel nutzen.
+FR13: Entwickler koennen fuer jede Komponente der Material-3-Komponenten-Referenzliste auf eine API-Beschreibung zugreifen.
+FR14: Entwickler koennen pro Komponente der Material-3-Komponenten-Referenzliste mindestens ein praxisnahes Standardbeispiel nutzen.
+FR15: Entwickler koennen pro Komponente der Material-3-Komponenten-Referenzliste mindestens ein Edge-Case- oder Fehlerfall-Beispiel nutzen.
 FR16: Entwickler koennen zu typischen Integrationsproblemen konkrete Troubleshooting-Anleitungen finden.
 FR17: Entwickler koennen Integrationsrezepte fuer gaengige Team-Setups finden.
 FR18: Integrations-Entwickler koennen die Library mit unterstuetzten React-/Node-/Build-Umfeldern einsetzen.
@@ -68,8 +66,8 @@ NFR9: Kernqualitaetsmetriken (kritische Bugs, API-Regressionen, Setup-Erfolg) du
 NFR10: Priorisierungs- und Delivery-Prozesse sind auf steigende Komponenten- und Integrationslast ausgelegt.
 NFR11: Komponenten erfuellen WCAG-2.2-AA-konforme Grundanforderungen.
 NFR12: Accessibility-Anforderungen sind Bestandteil der Qualitaetspruefung vor Stable-Releases.
-NFR13: Dokumentation enthaelt Hinweise fuer barrierearme Nutzung relevanter Komponenten.
-NFR14: Kernkomponenten muessen eine explizit dokumentierte Accessibility-Abdeckung aufweisen.
+NFR13: Dokumentation enthaelt Hinweise fuer barrierearme Nutzung der Komponenten der Material-3-Komponenten-Referenzliste.
+NFR14: Komponenten der Material-3-Komponenten-Referenzliste muessen eine explizit dokumentierte Accessibility-Abdeckung aufweisen.
 NFR15: Unterstuetzte React-/Node-/Package-Manager-Matrix muss in CI reproduzierbar gruen sein.
 NFR16: Integrationsrezepte fuer Standard-Setups muessen aktuell, lauffaehig und konsistent zur API sein.
 NFR17: Breaking Changes erfordern dokumentierte Migrationspfade fuer betroffene Integrationen.
@@ -108,9 +106,9 @@ FR9: Epic 2 - Verlaessliche dokumentierte Public API
 FR10: Epic 2 - Nachvollziehbare API-Aenderungen per Releases
 FR11: Epic 3 - Dokumentierte Migrationshinweise fuer Integrationen
 FR12: Epic 2 - Deprecation-Policy fuer API-Lifecycle
-FR13: Epic 1 - Zugriff auf API-Beschreibung je Komponente
-FR14: Epic 1 - Praxisnahe Standardbeispiele je Komponente
-FR15: Epic 2 - Edge-Case-/Fehlerfallbeispiele je Komponente
+FR13: Epic 1 - Zugriff auf API-Beschreibung je Referenzlisten-Komponente
+FR14: Epic 1 - Praxisnahe Standardbeispiele je Referenzlisten-Komponente
+FR15: Epic 2 - Edge-Case-/Fehlerfallbeispiele je Referenzlisten-Komponente
 FR16: Epic 1 - Konkrete Troubleshooting-Anleitungen
 FR17: Epic 3 - Integrationsrezepte fuer Team-Setups
 FR18: Epic 3 - Einsatz in unterstuetzten React-/Node-/Build-Umfeldern
@@ -136,7 +134,7 @@ Entwickler koennen die Library sofort installieren, die erste produktive Kompone
 **FRs covered:** FR6, FR7, FR8, FR13, FR14, FR16
 
 ### Epic 2: Vollstaendige M3-Komponentenabdeckung mit stabiler API
-Entwickler koennen alle offiziellen Material-3-Komponenten produktiv und konsistent einsetzen, sicher anpassen und auf einen stabilen API-Lifecycle vertrauen.
+Entwickler koennen alle Eintraege der Material-3-Komponenten-Referenzliste (42, verbatim) produktiv und konsistent einsetzen, sicher anpassen und auf einen stabilen API-Lifecycle vertrauen.
 **FRs covered:** FR1, FR2, FR3, FR4, FR5, FR9, FR10, FR12, FR15
 
 ### Epic 3: Integrationsfaehigkeit und Team-Workflow-Kompatibilitaet
@@ -209,7 +207,7 @@ So that ich Blocker schnell und ohne Eskalation beheben kann.
 
 ## Epic 2: Vollstaendige M3-Komponentenabdeckung mit stabiler API
 
-Entwickler koennen alle offiziellen Material-3-Komponenten produktiv und konsistent einsetzen, sicher anpassen und auf einen stabilen API-Lifecycle vertrauen.
+Entwickler koennen alle Eintraege der Material-3-Komponenten-Referenzliste (42, verbatim) produktiv und konsistent einsetzen, sicher anpassen und auf einen stabilen API-Lifecycle vertrauen.
 
 ### Story 2.1: Public-API-Vertrag und Deprecation-Policy etablieren
 
@@ -275,6 +273,19 @@ So that ich Nutzer transparent ueber Ergebnisse, Fehler und naechste Schritte in
 **When** ich Success-, Warning- und Error-Szenarien abbilde
 **Then** sind Rueckmeldungen konsistent, barrierearm und API-seitig stabil nutzbar
 **And** fuer kritische Szenarien existieren explizite Fehlerfall-Beispiele (FR1, FR4, FR15).
+
+### Story 2.6: 42/42-Komponentenabdeckung nachweisen und Restluecken schliessen
+
+As a Library-Maintainer,
+I want eine verifizierbare Coverage-Matrix zur Material-3-Komponenten-Referenzliste inklusive Umsetzungsplan fuer Restluecken,
+So that die Einhaltung des 42/42-MVP-Ziels nachvollziehbar, messbar und releasefaehig ist.
+
+**Acceptance Criteria:**
+
+**Given** die PRD-Referenzliste mit 42 Eintraegen
+**When** ich Coverage-Matrix und Implementierungsstand pruefe
+**Then** ist jeder Eintrag entweder einer implementierten Komponente zugeordnet oder als Luecke mit priorisiertem Umsetzungsplan dokumentiert
+**And** der Abschlusszustand fuer diese Story ist erst bei nachweisbarer 42/42-Abdeckung erreicht (FR1, FR14, FR15).
 
 ## Epic 3: Integrationsfaehigkeit und Team-Workflow-Kompatibilitaet
 
@@ -374,6 +385,19 @@ So that Scope- und Release-Entscheidungen konsistent und auditierbar bleiben.
 **When** ein Phasenwechsel ansteht
 **Then** wird die Entscheidung anhand der Kriterien dokumentiert getroffen
 **And** Abweichungen oder Risiken sind mit Gegenmassnahmen erfasst (FR24, FR21).
+
+### Story 4.4: PRD-Epics-Traceability-Gate automatisieren
+
+As a Maintainer,
+I want einen automatisierten Traceability-Check zwischen PRD und Epics,
+So that Requirements- und KPI-Drift vor Release sichtbar und blockierend wird.
+
+**Acceptance Criteria:**
+
+**Given** PRD und Epics als relevante Planungsartefakte
+**When** der CI-Traceability-Check ausgefuehrt wird
+**Then** werden Abweichungen in FR/NFR-Referenzen oder KPI-Verknuepfungen als Fehler markiert
+**And** die Pipeline schlaegt fehl, wenn mindestens FR1/FR13/FR14/FR15 oder NFR13/NFR14 nicht konsistent zum PRD sind (FR21, FR23, FR24).
 
 ## Epic 5: Support, Recovery und Produktlernen
 

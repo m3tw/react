@@ -1,0 +1,33 @@
+.m3-button-group {
+  display: inline-flex;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  border: 1px solid #cbd5e1;
+}
+
+.m3-button-group__button {
+  border: 0;
+  border-right: 1px solid #cbd5e1;
+  background: #f8fafc;
+  color: #0f172a;
+  padding: 0.45rem 0.8rem;
+  font: inherit;
+}
+
+.m3-button-group__button:last-child {
+  border-right: 0;
+}
+
+.m3-button-group__button--active {
+  background: #dbeafe;
+  color: #1d4ed8;
+  font-weight: 700;
+}
+
+.m3-button-group--segmented .m3-button-group__button {
+  border-radius: 999px;
+}
+
+.m3-button-group--split .m3-button-group__button:first-child {
+  min-width: 7rem;
+}

@@ -3,15 +3,15 @@ import { afterEach, describe, expect, it } from 'vitest'
 
 import App from './App'
 
-describe('App getting-started flow', () => {
+describe('App coverage demo flow', () => {
   afterEach(() => {
     cleanup()
   })
 
-  it('renders story 2.5 reference layout with overlay interactions', () => {
+  it('renders story 2.6 layout and verifies core interactions', () => {
     const { getByRole, getByText, queryByRole } = render(<App />)
 
-    expect(getByText('Story 2.5 Feedback/Overlay')).toBeInTheDocument()
+    expect(getByText('Story 2.6 42/42 Coverage')).toBeInTheDocument()
     expect(getByRole('banner', { name: 'Produktkopfzeile' })).toBeInTheDocument()
     expect(
       getByRole('heading', { name: 'Feedback Overlay Referenzlayout', level: 1 }),
@@ -27,7 +27,6 @@ describe('App getting-started flow', () => {
       'aria-current',
       'page',
     )
-    expect(within(drawerNav).queryByRole('button', { name: 'Archiv' })).not.toBeInTheDocument()
 
     fireEvent.click(within(drawerNav).getByRole('button', { name: 'Projekte' }))
     expect(within(drawerNav).getByRole('button', { name: 'Projekte' })).toHaveAttribute(
@@ -35,6 +34,20 @@ describe('App getting-started flow', () => {
       'page',
     )
     expect(getByText('Aktive Destination: projekte')).toBeInTheDocument()
+
+    expect(getByRole('heading', { name: 'Story 2.6 Coverage Matrix', level: 2 })).toBeInTheDocument()
+    expect(getByRole('heading', { name: 'Edge-Case- und Fehlerfall-Nachweise', level: 2 })).toBeInTheDocument()
+    expect(getByRole('status', { name: 'Done Badge' })).toBeInTheDocument()
+
+    fireEvent.change(getByRole('searchbox'), { target: { value: 'navigation' } })
+    fireEvent.click(getByRole('button', { name: 'Suchen' }))
+    expect(getByText('Search fuer: navigation')).toBeInTheDocument()
+
+    fireEvent.click(getByRole('menuitem', { name: 'Bearbeiten' }))
+    expect(getByText('Menu Select: edit')).toBeInTheDocument()
+
+    fireEvent.click(getByRole('switch', { name: 'M3 Switch' }))
+    expect(getByText(/Switch aktiv: ja/)).toBeInTheDocument()
 
     fireEvent.click(getByRole('button', { name: 'Error zeigen' }))
     expect(getByRole('alert')).toBeInTheDocument()

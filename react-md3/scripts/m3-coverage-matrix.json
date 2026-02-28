@@ -1,0 +1,608 @@
+{
+  "source": {
+    "name": "Material-3-Komponenten-Referenzliste (verbatim)",
+    "path": "_bmad-output/planning-artifacts/prd.md"
+  },
+  "mappingRules": [
+    {
+      "id": "top-app-bar-family",
+      "description": "Mappt App bars und Toolbars auf die TopAppBar-Implementierung."
+    },
+    {
+      "id": "button-core",
+      "description": "Mappt den expliziten Buttons-Eintrag auf die Button-Basiskomponente."
+    },
+    {
+      "id": "button-family",
+      "description": "Mappt Sammelbegriffe wie All buttons, segmented und split ueber Button/ButtonGroup/IconButton/Fab."
+    },
+    {
+      "id": "fab-family",
+      "description": "Mappt Extended FABs, FAB menu und FABs auf die Fab-Komponente mit Varianten."
+    },
+    {
+      "id": "date-time-picker-family",
+      "description": "Mappt Date & time/date/time picker auf DateTimePicker-Modi."
+    },
+    {
+      "id": "dialog-family",
+      "description": "Mappt Dialogs auf Dialog und AlertDialog."
+    },
+    {
+      "id": "progress-family",
+      "description": "Mappt Loading & progress, Loading indicator und Progress indicators auf ProgressIndicator-Modi."
+    },
+    {
+      "id": "navigation-family",
+      "description": "Mappt Navigation auf NavigationBar, NavigationDrawer und NavigationRail."
+    },
+    {
+      "id": "sheet-family",
+      "description": "Mappt Sheets, Bottom sheets und Side sheets auf Sheet mit placement-Varianten."
+    },
+    {
+      "id": "single-component",
+      "description": "Direkte 1:1-Zuordnung auf eine einzelne Komponente."
+    }
+  ],
+  "entries": [
+    {
+      "referenceIndex": 1,
+      "referenceLabel": "App bars",
+      "coverageKey": "top-app-bar",
+      "mappingRule": "top-app-bar-family",
+      "status": "implemented",
+      "implementation": {
+        "exports": ["TopAppBar"],
+        "standardExample": "src/App.tsx (TopAppBar Standard)",
+        "edgeExample": "src/components/TopAppBar/TopAppBar.test.tsx (disabled/hidden actions)",
+        "tests": ["src/components/TopAppBar/TopAppBar.test.tsx"]
+      }
+    },
+    {
+      "referenceIndex": 2,
+      "referenceLabel": "Badges",
+      "coverageKey": "badge",
+      "mappingRule": "single-component",
+      "status": "implemented",
+      "implementation": {
+        "exports": ["Badge"],
+        "standardExample": "src/App.tsx (Done/Gap Badge)",
+        "edgeExample": "src/components/Badge/Badge.test.tsx (hidden)",
+        "tests": ["src/components/Badge/Badge.test.tsx"]
+      }
+    },
+    {
+      "referenceIndex": 3,
+      "referenceLabel": "Buttons",
+      "coverageKey": "button",
+      "mappingRule": "button-core",
+      "status": "implemented",
+      "implementation": {
+        "exports": ["Button"],
+        "standardExample": "src/App.tsx (Success/Warning/Error Buttons)",
+        "edgeExample": "src/components/Button/Button.test.tsx (loading disabled)",
+        "tests": ["src/components/Button/Button.test.tsx"]
+      }
+    },
+    {
+      "referenceIndex": 4,
+      "referenceLabel": "All buttons",
+      "coverageKey": "button-family",
+      "mappingRule": "button-family",
+      "status": "implemented",
+      "implementation": {
+        "exports": ["Button", "ButtonGroup", "Fab", "IconButton"],
+        "standardExample": "src/App.tsx (Button-Familie)",
+        "edgeExample": "src/components/ButtonGroup/ButtonGroup.test.tsx (split disabled)",
+        "tests": [
+          "src/components/Button/Button.test.tsx",
+          "src/components/ButtonGroup/ButtonGroup.test.tsx",
+          "src/components/Fab/Fab.test.tsx",
+          "src/components/IconButton/IconButton.test.tsx"
+        ]
+      }
+    },
+    {
+      "referenceIndex": 5,
+      "referenceLabel": "Button groups",
+      "coverageKey": "button-group",
+      "mappingRule": "button-family",
+      "status": "implemented",
+      "implementation": {
+        "exports": ["ButtonGroup"],
+        "standardExample": "src/App.tsx (ButtonGroup segmented)",
+        "edgeExample": "src/components/ButtonGroup/ButtonGroup.test.tsx (disabled option)",
+        "tests": ["src/components/ButtonGroup/ButtonGroup.test.tsx"]
+      }
+    },
+    {
+      "referenceIndex": 6,
+      "referenceLabel": "Buttons",
+      "coverageKey": "button",
+      "mappingRule": "button-core",
+      "status": "implemented",
+      "implementation": {
+        "exports": ["Button"],
+        "standardExample": "src/App.tsx (Success/Warning/Error Buttons)",
+        "edgeExample": "src/components/Button/Button.test.tsx (loading disabled)",
+        "tests": ["src/components/Button/Button.test.tsx"]
+      }
+    },
+    {
+      "referenceIndex": 7,
+      "referenceLabel": "Extended FABs",
+      "coverageKey": "fab-family",
+      "mappingRule": "fab-family",
+      "status": "implemented",
+      "implementation": {
+        "exports": ["Fab"],
+        "standardExample": "src/App.tsx (Fab extended)",
+        "edgeExample": "src/components/Fab/Fab.test.tsx (disabled menu)",
+        "tests": ["src/components/Fab/Fab.test.tsx"]
+      }
+    },
+    {
+      "referenceIndex": 8,
+      "referenceLabel": "FAB menu",
+      "coverageKey": "fab-family",
+      "mappingRule": "fab-family",
+      "status": "implemented",
+      "implementation": {
+        "exports": ["Fab"],
+        "standardExample": "src/App.tsx (Fab menuItems)",
+        "edgeExample": "src/components/Fab/Fab.test.tsx (disabled menu)",
+        "tests": ["src/components/Fab/Fab.test.tsx"]
+      }
+    },
+    {
+      "referenceIndex": 9,
+      "referenceLabel": "FABs",
+      "coverageKey": "fab-family",
+      "mappingRule": "fab-family",
+      "status": "implemented",
+      "implementation": {
+        "exports": ["Fab"],
+        "standardExample": "src/App.tsx (Fab regular)",
+        "edgeExample": "src/components/Fab/Fab.test.tsx (disabled menu)",
+        "tests": ["src/components/Fab/Fab.test.tsx"]
+      }
+    },
+    {
+      "referenceIndex": 10,
+      "referenceLabel": "Icon buttons",
+      "coverageKey": "icon-button",
+      "mappingRule": "button-family",
+      "status": "implemented",
+      "implementation": {
+        "exports": ["IconButton"],
+        "standardExample": "src/App.tsx (IconButton selected)",
+        "edgeExample": "src/components/IconButton/IconButton.test.tsx (disabled)",
+        "tests": ["src/components/IconButton/IconButton.test.tsx"]
+      }
+    },
+    {
+      "referenceIndex": 11,
+      "referenceLabel": "Segmented buttons",
+      "coverageKey": "button-group",
+      "mappingRule": "button-family",
+      "status": "implemented",
+      "implementation": {
+        "exports": ["ButtonGroup"],
+        "standardExample": "src/App.tsx (ButtonGroup segmented)",
+        "edgeExample": "src/components/ButtonGroup/ButtonGroup.test.tsx (disabled option)",
+        "tests": ["src/components/ButtonGroup/ButtonGroup.test.tsx"]
+      }
+    },
+    {
+      "referenceIndex": 12,
+      "referenceLabel": "Split button",
+      "coverageKey": "button-group",
+      "mappingRule": "button-family",
+      "status": "implemented",
+      "implementation": {
+        "exports": ["ButtonGroup"],
+        "standardExample": "src/App.tsx (ButtonGroup split)",
+        "edgeExample": "src/components/ButtonGroup/ButtonGroup.test.tsx (disabled option)",
+        "tests": ["src/components/ButtonGroup/ButtonGroup.test.tsx"]
+      }
+    },
+    {
+      "referenceIndex": 13,
+      "referenceLabel": "Cards",
+      "coverageKey": "cards",
+      "mappingRule": "single-component",
+      "status": "implemented",
+      "implementation": {
+        "exports": ["M3ReferenceCard"],
+        "standardExample": "src/components/M3ReferenceCard/M3ReferenceCard.test.tsx (title/support text)",
+        "edgeExample": "src/components/M3ReferenceCard/M3ReferenceCard.test.tsx (fallback text)",
+        "tests": ["src/components/M3ReferenceCard/M3ReferenceCard.test.tsx"]
+      }
+    },
+    {
+      "referenceIndex": 14,
+      "referenceLabel": "Carousel",
+      "coverageKey": "carousel",
+      "mappingRule": "single-component",
+      "status": "implemented",
+      "implementation": {
+        "exports": ["Carousel"],
+        "standardExample": "src/App.tsx (Carousel section)",
+        "edgeExample": "src/components/Carousel/Carousel.test.tsx (clamp index)",
+        "tests": ["src/components/Carousel/Carousel.test.tsx"]
+      }
+    },
+    {
+      "referenceIndex": 15,
+      "referenceLabel": "Checkbox",
+      "coverageKey": "checkbox",
+      "mappingRule": "single-component",
+      "status": "implemented",
+      "implementation": {
+        "exports": ["Checkbox"],
+        "standardExample": "src/components/Checkbox/Checkbox.test.tsx (checked)",
+        "edgeExample": "src/components/Checkbox/Checkbox.test.tsx (disabled)",
+        "tests": ["src/components/Checkbox/Checkbox.test.tsx"]
+      }
+    },
+    {
+      "referenceIndex": 16,
+      "referenceLabel": "Chips",
+      "coverageKey": "chip",
+      "mappingRule": "single-component",
+      "status": "implemented",
+      "implementation": {
+        "exports": ["Chip"],
+        "standardExample": "src/App.tsx (Assist Chip)",
+        "edgeExample": "src/components/Chip/Chip.test.tsx (dismiss)",
+        "tests": ["src/components/Chip/Chip.test.tsx"]
+      }
+    },
+    {
+      "referenceIndex": 17,
+      "referenceLabel": "Date & time pickers",
+      "coverageKey": "date-time-picker",
+      "mappingRule": "date-time-picker-family",
+      "status": "implemented",
+      "implementation": {
+        "exports": ["DateTimePicker"],
+        "standardExample": "src/App.tsx (DateTimePicker datetime)",
+        "edgeExample": "src/components/DateTimePicker/DateTimePicker.test.tsx (disabled time)",
+        "tests": ["src/components/DateTimePicker/DateTimePicker.test.tsx"]
+      }
+    },
+    {
+      "referenceIndex": 18,
+      "referenceLabel": "Date pickers",
+      "coverageKey": "date-time-picker",
+      "mappingRule": "date-time-picker-family",
+      "status": "implemented",
+      "implementation": {
+        "exports": ["DateTimePicker"],
+        "standardExample": "src/App.tsx (DateTimePicker date)",
+        "edgeExample": "src/components/DateTimePicker/DateTimePicker.test.tsx (disabled time)",
+        "tests": ["src/components/DateTimePicker/DateTimePicker.test.tsx"]
+      }
+    },
+    {
+      "referenceIndex": 19,
+      "referenceLabel": "Time pickers",
+      "coverageKey": "date-time-picker",
+      "mappingRule": "date-time-picker-family",
+      "status": "implemented",
+      "implementation": {
+        "exports": ["DateTimePicker"],
+        "standardExample": "src/App.tsx (DateTimePicker time)",
+        "edgeExample": "src/components/DateTimePicker/DateTimePicker.test.tsx (disabled time)",
+        "tests": ["src/components/DateTimePicker/DateTimePicker.test.tsx"]
+      }
+    },
+    {
+      "referenceIndex": 20,
+      "referenceLabel": "Dialogs",
+      "coverageKey": "dialogs",
+      "mappingRule": "dialog-family",
+      "status": "implemented",
+      "implementation": {
+        "exports": ["Dialog", "AlertDialog"],
+        "standardExample": "src/App.tsx (Dialog + AlertDialog)",
+        "edgeExample": "src/components/AlertDialog/AlertDialog.test.tsx (keyboard focus)",
+        "tests": [
+          "src/components/Dialog/Dialog.test.tsx",
+          "src/components/AlertDialog/AlertDialog.test.tsx"
+        ]
+      }
+    },
+    {
+      "referenceIndex": 21,
+      "referenceLabel": "Divider",
+      "coverageKey": "divider",
+      "mappingRule": "single-component",
+      "status": "implemented",
+      "implementation": {
+        "exports": ["Divider"],
+        "standardExample": "src/App.tsx (horizontal divider)",
+        "edgeExample": "src/components/Divider/Divider.test.tsx (vertical)",
+        "tests": ["src/components/Divider/Divider.test.tsx"]
+      }
+    },
+    {
+      "referenceIndex": 22,
+      "referenceLabel": "Lists",
+      "coverageKey": "list",
+      "mappingRule": "single-component",
+      "status": "implemented",
+      "implementation": {
+        "exports": ["List"],
+        "standardExample": "src/App.tsx (List section)",
+        "edgeExample": "src/components/List/List.test.tsx (disabled item)",
+        "tests": ["src/components/List/List.test.tsx"]
+      }
+    },
+    {
+      "referenceIndex": 23,
+      "referenceLabel": "Loading & progress",
+      "coverageKey": "progress-indicator",
+      "mappingRule": "progress-family",
+      "status": "implemented",
+      "implementation": {
+        "exports": ["ProgressIndicator"],
+        "standardExample": "src/App.tsx (determinate progress)",
+        "edgeExample": "src/components/ProgressIndicator/ProgressIndicator.test.tsx (indeterminate)",
+        "tests": ["src/components/ProgressIndicator/ProgressIndicator.test.tsx"]
+      }
+    },
+    {
+      "referenceIndex": 24,
+      "referenceLabel": "Loading indicator",
+      "coverageKey": "progress-indicator",
+      "mappingRule": "progress-family",
+      "status": "implemented",
+      "implementation": {
+        "exports": ["ProgressIndicator"],
+        "standardExample": "src/App.tsx (indeterminate progress)",
+        "edgeExample": "src/components/ProgressIndicator/ProgressIndicator.test.tsx (indeterminate)",
+        "tests": ["src/components/ProgressIndicator/ProgressIndicator.test.tsx"]
+      }
+    },
+    {
+      "referenceIndex": 25,
+      "referenceLabel": "Progress indicators",
+      "coverageKey": "progress-indicator",
+      "mappingRule": "progress-family",
+      "status": "implemented",
+      "implementation": {
+        "exports": ["ProgressIndicator"],
+        "standardExample": "src/App.tsx (determinate progress)",
+        "edgeExample": "src/components/ProgressIndicator/ProgressIndicator.test.tsx (value clamp)",
+        "tests": ["src/components/ProgressIndicator/ProgressIndicator.test.tsx"]
+      }
+    },
+    {
+      "referenceIndex": 26,
+      "referenceLabel": "Menus",
+      "coverageKey": "menu",
+      "mappingRule": "single-component",
+      "status": "implemented",
+      "implementation": {
+        "exports": ["Menu"],
+        "standardExample": "src/App.tsx (Menu section)",
+        "edgeExample": "src/components/Menu/Menu.test.tsx (disabled menu item)",
+        "tests": ["src/components/Menu/Menu.test.tsx"]
+      }
+    },
+    {
+      "referenceIndex": 27,
+      "referenceLabel": "Navigation",
+      "coverageKey": "navigation-family",
+      "mappingRule": "navigation-family",
+      "status": "implemented",
+      "implementation": {
+        "exports": ["NavigationBar", "NavigationDrawer", "NavigationRail"],
+        "standardExample": "src/App.tsx (Navigation components)",
+        "edgeExample": "src/components/NavigationDrawer/NavigationDrawer.test.tsx (hidden/disabled)",
+        "tests": [
+          "src/components/NavigationBar/NavigationBar.test.tsx",
+          "src/components/NavigationDrawer/NavigationDrawer.test.tsx",
+          "src/components/NavigationRail/NavigationRail.test.tsx"
+        ]
+      }
+    },
+    {
+      "referenceIndex": 28,
+      "referenceLabel": "Navigation bar",
+      "coverageKey": "navigation-bar",
+      "mappingRule": "single-component",
+      "status": "implemented",
+      "implementation": {
+        "exports": ["NavigationBar"],
+        "standardExample": "src/App.tsx (NavigationBar section)",
+        "edgeExample": "src/components/NavigationBar/NavigationBar.test.tsx (hidden destination)",
+        "tests": ["src/components/NavigationBar/NavigationBar.test.tsx"]
+      }
+    },
+    {
+      "referenceIndex": 29,
+      "referenceLabel": "Navigation drawer",
+      "coverageKey": "navigation-drawer",
+      "mappingRule": "single-component",
+      "status": "implemented",
+      "implementation": {
+        "exports": ["NavigationDrawer"],
+        "standardExample": "src/App.tsx (NavigationDrawer section)",
+        "edgeExample": "src/components/NavigationDrawer/NavigationDrawer.test.tsx (hidden/disabled)",
+        "tests": ["src/components/NavigationDrawer/NavigationDrawer.test.tsx"]
+      }
+    },
+    {
+      "referenceIndex": 30,
+      "referenceLabel": "Navigation rail",
+      "coverageKey": "navigation-rail",
+      "mappingRule": "single-component",
+      "status": "implemented",
+      "implementation": {
+        "exports": ["NavigationRail"],
+        "standardExample": "src/App.tsx (NavigationRail section)",
+        "edgeExample": "src/components/NavigationRail/NavigationRail.test.tsx (keyboard + disabled)",
+        "tests": ["src/components/NavigationRail/NavigationRail.test.tsx"]
+      }
+    },
+    {
+      "referenceIndex": 31,
+      "referenceLabel": "Radio button",
+      "coverageKey": "radio-group",
+      "mappingRule": "single-component",
+      "status": "implemented",
+      "implementation": {
+        "exports": ["RadioGroup"],
+        "standardExample": "src/components/RadioGroup/RadioGroup.test.tsx (selection)",
+        "edgeExample": "src/components/RadioGroup/RadioGroup.test.tsx (validation/error)",
+        "tests": ["src/components/RadioGroup/RadioGroup.test.tsx"]
+      }
+    },
+    {
+      "referenceIndex": 32,
+      "referenceLabel": "Search",
+      "coverageKey": "search",
+      "mappingRule": "single-component",
+      "status": "implemented",
+      "implementation": {
+        "exports": ["SearchBar"],
+        "standardExample": "src/App.tsx (SearchBar section)",
+        "edgeExample": "src/components/SearchBar/SearchBar.test.tsx (empty query)",
+        "tests": ["src/components/SearchBar/SearchBar.test.tsx"]
+      }
+    },
+    {
+      "referenceIndex": 33,
+      "referenceLabel": "Sheets",
+      "coverageKey": "sheet-family",
+      "mappingRule": "sheet-family",
+      "status": "implemented",
+      "implementation": {
+        "exports": ["Sheet"],
+        "standardExample": "src/App.tsx (Sheet section)",
+        "edgeExample": "src/components/Sheet/Sheet.test.tsx (open=false)",
+        "tests": ["src/components/Sheet/Sheet.test.tsx"]
+      }
+    },
+    {
+      "referenceIndex": 34,
+      "referenceLabel": "Bottom sheets",
+      "coverageKey": "sheet-family",
+      "mappingRule": "sheet-family",
+      "status": "implemented",
+      "implementation": {
+        "exports": ["Sheet"],
+        "standardExample": "src/App.tsx (Sheet placement=bottom)",
+        "edgeExample": "src/components/Sheet/Sheet.test.tsx (open=false)",
+        "tests": ["src/components/Sheet/Sheet.test.tsx"]
+      }
+    },
+    {
+      "referenceIndex": 35,
+      "referenceLabel": "Side sheets",
+      "coverageKey": "sheet-family",
+      "mappingRule": "sheet-family",
+      "status": "implemented",
+      "implementation": {
+        "exports": ["Sheet"],
+        "standardExample": "src/App.tsx (Sheet placement=side)",
+        "edgeExample": "src/components/Sheet/Sheet.test.tsx (open=false)",
+        "tests": ["src/components/Sheet/Sheet.test.tsx"]
+      }
+    },
+    {
+      "referenceIndex": 36,
+      "referenceLabel": "Sliders",
+      "coverageKey": "slider",
+      "mappingRule": "single-component",
+      "status": "implemented",
+      "implementation": {
+        "exports": ["Slider"],
+        "standardExample": "src/App.tsx (Slider section)",
+        "edgeExample": "src/components/Slider/Slider.test.tsx (disabled)",
+        "tests": ["src/components/Slider/Slider.test.tsx"]
+      }
+    },
+    {
+      "referenceIndex": 37,
+      "referenceLabel": "Snackbar",
+      "coverageKey": "snackbar",
+      "mappingRule": "single-component",
+      "status": "implemented",
+      "implementation": {
+        "exports": ["Snackbar"],
+        "standardExample": "src/App.tsx (Snackbar section)",
+        "edgeExample": "src/components/Snackbar/Snackbar.test.tsx (action coupling)",
+        "tests": ["src/components/Snackbar/Snackbar.test.tsx"]
+      }
+    },
+    {
+      "referenceIndex": 38,
+      "referenceLabel": "Switch",
+      "coverageKey": "switch",
+      "mappingRule": "single-component",
+      "status": "implemented",
+      "implementation": {
+        "exports": ["Switch"],
+        "standardExample": "src/App.tsx (Switch section)",
+        "edgeExample": "src/components/Switch/Switch.test.tsx (disabled)",
+        "tests": ["src/components/Switch/Switch.test.tsx"]
+      }
+    },
+    {
+      "referenceIndex": 39,
+      "referenceLabel": "Tabs",
+      "coverageKey": "tabs",
+      "mappingRule": "single-component",
+      "status": "implemented",
+      "implementation": {
+        "exports": ["Tabs"],
+        "standardExample": "src/App.tsx (Tabs section)",
+        "edgeExample": "src/components/Tabs/Tabs.test.tsx (disabled tab)",
+        "tests": ["src/components/Tabs/Tabs.test.tsx"]
+      }
+    },
+    {
+      "referenceIndex": 40,
+      "referenceLabel": "Text fields",
+      "coverageKey": "text-field",
+      "mappingRule": "single-component",
+      "status": "implemented",
+      "implementation": {
+        "exports": ["TextField"],
+        "standardExample": "src/components/TextField/TextField.test.tsx (standard)",
+        "edgeExample": "src/components/TextField/TextField.test.tsx (error)",
+        "tests": ["src/components/TextField/TextField.test.tsx"]
+      }
+    },
+    {
+      "referenceIndex": 41,
+      "referenceLabel": "Toolbars",
+      "coverageKey": "top-app-bar",
+      "mappingRule": "top-app-bar-family",
+      "status": "implemented",
+      "implementation": {
+        "exports": ["TopAppBar"],
+        "standardExample": "src/App.tsx (TopAppBar Standard)",
+        "edgeExample": "src/components/TopAppBar/TopAppBar.test.tsx (disabled/hidden actions)",
+        "tests": ["src/components/TopAppBar/TopAppBar.test.tsx"]
+      }
+    },
+    {
+      "referenceIndex": 42,
+      "referenceLabel": "Tooltips",
+      "coverageKey": "tooltip",
+      "mappingRule": "single-component",
+      "status": "implemented",
+      "implementation": {
+        "exports": ["Tooltip"],
+        "standardExample": "src/App.tsx (Tooltip section)",
+        "edgeExample": "src/components/Tooltip/Tooltip.test.tsx (open=false)",
+        "tests": ["src/components/Tooltip/Tooltip.test.tsx"]
+      }
+    }
+  ]
+}

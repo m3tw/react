@@ -1,0 +1,8 @@
+.m3-slider {
+  display: grid;
+  gap: 0.3rem;
+}
+
+.m3-slider input {
+  width: 100%;
+}

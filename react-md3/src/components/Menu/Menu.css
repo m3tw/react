@@ -1,0 +1,18 @@
+.m3-menu {
+  display: grid;
+  gap: 0.25rem;
+  padding: 0.35rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 0.75rem;
+  background: #ffffff;
+}
+
+.m3-menu__item {
+  border: 0;
+  border-radius: 0.45rem;
+  background: #f8fafc;
+  color: #0f172a;
+  text-align: left;
+  padding: 0.4rem 0.6rem;
+  font: inherit;
+}

@@ -1,0 +1,42 @@
+.m3-fab-group {
+  display: grid;
+  gap: 0.5rem;
+  justify-items: start;
+}
+
+.m3-fab {
+  border: 0;
+  border-radius: 999px;
+  background: #1d4ed8;
+  color: #ffffff;
+  min-width: 3rem;
+  min-height: 3rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  padding: 0 0.9rem;
+  font: inherit;
+}
+
+.m3-fab__icon {
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+.m3-fab__menu {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.25rem;
+}
+
+.m3-fab__menu-item {
+  border: 1px solid #cbd5e1;
+  border-radius: 0.5rem;
+  background: #ffffff;
+  color: #0f172a;
+  font: inherit;
+  padding: 0.3rem 0.6rem;
+}

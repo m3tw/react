@@ -14,6 +14,10 @@ stepsCompleted:
   - step-10-nonfunctional
   - step-11-polish
   - step-12-complete
+  - step-e-01-discovery
+  - step-e-02-review
+  - step-e-03-edit
+  - step-e-04-complete
 inputDocuments:
   - _bmad-output/planning-artifacts/product-brief-react-2026-02-26.md
   - _bmad-output/planning-artifacts/research/technical-react-md3-shadcn-style-library-research-2026-02-26.md
@@ -29,6 +33,11 @@ classification:
   complexity: medium
   projectContext: greenfield
 workflowType: 'prd'
+workflow: 'edit'
+lastEdited: '2026-02-28'
+editHistory:
+  - date: '2026-02-28'
+    changes: 'Material-3-Komponenten-Referenzliste ergänzt und Scope/FR/KPI/Gates darauf ausgerichtet.'
 ---
 
 # Product Requirements Document - react
@@ -82,15 +91,20 @@ Die Bibliothek kombiniert vier Differenzierungsfaktoren: vollständige M3-Ausric
 - KPI 5: Offene kritische Bugs pro Stable-Release.
 - KPI 6: Anteil erfolgreich abgeschlossener Getting-Started-Tutorials.
 - KPI 7: Anteil neuer Nutzer mit fortlaufender Nutzung nach 30 Tagen.
+- KPI 8: Komponentenabdeckung gemäß Material-3-Komponenten-Referenzliste (Ziel: 42/42 Einträge umgesetzt).
 
 ## Product Scope
 
 ### MVP - Minimum Viable Product
 
-- Vollständige Umsetzung aller offiziellen Material-3-Komponenten für React.
+- Vollständige Umsetzung der Material-3-Komponenten-Referenzliste für React (42 Einträge, verbatim).
 - Kostenfreie Nutzung ohne Paywall.
 - Stabile API und produktionsnahe Komponentenqualität.
 - Dokumentation mit ausreichend Beispielen für produktiven Einsatz.
+
+### Material-3-Komponenten-Referenzliste (verbatim)
+
+- App bars, Badges, Buttons, All buttons, Button groups, Buttons, Extended FABs, FAB menu, FABs, Icon buttons, Segmented buttons, Split button, Cards, Carousel, Checkbox, Chips, Date & time pickers, Date pickers, Time pickers, Dialogs, Divider, Lists, Loading & progress, Loading indicator, Progress indicators, Menus, Navigation, Navigation bar, Navigation drawer, Navigation rail, Radio button, Search, Sheets, Bottom sheets, Side sheets, Sliders, Snackbar, Switch, Tabs, Text fields, Toolbars, Tooltips
 
 ### Growth Features (Post-MVP)
 
@@ -248,7 +262,7 @@ react ist als Developer Tool auf hohe Integrationsgeschwindigkeit, API-Verlässl
 - Support/Troubleshooting Journey
 
 **Must-Have Capabilities:**
-- Vollständige Umsetzung aller offiziellen Material-3-Komponenten.
+- Vollständige Umsetzung der Material-3-Komponenten-Referenzliste (42 Einträge, verbatim).
 - Stabile semver-konforme API mit klarer Deprecation-Policy.
 - Offiziell unterstützte Installation via npm/pnpm/yarn/bun.
 - Pro Komponente lauffähige Beispiele (Happy Path + Edge Case + Troubleshooting-Verweis).
@@ -275,14 +289,14 @@ react ist als Developer Tool auf hohe Integrationsgeschwindigkeit, API-Verlässl
 
 ### Phase Transition Criteria
 
-- Übergang Phase 1 -> Phase 2 nur bei erfüllten Go/No-Go-Kriterien (z. B. Setup-Erfolgsrate, kritische Bugs, API-Stabilität).
+- Übergang Phase 1 -> Phase 2 nur bei erfüllten Go/No-Go-Kriterien (z. B. Setup-Erfolgsrate, kritische Bugs, API-Stabilität, 42/42 Einträge der Material-3-Komponenten-Referenzliste umgesetzt).
 - Übergang Phase 2 -> Phase 3 nur bei belastbarer Nutzungsqualität und nachgewiesener Integrationsreife.
 
 ## Functional Requirements
 
 ### Component Delivery & Usage
 
-- FR1: Frontend-Entwickler können alle offiziell definierten Material-3-Komponenten in React nutzen.
+- FR1: Frontend-Entwickler können alle Einträge der Material-3-Komponenten-Referenzliste in React nutzen.
 - FR2: Frontend-Entwickler können Komponenten in bestehenden React-Anwendungen ohne Neuaufbau der Anwendung einführen.
 - FR3: Frontend-Entwickler können Komponenten konsistent mit Material-3-Prinzipien einsetzen.
 - FR4: Frontend-Entwickler können Komponenten für produktive Nutzung in realen Features verwenden.
@@ -303,9 +317,9 @@ react ist als Developer Tool auf hohe Integrationsgeschwindigkeit, API-Verlässl
 
 ### Documentation & Example Coverage
 
-- FR13: Entwickler können für jede Komponente auf eine API-Beschreibung zugreifen.
-- FR14: Entwickler können pro Komponente mindestens ein praxisnahes Standardbeispiel nutzen.
-- FR15: Entwickler können pro Komponente mindestens ein Edge-Case- oder Fehlerfall-Beispiel nutzen.
+- FR13: Entwickler können für jede Komponente der Material-3-Komponenten-Referenzliste auf eine API-Beschreibung zugreifen.
+- FR14: Entwickler können pro Komponente der Material-3-Komponenten-Referenzliste mindestens ein praxisnahes Standardbeispiel nutzen.
+- FR15: Entwickler können pro Komponente der Material-3-Komponenten-Referenzliste mindestens ein Edge-Case- oder Fehlerfall-Beispiel nutzen.
 - FR16: Entwickler können zu typischen Integrationsproblemen konkrete Troubleshooting-Anleitungen finden.
 - FR17: Entwickler können Integrationsrezepte für gängige Team-Setups finden.
 
@@ -361,8 +375,8 @@ react ist als Developer Tool auf hohe Integrationsgeschwindigkeit, API-Verlässl
 
 - Komponenten erfüllen WCAG-2.2-AA-konforme Grundanforderungen.
 - Accessibility-Anforderungen sind Bestandteil der Qualitätsprüfung vor Stable-Releases.
-- Dokumentation enthält Hinweise für barrierearme Nutzung relevanter Komponenten.
-- Kernkomponenten müssen eine explizit dokumentierte Accessibility-Abdeckung aufweisen.
+- Dokumentation enthält Hinweise für barrierearme Nutzung der Komponenten der Material-3-Komponenten-Referenzliste.
+- Komponenten der Material-3-Komponenten-Referenzliste müssen eine explizit dokumentierte Accessibility-Abdeckung aufweisen.
 
 ### Integration
 

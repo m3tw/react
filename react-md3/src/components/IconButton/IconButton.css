@@ -1,0 +1,16 @@
+.m3-icon-button {
+  border: 0;
+  border-radius: 999px;
+  width: 2.25rem;
+  height: 2.25rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #e2e8f0;
+  color: #0f172a;
+}
+
+.m3-icon-button--selected {
+  background: #dbeafe;
+  color: #1d4ed8;
+}

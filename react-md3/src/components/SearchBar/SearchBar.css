@@ -1,0 +1,21 @@
+.m3-search-bar {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.m3-search-bar__label {
+  font-size: 0.86rem;
+  font-weight: 600;
+}
+
+.m3-search-bar__controls {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.m3-search-bar input {
+  border: 1px solid #cbd5e1;
+  border-radius: 0.5rem;
+  padding: 0.42rem 0.52rem;
+  font: inherit;
+}

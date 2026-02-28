@@ -1,0 +1,21 @@
+.m3-tabs {
+  display: flex;
+  gap: 0.35rem;
+  border-bottom: 1px solid #cbd5e1;
+  padding-bottom: 0.35rem;
+}
+
+.m3-tabs__tab {
+  border: 0;
+  border-radius: 0.5rem;
+  background: #f8fafc;
+  color: #334155;
+  padding: 0.35rem 0.65rem;
+  font: inherit;
+}
+
+.m3-tabs__tab--active {
+  background: #dbeafe;
+  color: #1d4ed8;
+  font-weight: 700;
+}

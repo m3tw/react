@@ -13,6 +13,15 @@
   - `minor`: `Migrationsaufwand: low`
   - `major`: `Migrationsaufwand: high`
 
+## 2026-02-28 - Story 2.6 42/42 Coverage Nachweis
+
+[api-contract-hash:c65af4fc1db01f4ac406f32dfe8530e51ea344bcd239218820227194f02c887b]
+
+- changeType: minor
+- affectedExports: AlertDialog, Badge, Button, ButtonGroup, Carousel, Checkbox, Chip, DateTimePicker, Dialog, Divider, Fab, IconButton, List, M3ReferenceCard, M3_REFERENCE_FALLBACK_TEXT, Menu, NavigationBar, NavigationDrawer, NavigationRail, ProgressIndicator, RadioGroup, SearchBar, Sheet, Slider, Snackbar, Surface, Switch, Tabs, TextField, Tooltip, TopAppBar
+- riskLevel: medium
+- migrationGuide: Trigger: additive API-Aenderung fuer 42/42-Komponentenabdeckung; Migrationsaufwand: low; Alt -> Neu: bestehende Nutzung bleibt lauffaehig, neue Exports fuer Badge/ButtonGroup/Fab/IconButton/Carousel/Chip/DateTimePicker/Divider/List/Menu/NavigationBar/ProgressIndicator/SearchBar/Sheet/Slider/Switch/Tabs/Tooltip stehen zusaetzlich zur Verfuegung; Betroffene Exports/Pfade: alle Public-Exports aus `src/index.ts` (kein Deep-Import); Verifikation: `cd react-md3 && npm run quality:gate`
+
 ## 2026-02-27 - Story 2.5 Feedback & Overlay Slice D
 
 [api-contract-hash:51a4e9a56afcc93d35924793c84cca4eff8b0ced36001649a0368e82fa6dfb71]

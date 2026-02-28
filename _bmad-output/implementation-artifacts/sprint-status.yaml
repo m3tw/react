@@ -1,4 +1,4 @@
-# generated: 2026-02-26T19:23:49Z
+# generated: 2026-02-28T09:41:36Z
 # project: react
 # project_key: NOKEY
 # tracking_system: file-system
@@ -33,7 +33,7 @@
 # - SM typically creates next story after previous one is 'done' to incorporate learnings
 # - Dev moves story to 'review', then runs code-review (fresh context, different LLM recommended)
 
-generated: "2026-02-26T19:23:49Z"
+generated: "2026-02-28T09:41:36Z"
 project: "react"
 project_key: "NOKEY"
 tracking_system: "file-system"
@@ -52,6 +52,7 @@ development_status:
   2-3-komponenten-slice-b-form-selection-liefern: done
   2-4-komponenten-slice-c-navigation-surfaces-liefern: done
   2-5-komponenten-slice-d-feedback-overlay-liefern: done
+  2-6-42-42-komponentenabdeckung-nachweisen-und-restluecken-schliessen: done
   epic-2-retrospective: optional
   epic-3: in-progress
   3-1-kompatibilitaetsmatrix-definieren-und-in-ci-absichern: done
@@ -63,6 +64,7 @@ development_status:
   4-1-release-checkliste-und-harte-quality-gates-definieren: done
   4-2-automatisierte-release-gate-pipeline-umsetzen: done
   4-3-go-no-go-entscheidungsprozess-fuer-phasenwechsel-verankern: done
+  4-4-prd-epics-traceability-gate-automatisieren: backlog
   epic-4-retrospective: optional
   epic-5: in-progress
   5-1-support-triage-und-known-issues-katalog-aufbauen: done

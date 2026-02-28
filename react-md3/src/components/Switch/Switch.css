@@ -1,0 +1,26 @@
+.m3-switch {
+  width: 2.6rem;
+  height: 1.5rem;
+  border-radius: 999px;
+  border: 0;
+  background: #cbd5e1;
+  display: inline-flex;
+  align-items: center;
+  padding: 0.16rem;
+}
+
+.m3-switch__thumb {
+  width: 1.15rem;
+  height: 1.15rem;
+  border-radius: 50%;
+  background: #ffffff;
+  transform: translateX(0);
+}
+
+.m3-switch--checked {
+  background: #2563eb;
+}
+
+.m3-switch--checked .m3-switch__thumb {
+  transform: translateX(1.02rem);
+}
