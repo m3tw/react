@@ -512,9 +512,10 @@ function App() {
                 open={snackbarOpen}
                 onOpenChange={setSnackbarOpen}
                 message="Operation completed successfully."
-                tone="success"
                 actionLabel="Undo"
                 onAction={() => setSnackbarOpen(false)}
+                closeable
+                onClose={() => setSnackbarOpen(false)}
               />
             </Surface>
 

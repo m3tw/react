@@ -38,7 +38,7 @@
     },
     {
       "id": "sheet-family",
-      "description": "Mappt Sheets, Bottom sheets und Side sheets auf Sheet mit placement-Varianten."
+      "description": "Mappt Sheets, Bottom sheets und Side sheets auf BottomSheet/SideSheet."
     },
     {
       "id": "single-component",
@@ -214,10 +214,10 @@
       "mappingRule": "single-component",
       "status": "implemented",
       "implementation": {
-        "exports": ["M3ReferenceCard"],
-        "standardExample": "src/components/M3ReferenceCard/M3ReferenceCard.test.tsx (title/support text)",
-        "edgeExample": "src/components/M3ReferenceCard/M3ReferenceCard.test.tsx (fallback text)",
-        "tests": ["src/components/M3ReferenceCard/M3ReferenceCard.test.tsx"]
+        "exports": ["Card"],
+        "standardExample": "src/App.tsx (Card section)",
+        "edgeExample": "src/components/Card/Card.test.tsx (elevation/interactive variants)",
+        "tests": ["src/components/Card/Card.test.tsx"]
       }
     },
     {
@@ -481,10 +481,13 @@
       "mappingRule": "sheet-family",
       "status": "implemented",
       "implementation": {
-        "exports": ["Sheet"],
-        "standardExample": "src/App.tsx (Sheet section)",
-        "edgeExample": "src/components/Sheet/Sheet.test.tsx (open=false)",
-        "tests": ["src/components/Sheet/Sheet.test.tsx"]
+        "exports": ["BottomSheet", "SideSheet"],
+        "standardExample": "src/App.tsx (BottomSheet + SideSheet section)",
+        "edgeExample": "src/components/Sheet/SideSheet.test.tsx (hidden + keyboard interactions)",
+        "tests": [
+          "src/components/Sheet/BottomSheet.test.tsx",
+          "src/components/Sheet/SideSheet.test.tsx"
+        ]
       }
     },
     {
@@ -494,10 +497,10 @@
       "mappingRule": "sheet-family",
       "status": "implemented",
       "implementation": {
-        "exports": ["Sheet"],
-        "standardExample": "src/App.tsx (Sheet placement=bottom)",
-        "edgeExample": "src/components/Sheet/Sheet.test.tsx (open=false)",
-        "tests": ["src/components/Sheet/Sheet.test.tsx"]
+        "exports": ["BottomSheet"],
+        "standardExample": "src/App.tsx (BottomSheet section)",
+        "edgeExample": "src/components/Sheet/BottomSheet.test.tsx (dismiss + keyboard + focus trap)",
+        "tests": ["src/components/Sheet/BottomSheet.test.tsx"]
       }
     },
     {
@@ -507,10 +510,10 @@
       "mappingRule": "sheet-family",
       "status": "implemented",
       "implementation": {
-        "exports": ["Sheet"],
-        "standardExample": "src/App.tsx (Sheet placement=side)",
-        "edgeExample": "src/components/Sheet/Sheet.test.tsx (open=false)",
-        "tests": ["src/components/Sheet/Sheet.test.tsx"]
+        "exports": ["SideSheet"],
+        "standardExample": "src/App.tsx (SideSheet section)",
+        "edgeExample": "src/components/Sheet/SideSheet.test.tsx (dismissible + keyboard + backdrop)",
+        "tests": ["src/components/Sheet/SideSheet.test.tsx"]
       }
     },
     {

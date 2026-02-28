@@ -1,41 +1,40 @@
+.m3-snackbar-portal {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  padding: 16px;
+  pointer-events: none;
+  z-index: 1400;
+}
+
 .m3-snackbar {
-  --m3-snackbar-bg: var(--md-sys-color-inverse-surface);
-  --m3-snackbar-color: var(--md-sys-color-inverse-on-surface);
-  
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  border: none;
-  border-radius: 4px; /* M3 Snackbar uses extra small shape */
-  padding: 14px 16px;
-  background-color: var(--m3-snackbar-bg);
-  color: var(--m3-snackbar-color);
-  box-shadow: var(--md-sys-elevation-level3);
+  flex-wrap: wrap;
+  gap: 4px;
+  border-radius: 4px;
+  padding: 0 16px;
+  min-height: 48px;
   min-width: 300px;
   max-width: 600px;
+  background-color: var(--md-sys-color-inverse-surface);
+  color: var(--md-sys-color-inverse-on-surface);
+  box-shadow: var(--md-sys-elevation-level3);
+  pointer-events: auto;
+  animation: m3-snackbar-enter 150ms cubic-bezier(0, 0, 0.2, 1);
 }
 
-.m3-snackbar--success {
-  /* In M3, snackbars usually don't change background colors based on tone, but if they do, 
-     they might use custom color containers, we override bg here for legacy support */
-  --m3-snackbar-bg: #16a34a; 
-  --m3-snackbar-color: #ffffff;
-}
-
-.m3-snackbar--warning {
-  --m3-snackbar-bg: #d97706;
-  --m3-snackbar-color: #ffffff;
-}
-
-.m3-snackbar--error {
-  /* M3 actually defines error containers */
-  --m3-snackbar-bg: var(--md-sys-color-error-container);
-  --m3-snackbar-color: var(--md-sys-color-on-error-container);
+.m3-snackbar--closing {
+  animation: m3-snackbar-exit 75ms cubic-bezier(0.4, 0, 1, 1) forwards;
 }
 
 .m3-snackbar__message {
+  flex: 1 1 0%;
   margin: 0;
+  padding: 14px 0;
   font-family: var(--md-sys-typescale-body-medium-font-family);
   font-weight: var(--md-sys-typescale-body-medium-font-weight);
   font-size: var(--md-sys-typescale-body-medium-font-size);
@@ -47,19 +46,60 @@
   display: flex;
   align-items: center;
   gap: 8px;
+  margin-inline-start: auto;
 }
 
-/* Force standard Buttons used in Snackbar to adopt inverse colors where appropriate */
 .m3-snackbar__action {
   --md-sys-color-primary: var(--md-sys-color-inverse-primary);
 }
 
-.m3-snackbar__dismiss {
-  --md-sys-color-primary: var(--m3-snackbar-color); /* Matches text color */
+.m3-snackbar__close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--md-sys-color-inverse-on-surface);
+  cursor: pointer;
+  flex-shrink: 0;
 }
 
-/* Specific overrides for error tone buttons to remain visible */
-.m3-snackbar--error .m3-snackbar__action,
-.m3-snackbar--error .m3-snackbar__dismiss {
-  --md-sys-color-primary: var(--md-sys-color-on-error-container);
+.m3-snackbar__close:hover {
+  background-color: color-mix(in srgb, var(--md-sys-color-inverse-on-surface) 8%, transparent);
+}
+
+.m3-snackbar__close:focus-visible {
+  outline: 2px solid var(--md-sys-color-inverse-primary);
+  outline-offset: -2px;
+}
+
+.m3-snackbar__close svg {
+  width: 20px;
+  height: 20px;
+}
+
+@keyframes m3-snackbar-enter {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes m3-snackbar-exit {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(100%);
+    opacity: 0;
+  }
 }

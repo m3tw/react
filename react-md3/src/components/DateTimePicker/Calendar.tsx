@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Ripple } from '../Ripple'
 import './Calendar.css'
 
@@ -113,7 +113,7 @@ export function Calendar({ value, onChange, onCancel, onSelect, minDate, maxDate
   }, [showYearMenu])
 
   // Generate grid cells including trailing days
-  const cells = useMemo(() => {
+  const cells = (() => {
     const grid = []
     
     // Previous month trailing days
@@ -195,7 +195,7 @@ export function Calendar({ value, onChange, onCancel, onSelect, minDate, maxDate
     }
     
     return grid
-  }, [currentYear, currentMonth, daysInMonth, firstDay, prevMonthDays, selectedDate, minDate, maxDate])
+  })()
 
   // Year range
   const startYear = currentYear - 100

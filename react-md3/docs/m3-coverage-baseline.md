@@ -1,6 +1,6 @@
 # M3 Coverage Baseline Report
 
-- Generated: 2026-02-28T10:12:25.447Z
+- Generated: 2026-02-28T21:45:08.166Z
 - Canonical source: _bmad-output/planning-artifacts/prd.md
 - Implemented: 42/42
 - Open gaps: 0
@@ -25,7 +25,7 @@
 | 10 | Icon buttons | implemented | button-family | IconButton |
 | 11 | Segmented buttons | implemented | button-family | ButtonGroup |
 | 12 | Split button | implemented | button-family | ButtonGroup |
-| 13 | Cards | implemented | single-component | M3ReferenceCard |
+| 13 | Cards | implemented | single-component | Card |
 | 14 | Carousel | implemented | single-component | Carousel |
 | 15 | Checkbox | implemented | single-component | Checkbox |
 | 16 | Chips | implemented | single-component | Chip |
@@ -45,9 +45,9 @@
 | 30 | Navigation rail | implemented | single-component | NavigationRail |
 | 31 | Radio button | implemented | single-component | RadioGroup |
 | 32 | Search | implemented | single-component | SearchBar |
-| 33 | Sheets | implemented | sheet-family | Sheet |
-| 34 | Bottom sheets | implemented | sheet-family | Sheet |
-| 35 | Side sheets | implemented | sheet-family | Sheet |
+| 33 | Sheets | implemented | sheet-family | BottomSheet, SideSheet |
+| 34 | Bottom sheets | implemented | sheet-family | BottomSheet |
+| 35 | Side sheets | implemented | sheet-family | SideSheet |
 | 36 | Sliders | implemented | single-component | Slider |
 | 37 | Snackbar | implemented | single-component | Snackbar |
 | 38 | Switch | implemented | single-component | Switch |

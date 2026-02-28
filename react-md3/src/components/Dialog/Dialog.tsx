@@ -76,10 +76,16 @@ export function Dialog({
 
   useEffect(() => {
     if (isOpen) {
-      setRendered(true)
-    } else if (rendered) {
-      const timer = setTimeout(() => setRendered(false), 75)
-      return () => clearTimeout(timer)
+      if (!rendered) {
+        const timer = window.setTimeout(() => setRendered(true), 0)
+        return () => window.clearTimeout(timer)
+      }
+      return
+    }
+
+    if (rendered) {
+      const timer = window.setTimeout(() => setRendered(false), 75)
+      return () => window.clearTimeout(timer)
     }
   }, [isOpen, rendered])
 

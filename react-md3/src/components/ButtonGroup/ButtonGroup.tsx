@@ -60,12 +60,33 @@ export function ButtonGroup(props: ButtonGroupProps) {
     [options],
   )
 
+  const firstSelectableValue = useMemo(
+    () => getFirstSelectableValue(visibleOptions),
+    [visibleOptions],
+  )
+
+  const [singleInternalValue, setSingleInternalValue] = useState<string | undefined>(() => {
+    if (props.multiSelect) {
+      return firstSelectableValue
+    }
+
+    return isSelectableValue(visibleOptions, props.defaultValue)
+      ? props.defaultValue
+      : firstSelectableValue
+  })
+
+  const [multiInternalValue, setMultiInternalValue] = useState<string[]>(() => {
+    if (props.multiSelect) {
+      return props.defaultValue ?? []
+    }
+    return []
+  })
+
   // ── Multi-select mode ──
   if (props.multiSelect) {
-    const { value, defaultValue, onValueChange } = props
+    const { value, onValueChange } = props
     const isControlled = value !== undefined
-    const [internalValue, setInternalValue] = useState<string[]>(() => defaultValue ?? [])
-    const activeValues = isControlled ? value : internalValue
+    const activeValues = (isControlled ? value : multiInternalValue) ?? []
 
     const toggleOption = (option: ButtonGroupOption) => {
       if (option.disabled) return
@@ -73,7 +94,7 @@ export function ButtonGroup(props: ButtonGroupProps) {
         ? activeValues.filter((v) => v !== option.value)
         : [...activeValues, option.value]
 
-      if (!isControlled) setInternalValue(next)
+      if (!isControlled) setMultiInternalValue(next)
       onValueChange?.(next)
     }
 
@@ -107,20 +128,13 @@ export function ButtonGroup(props: ButtonGroupProps) {
   }
 
   // ── Single-select mode ──
-  const { value, defaultValue, onValueChange } = props
-  const firstSelectableValue = useMemo(
-    () => getFirstSelectableValue(visibleOptions),
-    [visibleOptions],
-  )
+  const { value, onValueChange } = props
   const isControlled = value !== undefined
-  const [internalValue, setInternalValue] = useState(() =>
-    isSelectableValue(visibleOptions, defaultValue) ? defaultValue : firstSelectableValue,
-  )
-  const activeValue = isControlled ? value : internalValue
+  const activeValue = isControlled ? value : singleInternalValue
 
   const selectOption = (option: ButtonGroupOption) => {
     if (option.disabled) return
-    if (!isControlled) setInternalValue(option.value)
+    if (!isControlled) setSingleInternalValue(option.value)
     onValueChange?.(option.value)
   }
 

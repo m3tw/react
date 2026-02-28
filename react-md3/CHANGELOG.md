@@ -15,12 +15,12 @@
 
 ## 2026-02-28 - Story 2.6 42/42 Coverage Nachweis
 
-[api-contract-hash:c65af4fc1db01f4ac406f32dfe8530e51ea344bcd239218820227194f02c887b]
+[api-contract-hash:6d02857fc73859b7dbd5ca0f61ba512ce4be47111ec61bddd329bc31309ed4fa]
 
 - changeType: minor
-- affectedExports: AlertDialog, Badge, Button, ButtonGroup, Carousel, Checkbox, Chip, DateTimePicker, Dialog, Divider, Fab, IconButton, List, M3ReferenceCard, M3_REFERENCE_FALLBACK_TEXT, Menu, NavigationBar, NavigationDrawer, NavigationRail, ProgressIndicator, RadioGroup, SearchBar, Sheet, Slider, Snackbar, Surface, Switch, Tabs, TextField, Tooltip, TopAppBar
+- affectedExports: AlertDialog, Badge, BottomSheet, Button, ButtonGroup, ButtonProps, ButtonShape, ButtonSize, ButtonVariant, Card, CardProps, CardVariant, Carousel, Checkbox, Chip, ChipProps, ChipVariant, DatePickerModal, DateTimePicker, Dialog, Divider, DockedToolbar, Fab, FabColor, FabMenuItem, FabProps, FabSize, FabVariant, FloatingToolbar, FullScreenDialog, IconButton, IconButtonProps, IconButtonVariant, List, Menu, NavigationBar, NavigationDrawer, NavigationRail, PlainTooltip, ProgressIndicator, RadioGroup, RichTooltip, Ripple, SearchBar, SideSheet, Slider, Snackbar, SplitButton, Surface, Switch, Tabs, TextField, Tooltip, TopAppBar
 - riskLevel: medium
-- migrationGuide: Trigger: additive API-Aenderung fuer 42/42-Komponentenabdeckung; Migrationsaufwand: low; Alt -> Neu: bestehende Nutzung bleibt lauffaehig, neue Exports fuer Badge/ButtonGroup/Fab/IconButton/Carousel/Chip/DateTimePicker/Divider/List/Menu/NavigationBar/ProgressIndicator/SearchBar/Sheet/Slider/Switch/Tabs/Tooltip stehen zusaetzlich zur Verfuegung; Betroffene Exports/Pfade: alle Public-Exports aus `src/index.ts` (kein Deep-Import); Verifikation: `cd react-md3 && npm run quality:gate`
+- migrationGuide: Trigger: Public-API-Vertragsbaseline wurde auf den aktuellen Barrel-Export synchronisiert; Migrationsaufwand: low; Alt -> Neu: bestehende Runtime-Nutzung bleibt unveraendert, Contract/Changelog enthalten nun zusaetzliche Exports fuer `BottomSheet`, `SideSheet`, `Card`, `SplitButton`, `Ripple`, `DockedToolbar`, `FloatingToolbar`, `PlainTooltip`, `RichTooltip` sowie oeffentliche Type-Exports; Betroffene Exports/Pfade: alle Public-Exports aus `src/index.ts` (kein Deep-Import); Verifikation: `cd react-md3 && npm run quality:gate`
 
 ## 2026-02-27 - Story 2.5 Feedback & Overlay Slice D
 
