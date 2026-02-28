@@ -1,6 +1,6 @@
 .m3-dialog-scrim {
   --m3-dialog-scrim-bg: var(--md-sys-color-scrim);
-  
+
   position: fixed;
   inset: 0;
   display: flex;
@@ -9,12 +9,17 @@
   padding: 24px;
   background-color: color-mix(in srgb, var(--m3-dialog-scrim-bg) 32%, transparent);
   z-index: 30;
+  animation: m3-dialog-scrim-enter 150ms ease-out;
+}
+
+.m3-dialog-scrim--closing {
+  animation: m3-dialog-scrim-exit 75ms ease-in forwards;
 }
 
 .m3-dialog {
   --m3-dialog-bg: var(--md-sys-color-surface-container-high);
   --m3-dialog-elevation: var(--md-sys-elevation-level3);
-  
+
   width: min(100%, 560px); /* Max width standard */
   min-width: 280px; /* Min width standard */
   border: none;
@@ -25,6 +30,11 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
+  animation: m3-dialog-enter 150ms ease-out;
+}
+
+.m3-dialog--closing {
+  animation: m3-dialog-exit 75ms ease-in forwards;
 }
 
 .m3-dialog__header {
@@ -64,39 +74,60 @@
   letter-spacing: var(--md-sys-typescale-body-medium-letter-spacing);
 }
 
+.m3-dialog--with-icon .m3-dialog__header {
+  text-align: center;
+  align-items: center;
+}
+
+.m3-dialog__icon {
+  color: var(--md-sys-color-secondary);
+  display: flex;
+  justify-content: center;
+}
+
+.m3-dialog__divider {
+  width: 100%;
+  height: 1px;
+  border: none;
+  margin: 0;
+  background-color: color-mix(in srgb, var(--md-sys-color-on-surface-variant) 12%, transparent);
+}
+
 .m3-dialog__actions {
   display: flex;
   justify-content: flex-end;
   gap: 8px;
-  margin-top: 8px; /* Extra spacing above actions */
+  margin-top: 8px;
 }
 
-/* Base styling for TSX fallback buttons, proper M3 buttons will be used in TSX replacement */
-.m3-dialog__action {
-  border: none;
-  border-radius: 20px;
-  background: transparent;
-  color: var(--md-sys-color-primary);
-  font-family: var(--md-sys-typescale-label-large-font-family);
-  font-weight: var(--md-sys-typescale-label-large-font-weight);
-  font-size: var(--md-sys-typescale-label-large-font-size);
-  line-height: var(--md-sys-typescale-label-large-line-height);
-  letter-spacing: var(--md-sys-typescale-label-large-letter-spacing);
-  cursor: pointer;
-  padding: 0 12px;
-  min-height: 40px;
-  transition: background-color var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard);
+@keyframes m3-dialog-scrim-enter {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
-.m3-dialog__action--primary {
-  color: var(--md-sys-color-primary);
+@keyframes m3-dialog-scrim-exit {
+  from { opacity: 1; }
+  to { opacity: 0; }
 }
 
-.m3-dialog__action:hover {
-  background-color: color-mix(in srgb, var(--md-sys-color-primary) 8%, transparent);
+@keyframes m3-dialog-enter {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
-.m3-dialog__action:focus-visible {
-  outline: 2px solid var(--md-sys-color-secondary);
-  outline-offset: 2px;
+@keyframes m3-dialog-exit {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.9);
+  }
 }

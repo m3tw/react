@@ -14,6 +14,7 @@ import {
   Dialog,
   Divider,
   Fab,
+  FullScreenDialog,
   IconButton,
   List,
   Menu,
@@ -97,6 +98,7 @@ function App() {
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false)
   const [bottomSheetOpen, setBottomSheetOpen] = useState(false)
   const [sideSheetOpen, setSideSheetOpen] = useState(false)
+  const [fullScreenDialogOpen, setFullScreenDialogOpen] = useState(false)
 
   return (
     <div className="app-shell">
@@ -457,6 +459,7 @@ function App() {
               <div className="component-row">
                 <Button onClick={() => setDialogOpen(true)}>Open Dialog</Button>
                 <Button onClick={() => setAlertDialogOpen(true)} variant="tonal">Open Alert Dialog</Button>
+                <Button onClick={() => setFullScreenDialogOpen(true)} variant="outlined">Open Full-Screen Dialog</Button>
                 <Button onClick={() => setSnackbarOpen(true)} variant="text">Show Snackbar</Button>
                 <Menu 
                   items={[
@@ -469,16 +472,30 @@ function App() {
               </div>
 
               {/* Overlays rendering */}
-              <Dialog 
-                open={dialogOpen} 
+              <Dialog
+                open={dialogOpen}
                 onOpenChange={setDialogOpen}
                 title="Standard Dialog"
                 description="This is a standard dialog overlay for general information or choices."
+                icon={<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>}
+                divider
                 onConfirm={() => setDialogOpen(false)}
                 onCancel={() => setDialogOpen(false)}
               >
                 <p>Additional custom content can go here.</p>
               </Dialog>
+
+              <FullScreenDialog
+                open={fullScreenDialogOpen}
+                onOpenChange={setFullScreenDialogOpen}
+                headline="New Entry"
+                confirmLabel="Save"
+                onConfirm={() => setFullScreenDialogOpen(false)}
+                onClose={() => setFullScreenDialogOpen(false)}
+                divider
+              >
+                <p>Full-screen dialog content. Typically used for mobile forms or complex editing tasks.</p>
+              </FullScreenDialog>
 
               <AlertDialog
                 open={alertDialogOpen}

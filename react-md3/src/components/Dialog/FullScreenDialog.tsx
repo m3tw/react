@@ -1,9 +1,8 @@
 import { useEffect, useId, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
-import { Button } from "../Button";
 import type { KeyboardEvent, ReactNode } from 'react'
 
-import './Dialog.css'
+import './FullScreenDialog.css'
 
 const focusableSelector = [
   'button:not([disabled])',
@@ -19,49 +18,43 @@ const getFocusableElements = (container: HTMLElement | null) =>
     ? Array.from(container.querySelectorAll<HTMLElement>(focusableSelector))
     : []
 
-type DialogRole = 'dialog' | 'alertdialog'
+const CloseIcon = (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
+  </svg>
+)
 
-type DialogProps = {
-  title: string
-  description?: string
-  icon?: ReactNode
+type FullScreenDialogProps = {
   children?: ReactNode
+  headline?: string
   open?: boolean
   defaultOpen?: boolean
   onOpenChange?: (open: boolean) => void
+  onClose?: () => void
   onConfirm?: () => void
-  onCancel?: () => void
   confirmLabel?: string
-  cancelLabel?: string
-  dismissible?: boolean
   divider?: boolean
-  role?: DialogRole
   className?: string
 }
 
-export function Dialog({
-  title,
-  description,
-  icon,
+export function FullScreenDialog({
   children,
+  headline,
   open,
   defaultOpen = false,
   onOpenChange,
+  onClose,
   onConfirm,
-  onCancel,
-  confirmLabel = 'Bestaetigen',
-  cancelLabel = 'Abbrechen',
-  dismissible = true,
+  confirmLabel = 'Speichern',
   divider = false,
-  role = 'alertdialog',
   className,
-}: DialogProps) {
+}: FullScreenDialogProps) {
   if (open !== undefined && defaultOpen !== false) {
-    throw new Error('Dialog erwartet entweder open oder defaultOpen, nicht beides.')
+    throw new Error('FullScreenDialog erwartet entweder open oder defaultOpen, nicht beides.')
   }
 
   if (open !== undefined && !onOpenChange) {
-    throw new Error('Controlled Dialog erwartet onOpenChange.')
+    throw new Error('Controlled FullScreenDialog erwartet onOpenChange.')
   }
 
   const isControlled = open !== undefined
@@ -71,14 +64,13 @@ export function Dialog({
   const panelRef = useRef<HTMLDivElement>(null)
   const previousFocusRef = useRef<HTMLElement | null>(null)
   const wasOpenRef = useRef(isOpen)
-  const titleId = useId()
-  const descriptionId = useId()
+  const headlineId = useId()
 
   useEffect(() => {
     if (isOpen) {
       setRendered(true)
     } else if (rendered) {
-      const timer = setTimeout(() => setRendered(false), 75)
+      const timer = setTimeout(() => setRendered(false), 200)
       return () => clearTimeout(timer)
     }
   }, [isOpen, rendered])
@@ -90,12 +82,12 @@ export function Dialog({
     onOpenChange?.(nextOpen)
   }
 
-  const closeAsCancel = () => {
-    onCancel?.()
+  const close = () => {
+    onClose?.()
     setDialogOpen(false)
   }
 
-  const closeAsConfirm = () => {
+  const confirm = () => {
     onConfirm?.()
     setDialogOpen(false)
   }
@@ -121,10 +113,8 @@ export function Dialog({
 
   const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
     if (event.key === 'Escape') {
-      if (dismissible) {
-        event.preventDefault()
-        closeAsCancel()
-      }
+      event.preventDefault()
+      close()
       return
     }
 
@@ -162,48 +152,41 @@ export function Dialog({
 
   return createPortal(
     <div
-      className={['m3-dialog-scrim', closing ? 'm3-dialog-scrim--closing' : ''].filter(Boolean).join(' ')}
-      onMouseDown={(event) => {
-        if (event.target === event.currentTarget && dismissible) {
-          closeAsCancel()
-        }
-      }}
+      aria-labelledby={headline ? headlineId : undefined}
+      aria-modal="true"
+      className={['m3-fullscreen-dialog', closing ? 'm3-fullscreen-dialog--closing' : '', className ?? ''].filter(Boolean).join(' ')}
+      onKeyDown={handleKeyDown}
+      ref={panelRef}
+      role="dialog"
+      tabIndex={-1}
     >
-      <div
-        aria-describedby={description ? descriptionId : undefined}
-        aria-labelledby={titleId}
-        aria-modal="true"
-        className={['m3-dialog', closing ? 'm3-dialog--closing' : '', icon ? 'm3-dialog--with-icon' : '', className ?? ''].filter(Boolean).join(' ')}
-        onKeyDown={handleKeyDown}
-        ref={panelRef}
-        role={role}
-        tabIndex={-1}
-      >
-        {icon ? <div className="m3-dialog__icon">{icon}</div> : null}
-
-        <header className="m3-dialog__header">
-          <h2 className="m3-dialog__title" id={titleId}>
-            {title}
+      <header className="m3-fullscreen-dialog__header">
+        <button
+          aria-label="Close"
+          className="m3-fullscreen-dialog__close"
+          onClick={close}
+          type="button"
+        >
+          {CloseIcon}
+        </button>
+        {headline ? (
+          <h2 className="m3-fullscreen-dialog__headline" id={headlineId}>
+            {headline}
           </h2>
-          {description ? (
-            <p className="m3-dialog__description" id={descriptionId}>
-              {description}
-            </p>
-          ) : null}
-        </header>
+        ) : null}
+        <button
+          className="m3-fullscreen-dialog__action"
+          onClick={confirm}
+          type="button"
+        >
+          {confirmLabel}
+        </button>
+      </header>
 
-        {children ? <div className="m3-dialog__content">{children}</div> : null}
+      {divider ? <hr className="m3-fullscreen-dialog__divider" /> : null}
 
-        {divider ? <hr className="m3-dialog__divider" /> : null}
-
-        <div className="m3-dialog__actions">
-          <Button onClick={closeAsCancel} variant="text">
-            {cancelLabel}
-          </Button>
-          <Button onClick={closeAsConfirm} variant="text">
-            {confirmLabel}
-          </Button>
-        </div>
+      <div className="m3-fullscreen-dialog__content">
+        {children}
       </div>
     </div>,
     document.body,

@@ -21,6 +21,7 @@ describe('public API barrel', () => {
       'DockedToolbar',
       'Fab',
       'FloatingToolbar',
+      'FullScreenDialog',
       'IconButton',
       'List',
       'Menu',

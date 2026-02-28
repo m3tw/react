@@ -1,11 +1,16 @@
-import { cleanup, fireEvent, render } from '@testing-library/react'
-import { afterEach, describe, expect, it, vi } from 'vitest'
+import { act, cleanup, fireEvent, render } from '@testing-library/react'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { AlertDialog } from './AlertDialog'
 
 describe('AlertDialog', () => {
+  beforeEach(() => {
+    vi.useFakeTimers()
+  })
+
   afterEach(() => {
     cleanup()
+    vi.useRealTimers()
   })
 
   it('renders critical alert dialog with explicit labels', () => {
@@ -25,6 +30,8 @@ describe('AlertDialog', () => {
     expect(alertDialog).toHaveAttribute('aria-describedby')
 
     fireEvent.click(getByRole('button', { name: 'Loeschen' }))
+    act(() => { vi.advanceTimersByTime(100) })
+
     expect(onConfirm).toHaveBeenCalledTimes(1)
     expect(queryByRole('alertdialog', { name: 'Kritischer Eingriff' })).not.toBeInTheDocument()
   })
@@ -59,6 +66,8 @@ describe('AlertDialog', () => {
     expect(getByRole('alertdialog', { name: 'Kritischer Eingriff' })).toBeInTheDocument()
 
     fireEvent.click(cancelButton)
+    act(() => { vi.advanceTimersByTime(100) })
+
     expect(onCancel).toHaveBeenCalledTimes(1)
     expect(queryByRole('alertdialog', { name: 'Kritischer Eingriff' })).not.toBeInTheDocument()
     expect(trigger).toHaveFocus()
