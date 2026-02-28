@@ -17,9 +17,11 @@
     "lint": "eslint .",
     "test": "vitest run",
     "api:contract:check": "node ./scripts/check-api-contract.mjs",
+    "traceability:check": "node ./scripts/check-prd-epics-traceability.mjs",
+    "traceability:report": "node ./scripts/check-prd-epics-traceability.mjs --report ../release-evidence/traceability-report.md",
     "m3:coverage:check": "node ./scripts/check-m3-coverage.mjs",
     "m3:coverage:report": "node ./scripts/check-m3-coverage.mjs --report ./docs/m3-coverage-baseline.md",
-    "quality:gate": "npm run lint && npm run test && npm run build && npm run api:contract:check && npm run m3:coverage:check",
+    "quality:gate": "npm run lint && npm run test && npm run build && npm run api:contract:check && npm run traceability:check && npm run m3:coverage:check",
     "test:watch": "vitest",
     "preview": "vite preview"
   },

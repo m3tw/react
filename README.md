@@ -293,6 +293,13 @@ Erwartung: Der Lauf bricht mit einem expliziten `[api-regression]`-Signal ab.
 - Harte Blocker bleiben unveraendert (`setup-fehler`, `toolchain-drift`, `api-regression`, fehlende Pflicht-Evidenz) und erzwingen `no-go`.
 - Entscheidungsstatus ist konsistent als `go`/`no-go` dokumentiert; kritische Entscheidungen erfordern 2-Augen-Freigabe ohne Self-Approval.
 
+## Story 4.4 PRD-Epics-Traceability-Gate automatisieren
+
+- Operativer Ablauf (Single Source of Truth): [`react-md3/README.md` Abschnitt 6.11.1](react-md3/README.md#6111-story-44-prd-epics-traceability-gate).
+- Pflichtinputs: `_bmad-output/planning-artifacts/prd.md`, `_bmad-output/planning-artifacts/epics.md`, `react-md3/scripts/prd-epics-traceability-matrix.json`.
+- Verifikation lokal/CI: `cd react-md3 && npm run traceability:check` (Report: `npm run traceability:report`), eingebunden in `quality:gate` und `.github/workflows/release-gate.yml`.
+- Harte Fail-Kriterien: Drift bei FR1/FR13/FR14/FR15 oder NFR13/NFR14 sowie fehlende KPI-Verknuepfungen erzwingt `no-go`.
+
 ## Story 5.1 Support-Triage und Known-Issues-Katalog
 
 - Verbindlicher operativer Prozess (Single Source of Truth): [`react-md3/README.md` Abschnitt 6.12](react-md3/README.md#612-story-51-support-triage-und-known-issues-katalog).

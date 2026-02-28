@@ -501,8 +501,10 @@ Erwartung: Explizites `[api-regression]`-Signal und Exit-Code != 0.
 - Harte Regel: Fehlende Evidenz oder ein rotes Gate fuehrt immer zu **No-Go** (kein Stable-Release).
 - Bestehende Guardrails bleiben Pflicht und werden hier nur gebuendelt (kein Shadow-Prozess):
   - `cd react-md3 && npm run quality:gate`
+  - `cd react-md3 && npm run traceability:check`
   - `.github/workflows/compatibility-matrix.yml` (Node 22/24, Node 20 ausgeschlossen)
   - `.github/workflows/reference-integration.yml`
+  - `.github/workflows/release-gate.yml` Job `traceability-gate` (PRD<->Epics)
   - API-Contract-Governance aus Story 3.3 (`migrationGuide`-Marker + Changelog-Token-Synchronitaet)
 - Technische Durchsetzung (Story 4.2): `.github/workflows/release-gate.yml` orchestriert diese Pflicht-Gates automatisiert und blockiert Stable-Publish bei fehlender/roter Evidenz.
 
@@ -518,12 +520,13 @@ Erwartung: Explizites `[api-regression]`-Signal und Exit-Code != 0.
 
 ### Evidence Pack fuer einen Release-Kandidaten
 
-1. `quality:gate` Nachweis (`lint`, `test`, `build`, `api:contract:check`).
-2. Kompatibilitaetsmatrix-Nachweise fuer Node 22 und 24.
-3. Referenzintegrations-Nachweis inkl. Log-Artefakten und Fehlerklassen (`setup-fehler`, `toolchain-drift`, `api-regression`).
-4. API-Governance-Nachweis (falls API beruehrt): Contract-Check-Ausgabe + `CHANGELOG.md` mit passendem `api-contract-hash`.
-5. Security-Nachweis (offene Funde oder explizit dokumentierte Ausnahme).
-6. Signiertes Go/No-Go-Protokoll.
+1. `quality:gate` Nachweis (`lint`, `test`, `build`, `api:contract:check`, `traceability:check`, `m3:coverage:check`).
+2. Traceability-Nachweis (`traceability-check` Job + `release-evidence/traceability-report.md`).
+3. Kompatibilitaetsmatrix-Nachweise fuer Node 22 und 24.
+4. Referenzintegrations-Nachweis inkl. Log-Artefakten und Fehlerklassen (`setup-fehler`, `toolchain-drift`, `api-regression`).
+5. API-Governance-Nachweis (falls API beruehrt): Contract-Check-Ausgabe + `CHANGELOG.md` mit passendem `api-contract-hash`.
+6. Security-Nachweis (offene Funde oder explizit dokumentierte Ausnahme).
+7. Signiertes Go/No-Go-Protokoll.
 
 ### Pruefablauf fuer Release-Kandidaten
 
@@ -585,7 +588,7 @@ Negativbeispiel (zwingendes No-Go):
 
 | Kriterium | `go`-Schwellwert | Datenquelle | Owner | Aktualisierungsrhythmus |
 | --- | --- | --- | --- | --- |
-| Release-Gates | `quality-gate`, `compatibility-matrix`, `reference-integration` jeweils `PASS` | `release-evidence/gates.json` | Release Owner | pro Kandidat |
+| Release-Gates | `quality-gate`, `traceability-check`, `compatibility-matrix`, `reference-integration` jeweils `PASS` | `release-evidence/gates.json` | Release Owner | pro Kandidat |
 | Fehlerklassifikation | Keine ungeklaerte rote Klassifikation (`setup-fehler`, `toolchain-drift`, `api-regression`) | CI-Logs + Artefakte aus Gate-Workflows | technischer Reviewer | pro Kandidat |
 | Kritische Defekte/Risiken | 0 offene High/Critical-Blocker ohne freigegebene Gegenmassnahme | Issue-/Risk-Backlog | Security Contact + Product Owner | taeglich waehrend Phase |
 | Setup-Erfolg (Nutzer) | >= 95% erfolgreicher Erstsetup im Bewertungsfenster | Produkt-/Support-Auswertung fuer Zielphase | Product Owner | mindestens woechentlich |
@@ -650,6 +653,33 @@ Positivbeispiel (`go` bei vollstaendiger Evidenz):
 
 - Alle Story-4.2-Gates stehen auf `PASS`, Pflichtlinks sind vollstaendig, keine offenen High/Critical-Risiken, Nutzungsmetriken liegen ueber Schwellwert.
 - Ergebnis: `go`, Sign-off durch Release Owner + Product Owner + technischer Reviewer (verschiedene Personen).
+
+## 6.11.1) Story 4.4 PRD-Epics-Traceability-Gate
+
+### Zielbild und Pflichtquellen
+
+- Story 4.4 erweitert den bestehenden Release-Governance-Pfad um einen harten Drift-Detektor zwischen PRD und Epics.
+- Pflichtquellen (kanonisch):
+  - `_bmad-output/planning-artifacts/prd.md`
+  - `_bmad-output/planning-artifacts/epics.md`
+  - `react-md3/scripts/prd-epics-traceability-matrix.json`
+- Guardrail-Entry-Points:
+  - `cd react-md3 && npm run traceability:check`
+  - `cd react-md3 && npm run traceability:report` (schreibt `release-evidence/traceability-report.md`)
+
+### Validierungsumfang (Fail-fast)
+
+- FR-Traceability muss fuer `FR1`, `FR13`, `FR14`, `FR15` sowie Governance-Referenzen `FR21`, `FR23`, `FR24` konsistent bleiben.
+- NFR-Traceability muss fuer `NFR13` und `NFR14` konsistent bleiben.
+- KPI-Verknuepfungen aus dem PRD duerfen nicht leer oder unaufloesbar sein; Epics-Verweise muessen fuer jede KPI explizit vorhanden sein.
+- Fehlende Quellen, unvollstaendige Matrix-Eintraege oder Drift in Referenzen fuehren sofort zu Exit-Code `!= 0`.
+
+### CI-/Evidence-Integration und No-Go-Kriterien
+
+- `.github/workflows/release-gate.yml` enthaelt den Pflichtjob `traceability-gate` und nimmt dessen Status in `release-evidence/gates.json` auf.
+- `release-evidence/evidence-pack.md` dokumentiert den Gate-Status inkl. Artefaktmuster `traceability-report-<run>-<attempt>`.
+- Bei `traceability-check != PASS` wird `decision=no-go` gesetzt und der Grund in `release-evidence/no-go-reasons.txt` abgelegt.
+- Terminologie bleibt konsistent: Entscheidungsstatus `go`/`no-go`; Fehlerklassen `setup-fehler`, `toolchain-drift`, `api-regression` bleiben unveraendert.
 
 ## 6.12) Story 5.1 Support-Triage und Known-Issues-Katalog
 

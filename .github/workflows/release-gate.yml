@@ -33,6 +33,35 @@ jobs:
           npm ci
           npm run quality:gate
 
+  traceability-gate:
+    name: traceability-check (PRD<->Epics)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v5
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: "24"
+          cache: npm
+          cache-dependency-path: react-md3/package-lock.json
+
+      - name: Run traceability gate and generate report
+        working-directory: react-md3
+        run: |
+          npm ci
+          npm run traceability:report
+
+      - name: Upload traceability report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: traceability-report-${{ github.run_id }}-${{ github.run_attempt }}
+          path: release-evidence/traceability-report.md
+          if-no-files-found: error
+
   compatibility-gate:
     name: compatibility-matrix (Node 22/24)
     uses: ./.github/workflows/compatibility-matrix.yml
@@ -47,6 +76,7 @@ jobs:
     if: always()
     needs:
       - quality-gate
+      - traceability-gate
       - compatibility-gate
       - reference-integration-gate
     steps:
@@ -54,9 +84,11 @@ jobs:
         id: summary
         env:
           QUALITY_RESULT: ${{ needs.quality-gate.result }}
+          TRACEABILITY_RESULT: ${{ needs.traceability-gate.result }}
           COMPATIBILITY_RESULT: ${{ needs.compatibility-gate.result }}
           REFERENCE_RESULT: ${{ needs.reference-integration-gate.result }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          TRACEABILITY_ARTIFACT_PATTERN: traceability-report-${{ github.run_id }}-${{ github.run_attempt }}
           REFERENCE_ARTIFACT_PATTERN: reference-integration-logs-node-{22,24}-${{ github.run_id }}-${{ github.run_attempt }}
         run: |
           set -euo pipefail
@@ -72,6 +104,7 @@ jobs:
           }
 
           QUALITY_STATUS="$(gate_status "${QUALITY_RESULT}")"
+          TRACEABILITY_STATUS="$(gate_status "${TRACEABILITY_RESULT}")"
           COMPATIBILITY_STATUS="$(gate_status "${COMPATIBILITY_RESULT}")"
           REFERENCE_STATUS="$(gate_status "${REFERENCE_RESULT}")"
 
@@ -84,6 +117,15 @@ jobs:
               no_go_reasons+=("quality-gate: Pflicht-Evidenz fehlt (${QUALITY_RESULT})")
             else
               no_go_reasons+=("quality-gate: rotes Gate (${QUALITY_RESULT})")
+            fi
+          fi
+
+          if [ "${TRACEABILITY_STATUS}" != "PASS" ]; then
+            decision="no-go"
+            if [ "${TRACEABILITY_STATUS}" = "NO_EVIDENCE" ]; then
+              no_go_reasons+=("traceability-check: Pflicht-Evidenz fehlt (${TRACEABILITY_RESULT})")
+            else
+              no_go_reasons+=("traceability-check: rotes Gate (${TRACEABILITY_RESULT})")
             fi
           fi
 
@@ -118,6 +160,7 @@ jobs:
             echo "  \"decision\": \"${decision}\","
             echo "  \"gates\": ["
             echo "    {\"name\": \"quality-gate\", \"result\": \"${QUALITY_RESULT}\", \"status\": \"${QUALITY_STATUS}\", \"evidence\": \"${RUN_URL}\"},"
+            echo "    {\"name\": \"traceability-check\", \"result\": \"${TRACEABILITY_RESULT}\", \"status\": \"${TRACEABILITY_STATUS}\", \"evidence\": \"${RUN_URL}\", \"artifactPattern\": \"${TRACEABILITY_ARTIFACT_PATTERN}\"},"
             echo "    {\"name\": \"compatibility-matrix\", \"result\": \"${COMPATIBILITY_RESULT}\", \"status\": \"${COMPATIBILITY_STATUS}\", \"evidence\": \"${RUN_URL}\"},"
             echo "    {\"name\": \"reference-integration\", \"result\": \"${REFERENCE_RESULT}\", \"status\": \"${REFERENCE_STATUS}\", \"evidence\": \"${RUN_URL}\", \"artifactPattern\": \"${REFERENCE_ARTIFACT_PATTERN}\"}"
             echo "  ]"
@@ -139,9 +182,11 @@ jobs:
             echo "| Gate | Job-Result | Status | Evidence |"
             echo "| --- | --- | --- | --- |"
             echo "| quality:gate | ${QUALITY_RESULT} | ${QUALITY_STATUS} | [Run Logs](${RUN_URL}) |"
+            echo "| traceability-check (PRD<->Epics) | ${TRACEABILITY_RESULT} | ${TRACEABILITY_STATUS} | [Run Logs + Report](${RUN_URL}) |"
             echo "| compatibility-matrix (Node 22/24) | ${COMPATIBILITY_RESULT} | ${COMPATIBILITY_STATUS} | [Run Logs](${RUN_URL}) |"
             echo "| reference-integration (Node 22/24) | ${REFERENCE_RESULT} | ${REFERENCE_STATUS} | [Run Logs + Artefakte](${RUN_URL}) |"
             echo ""
+            echo "Traceability-Artefaktmuster: \`${TRACEABILITY_ARTIFACT_PATTERN}\`"
             echo "Referenzintegrations-Artefaktmuster: \`${REFERENCE_ARTIFACT_PATTERN}\`"
             if [ "${decision}" = "no-go" ]; then
               echo ""

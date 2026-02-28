@@ -1,0 +1,119 @@
+{
+  "schemaVersion": 1,
+  "sources": {
+    "prd": "../_bmad-output/planning-artifacts/prd.md",
+    "epics": "../_bmad-output/planning-artifacts/epics.md"
+  },
+  "consistencyRules": {
+    "requiredFrIds": ["FR1", "FR13", "FR14", "FR15"],
+    "requiredNfrIds": ["NFR13", "NFR14"]
+  },
+  "frMappings": [
+    {
+      "id": "FR1",
+      "expectedEpic": "Epic 2 - Vollstaendige M3-Komponentenabdeckung"
+    },
+    {
+      "id": "FR13",
+      "expectedEpic": "Epic 1 - Zugriff auf API-Beschreibung je Referenzlisten-Komponente"
+    },
+    {
+      "id": "FR14",
+      "expectedEpic": "Epic 1 - Praxisnahe Standardbeispiele je Referenzlisten-Komponente"
+    },
+    {
+      "id": "FR15",
+      "expectedEpic": "Epic 2 - Edge-Case-/Fehlerfallbeispiele je Referenzlisten-Komponente"
+    },
+    {
+      "id": "FR21",
+      "expectedEpic": "Epic 4 - Release-Bewertung gegen Qualitaetskriterien"
+    },
+    {
+      "id": "FR23",
+      "expectedEpic": "Epic 4 - API- und Beispielkonsistenz vor Release pruefen"
+    },
+    {
+      "id": "FR24",
+      "expectedEpic": "Epic 4 - Go/No-Go-Steuerung fuer Phasenuebergaenge"
+    }
+  ],
+  "nfrMappings": [
+    {
+      "id": "NFR13",
+      "prdSnippet": "barrierearme Nutzung der Komponenten der Material-3-Komponenten-Referenzliste",
+      "epicsSnippet": "barrierearme Nutzung der Komponenten der Material-3-Komponenten-Referenzliste"
+    },
+    {
+      "id": "NFR14",
+      "prdSnippet": "explizit dokumentierte Accessibility-Abdeckung",
+      "epicsSnippet": "explizit dokumentierte Accessibility-Abdeckung"
+    }
+  ],
+  "kpiMappings": [
+    {
+      "id": "KPI 1",
+      "prdSnippet": "Anzahl aktiver Projekte",
+      "epicsLinks": [
+        "FR28: Epic 5 - Bewertung aktiver Nutzung",
+        "### Story 5.3: KPI-Tracking fuer Adoption und Time-to-Value etablieren"
+      ]
+    },
+    {
+      "id": "KPI 2",
+      "prdSnippet": "GitHub Stars als Trust-/Reach-Signal",
+      "epicsLinks": [
+        "FR28: Epic 5 - Bewertung aktiver Nutzung",
+        "### Story 5.3: KPI-Tracking fuer Adoption und Time-to-Value etablieren"
+      ]
+    },
+    {
+      "id": "KPI 3",
+      "prdSnippet": "erster laufender Komponente in <= 5 Minuten",
+      "epicsLinks": [
+        "FR29: Epic 5 - Tracking von Time-to-Value und Setup-Erfolg",
+        "### Story 5.3: KPI-Tracking fuer Adoption und Time-to-Value etablieren"
+      ]
+    },
+    {
+      "id": "KPI 4",
+      "prdSnippet": "Getting-Started Success Rate",
+      "epicsLinks": [
+        "FR29: Epic 5 - Tracking von Time-to-Value und Setup-Erfolg",
+        "### Story 5.3: KPI-Tracking fuer Adoption und Time-to-Value etablieren"
+      ]
+    },
+    {
+      "id": "KPI 5",
+      "prdSnippet": "Offene kritische Bugs pro Stable-Release",
+      "epicsLinks": [
+        "FR21: Epic 4 - Release-Bewertung gegen Qualitaetskriterien",
+        "### Epic 4: Release-Governance und Lifecycle-Sicherheit"
+      ]
+    },
+    {
+      "id": "KPI 6",
+      "prdSnippet": "erfolgreich abgeschlossener Getting-Started-Tutorials",
+      "epicsLinks": [
+        "FR29: Epic 5 - Tracking von Time-to-Value und Setup-Erfolg",
+        "### Story 5.3: KPI-Tracking fuer Adoption und Time-to-Value etablieren"
+      ]
+    },
+    {
+      "id": "KPI 7",
+      "prdSnippet": "fortlaufender Nutzung nach 30 Tagen",
+      "epicsLinks": [
+        "FR30: Epic 5 - Bewertung von Nutzungsqualitaet im Zeitverlauf",
+        "### Story 5.3: KPI-Tracking fuer Adoption und Time-to-Value etablieren"
+      ]
+    },
+    {
+      "id": "KPI 8",
+      "prdSnippet": "Komponentenabdeckung",
+      "epicsLinks": [
+        "FR1: Epic 2 - Vollstaendige M3-Komponentenabdeckung",
+        "### Epic 2: Vollstaendige M3-Komponentenabdeckung mit stabiler API"
+      ]
+    }
+  ]
+}

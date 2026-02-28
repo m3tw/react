@@ -64,7 +64,7 @@ development_status:
   4-1-release-checkliste-und-harte-quality-gates-definieren: done
   4-2-automatisierte-release-gate-pipeline-umsetzen: done
   4-3-go-no-go-entscheidungsprozess-fuer-phasenwechsel-verankern: done
-  4-4-prd-epics-traceability-gate-automatisieren: backlog
+  4-4-prd-epics-traceability-gate-automatisieren: done
   epic-4-retrospective: optional
   epic-5: in-progress
   5-1-support-triage-und-known-issues-katalog-aufbauen: done
