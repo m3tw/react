@@ -398,15 +398,50 @@ function App() {
                   onConfirm={(d) => { console.log('Input selected:', d); setShowModalInputPicker(false) }}
                   onCancel={() => setShowModalInputPicker(false)}
                 />
-                <Tabs 
-                  tabs={[
-                    { label: 'Overview', value: 'overview' },
-                    { label: 'A11y', value: 'a11y' },
-                    { label: 'Blocked (Disabled)', value: 'blocked', disabled: true },
-                  ]} 
-                  value={tabValue} 
-                  onValueChange={setTabValue} 
-                />
+                <div className="component-col" style={{ width: '100%', maxWidth: '600px', margin: '32px 0' }}>
+                  <h3>Tabs</h3>
+                  
+                  <h4>Primary (Fixed)</h4>
+                  <Tabs 
+                    variant="primary"
+                    layout="fixed"
+                    tabs={[
+                      { label: 'Overview', value: 'overview' },
+                      { label: 'Details', value: 'details' },
+                      { label: 'A11y', value: 'a11y' },
+                      { label: 'Blocked', value: 'blocked', disabled: true },
+                    ]} 
+                    value={tabValue} 
+                    onValueChange={setTabValue} 
+                  />
+
+                  <h4 style={{ marginTop: '24px' }}>Secondary (Fixed)</h4>
+                  <Tabs 
+                    variant="secondary"
+                    layout="fixed"
+                    tabs={[
+                      { label: 'Overview', value: 'overview' },
+                      { label: 'Details', value: 'details' },
+                      { label: 'A11y', value: 'a11y' },
+                    ]} 
+                    value={tabValue} 
+                    onValueChange={setTabValue} 
+                  />
+
+                  <h4 style={{ marginTop: '24px' }}>Primary with Icons (Scrollable)</h4>
+                  <Tabs 
+                    variant="primary"
+                    layout="scrollable"
+                    tabs={[
+                      { label: 'Flights', value: 'flight', icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/></svg> },
+                      { label: 'Trips', value: 'trip', icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M19 6h-2c0-2.76-2.24-5-5-5S7 3.24 7 6H5c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-7-3c1.66 0 3 1.34 3 3H9c0-1.66 1.34-3 3-3zm7 17H5V8h14v12zm-7-8c-1.66 0-3-1.34-3-3H7c0 2.76 2.24 5 5 5s5-2.24 5-5h-2c0 1.66-1.34 3-3 3z"/></svg> },
+                      { label: 'Explore', value: 'explore', icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 10.9c-.61 0-1.1.49-1.1 1.1s.49 1.1 1.1 1.1c.61 0 1.1-.49 1.1-1.1s-.49-1.1-1.1-1.1zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm2.19 12.19L6 18l3.81-8.19L18 6l-3.81 8.19z"/></svg> },
+                      { label: 'Settings', value: 'settings', icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.06-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.73,8.87 C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.06,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.49-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"/></svg> },
+                      { label: 'Long Tab Example That Forces Scrolling', value: 'long' },
+                    ]} 
+                    defaultValue="explore" 
+                  />
+                </div>
                 <div className="carousel-container">
                   <Carousel 
                     items={carouselItems} 

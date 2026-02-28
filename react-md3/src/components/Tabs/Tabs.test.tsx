@@ -34,4 +34,47 @@ describe('Tabs', () => {
     fireEvent.click(blockedTab)
     expect(onValueChange).not.toHaveBeenCalledWith('blocked')
   })
+
+  it('renders correctly with primary and secondary variants', () => {
+    const { getByRole, rerender } = render(<Tabs tabs={tabs} variant="primary" />)
+    expect(getByRole('tablist')).toHaveClass('m3-tabs--primary')
+
+    rerender(<Tabs tabs={tabs} variant="secondary" />)
+    expect(getByRole('tablist')).toHaveClass('m3-tabs--secondary')
+  })
+
+  it('renders correctly with fixed and scrollable layouts', () => {
+    const { getByRole, rerender } = render(<Tabs tabs={tabs} layout="fixed" />)
+    expect(getByRole('tablist')).toHaveClass('m3-tabs--fixed')
+
+    rerender(<Tabs tabs={tabs} layout="scrollable" />)
+    expect(getByRole('tablist')).toHaveClass('m3-tabs--scrollable')
+  })
+
+  it('renders icons when provided', () => {
+    const tabsWithIcons = [
+      { label: 'Video', value: 'video', icon: <span data-testid="icon">V</span> },
+      { label: 'Audio', value: 'audio' }
+    ]
+    const { getByTestId } = render(<Tabs tabs={tabsWithIcons} />)
+    expect(getByTestId('icon')).toBeInTheDocument()
+  })
+
+  it('handles arrow key navigation', () => {
+    const { getByRole } = render(<Tabs tabs={tabs} defaultValue="overview" />)
+    const tablist = getByRole('tablist')
+    
+    // Overview is currently selected/active. Focus is managed by the user traditionally,
+    // but the component intercepts keydown on the tablist
+    fireEvent.keyDown(tablist, { key: 'ArrowRight' })
+    expect(getByRole('tab', { name: 'Details' })).toHaveFocus()
+    
+    // Test wrap around or skips
+    fireEvent.keyDown(tablist, { key: 'End' })
+    // Focus should move to Details (Blocked is disabled)
+    expect(getByRole('tab', { name: 'Details' })).toHaveFocus()
+    
+    fireEvent.keyDown(tablist, { key: 'Home' })
+    expect(getByRole('tab', { name: 'Overview' })).toHaveFocus()
+  })
 })

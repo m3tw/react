@@ -1,15 +1,28 @@
 .m3-tabs {
   display: flex;
   height: 48px;
-  border-bottom: 1px solid var(--md-sys-color-surface-variant);
   background-color: transparent;
   width: 100%;
+  position: relative;
+  /* M3 tab containers often have an inset bottom border for dividers */
+  box-shadow: inset 0 -1px 0 0 var(--md-sys-color-surface-variant);
+}
+
+.m3-tabs--scrollable {
+  overflow-x: auto;
+  overflow-y: hidden;
+  justify-content: flex-start;
+  /* Mask scrollbars */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.m3-tabs--scrollable::-webkit-scrollbar {
+  display: none;
 }
 
 .m3-tabs__tab {
   --md-ripple-color: var(--md-sys-color-on-surface); /* Unselected ripple */
   
-  flex: 1; /* Tabs usually distribute space evenly in M3 */
   position: relative;
   display: flex;
   align-items: center;
@@ -17,46 +30,93 @@
   border: none;
   background-color: transparent;
   color: var(--md-sys-color-on-surface-variant);
-  padding: 0 16px;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
+  min-width: 90px;
 }
 
-.m3-tabs__label {
+.m3-tabs--fixed .m3-tabs__tab {
+  flex: 1 1 0px; 
+}
+.m3-tabs--scrollable .m3-tabs__tab {
+  flex: 0 0 auto;
+  padding: 0 16px;
+}
+
+/* Primary Tab Height - Usually 48dp, or 64dp if icon stacked 
+   For simplicity, keeping default flex styling. 
+   If developers want stacked, they could do flex-col inside the tab-content. */
+
+.m3-tabs__tab-content {
   position: relative;
-  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px; /* Gap between icon and label */
+  height: 100%;
+  z-index: 1; /* Above ripple */
+}
+
+/* Icons */
+.m3-tabs__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  /* Icon fill inherits current color */
+}
+
+/* Labels */
+.m3-tabs__label {
   font-family: var(--md-sys-typescale-title-small-font-family);
   font-weight: var(--md-sys-typescale-title-small-font-weight);
   font-size: var(--md-sys-typescale-title-small-font-size);
   line-height: var(--md-sys-typescale-title-small-line-height);
   letter-spacing: var(--md-sys-typescale-title-small-letter-spacing);
   transition: color var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard);
+  white-space: nowrap;
 }
 
+/* =======================================
+   Active Indicators
+   ======================================= */
+
+/* Active Indicator (Absolute to container) */
 .m3-tabs__indicator {
   position: absolute;
   bottom: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
+  left: 0; /* JS controls transform translateX */
   background-color: var(--md-sys-color-primary);
-  border-radius: 3px 3px 0 0; /* Rounded top corners only */
-  z-index: 1;
+  z-index: 10;
+  transition: transform var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized),
+              width var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized),
+              opacity 0.1s ease-in;
+  pointer-events: none;
 }
 
-/* Active State */
+/* Primary logic */
+.m3-tabs--primary .m3-tabs__indicator {
+  height: 3px;
+  border-radius: 3px 3px 0 0;
+}
+
+/* Secondary logic */
+.m3-tabs--secondary .m3-tabs__indicator {
+  height: 2px;
+  border-radius: 0;
+}
+
+/* Active State Colors */
 .m3-tabs__tab--active {
   --md-ripple-color: var(--md-sys-color-primary);
-}
-
-.m3-tabs__tab--active .m3-tabs__label {
   color: var(--md-sys-color-primary);
 }
 
-/* Focus */
+/* Focus and Outline Focus Ring generally shouldn't clip indicators */
 .m3-tabs__tab:focus-visible {
   outline: 2px solid var(--md-sys-color-secondary);
-  outline-offset: -2px; /* Inset outline to avoid clipping */
+  outline-offset: -2px;
 }
 
 /* Disabled */
