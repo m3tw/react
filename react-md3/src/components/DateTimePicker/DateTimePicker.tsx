@@ -69,7 +69,7 @@ export function DateTimePicker({
       </div>
       
       {isCalendarOpen && (
-        <div className="m3-date-time-picker__modal-overlay" role="dialog" aria-modal="true" aria-label={label}>
+        <div className="m3-date-time-picker__modal-overlay" role="dialog" aria-modal="false" aria-label={label}>
           <div className="m3-date-time-picker__scrim" onClick={() => setIsCalendarOpen(false)} aria-hidden="true" />
           <div className="m3-date-time-picker__modal-container">
             <Calendar 

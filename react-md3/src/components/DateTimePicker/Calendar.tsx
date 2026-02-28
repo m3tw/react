@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { IconButton } from '../IconButton'
 import { Ripple } from '../Ripple'
 import './Calendar.css'
 
@@ -19,22 +18,13 @@ const MONTHS = [
   'January', 'February', 'March', 'April', 'May', 'June',
   'July', 'August', 'September', 'October', 'November', 'December'
 ]
-const SHORT_WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
-
-/**
- * Formats a Date as e.g. "Sat, Feb 28"
- */
-function formatHeadlineDate(date: Date | undefined): string {
-  if (!date || isNaN(date.getTime())) return 'Select date'
-  const dayName = SHORT_WEEKDAYS[date.getDay()]
-  const monthName = MONTHS[date.getMonth()].substring(0, 3)
-  return `${dayName}, ${monthName} ${date.getDate()}`
-}
+const SHORT_MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
 export function Calendar({ value, onChange, onCancel, minDate, maxDate }: CalendarProps) {
   const [currentDate, setCurrentDate] = useState(value || new Date())
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(value)
-  const [viewMode, setViewMode] = useState<'date' | 'year'>('date')
+  const [showMonthMenu, setShowMonthMenu] = useState(false)
+  const [showYearMenu, setShowYearMenu] = useState(false)
   const yearGridRef = useRef<HTMLDivElement>(null)
   
   const currentYear = currentDate.getFullYear()
@@ -43,26 +33,32 @@ export function Calendar({ value, onChange, onCancel, minDate, maxDate }: Calend
   const daysInMonth = getDaysInMonth(currentYear, currentMonth)
   const firstDay = getFirstDayOfMonth(currentYear, currentMonth)
 
-  const isSelected = (day: number) => {
+  // Previous month trailing days
+  const prevMonthDays = getDaysInMonth(
+    currentMonth === 0 ? currentYear - 1 : currentYear,
+    currentMonth === 0 ? 11 : currentMonth - 1
+  )
+
+  const isSelected = (day: number, month: number, year: number) => {
     if (!selectedDate) return false
     return (
       selectedDate.getDate() === day &&
-      selectedDate.getMonth() === currentMonth &&
-      selectedDate.getFullYear() === currentYear
+      selectedDate.getMonth() === month &&
+      selectedDate.getFullYear() === year
     )
   }
 
-  const isToday = (day: number) => {
+  const isToday = (day: number, month: number, year: number) => {
     const today = new Date()
     return (
       today.getDate() === day &&
-      today.getMonth() === currentMonth &&
-      today.getFullYear() === currentYear
+      today.getMonth() === month &&
+      today.getFullYear() === year
     )
   }
 
-  const isDisabled = (day: number) => {
-    const date = new Date(currentYear, currentMonth, day)
+  const isDisabled = (day: number, month: number, year: number) => {
+    const date = new Date(year, month, day)
     if (minDate) {
       const min = new Date(minDate)
       min.setHours(0, 0, 0, 0)
@@ -78,11 +74,17 @@ export function Calendar({ value, onChange, onCancel, minDate, maxDate }: Calend
 
   const handlePrevMonth = () => setCurrentDate(new Date(currentYear, currentMonth - 1, 1))
   const handleNextMonth = () => setCurrentDate(new Date(currentYear, currentMonth + 1, 1))
+  const handlePrevYear = () => setCurrentDate(new Date(currentYear - 1, currentMonth, 1))
+  const handleNextYear = () => setCurrentDate(new Date(currentYear + 1, currentMonth, 1))
 
-  const handleSelectDate = (day: number) => {
-    if (isDisabled(day)) return
-    const newDate = new Date(currentYear, currentMonth, day)
+  const handleSelectDate = (day: number, month: number, year: number) => {
+    if (isDisabled(day, month, year)) return
+    const newDate = new Date(year, month, day)
     setSelectedDate(newDate)
+    // Navigate to that month if it's a trailing day
+    if (month !== currentMonth || year !== currentYear) {
+      setCurrentDate(new Date(year, month, 1))
+    }
   }
 
   const handleConfirm = () => {
@@ -91,35 +93,63 @@ export function Calendar({ value, onChange, onCancel, minDate, maxDate }: Calend
     }
   }
 
-  // Scroll to current year when year view opens
+  // Close menus when clicking outside
+  const handleCloseMenus = () => {
+    setShowMonthMenu(false)
+    setShowYearMenu(false)
+  }
+
+  // Scroll to current year when year menu opens
   useEffect(() => {
-    if (viewMode === 'year' && yearGridRef.current) {
-      const selectedBtn = yearGridRef.current.querySelector('.m3-calendar__year-btn--selected')
+    if (showYearMenu && yearGridRef.current) {
+      const selectedBtn = yearGridRef.current.querySelector('.m3-calendar__year-option--selected')
       if (selectedBtn) {
         selectedBtn.scrollIntoView({ block: 'center', behavior: 'instant' })
       }
     }
-  }, [viewMode])
+  }, [showYearMenu])
 
-  // Generate grid cells
+  // Generate grid cells including trailing days
   const cells = useMemo(() => {
     const grid = []
     
-    for (let i = 0; i < firstDay; i++) {
-      grid.push(<div key={`empty-${i}`} className="m3-calendar__cell m3-calendar__cell--empty" />)
+    // Previous month trailing days
+    for (let i = firstDay - 1; i >= 0; i--) {
+      const day = prevMonthDays - i
+      const month = currentMonth === 0 ? 11 : currentMonth - 1
+      const year = currentMonth === 0 ? currentYear - 1 : currentYear
+
+      grid.push(
+        <button
+          key={`prev-${day}`}
+          type="button"
+          onClick={() => handleSelectDate(day, month, year)}
+          className={[
+            'm3-calendar__cell',
+            'm3-calendar__day',
+            'm3-calendar__day--outside',
+            isSelected(day, month, year) ? 'm3-calendar__day--selected' : '',
+          ].filter(Boolean).join(' ')}
+          aria-label={`${MONTHS[month]} ${day}, ${year}`}
+        >
+          <Ripple />
+          <span className="m3-calendar__day-text">{day}</span>
+        </button>
+      )
     }
     
+    // Current month days
     for (let day = 1; day <= daysInMonth; day++) {
-      const selected = isSelected(day)
-      const today = isToday(day)
-      const disabled = isDisabled(day)
+      const selected = isSelected(day, currentMonth, currentYear)
+      const today = isToday(day, currentMonth, currentYear)
+      const disabled = isDisabled(day, currentMonth, currentYear)
       
       grid.push(
         <button
           key={`day-${day}`}
           type="button"
           disabled={disabled}
-          onClick={() => handleSelectDate(day)}
+          onClick={() => handleSelectDate(day, currentMonth, currentYear)}
           className={[
             'm3-calendar__cell',
             'm3-calendar__day',
@@ -134,115 +164,169 @@ export function Calendar({ value, onChange, onCancel, minDate, maxDate }: Calend
         </button>
       )
     }
+
+    // Next month trailing days (fill out to 6 rows = 42 cells)
+    const totalCells = grid.length
+    const remaining = 42 - totalCells
+    for (let i = 1; i <= remaining; i++) {
+      const month = currentMonth === 11 ? 0 : currentMonth + 1
+      const year = currentMonth === 11 ? currentYear + 1 : currentYear
+
+      grid.push(
+        <button
+          key={`next-${i}`}
+          type="button"
+          onClick={() => handleSelectDate(i, month, year)}
+          className={[
+            'm3-calendar__cell',
+            'm3-calendar__day',
+            'm3-calendar__day--outside',
+            isSelected(i, month, year) ? 'm3-calendar__day--selected' : '',
+          ].filter(Boolean).join(' ')}
+          aria-label={`${MONTHS[month]} ${i}, ${year}`}
+        >
+          <Ripple />
+          <span className="m3-calendar__day-text">{i}</span>
+        </button>
+      )
+    }
     
     return grid
-  }, [currentYear, currentMonth, daysInMonth, firstDay, selectedDate, minDate, maxDate])
+  }, [currentYear, currentMonth, daysInMonth, firstDay, prevMonthDays, selectedDate, minDate, maxDate])
 
-  // Year range: 100 years back and 50 forward
+  // Year range
   const startYear = currentYear - 100
   const endYear = currentYear + 50
   const years = Array.from({ length: endYear - startYear + 1 }, (_, i) => startYear + i)
 
   return (
-    <div className="m3-calendar">
-      {/* M3 Header */}
-      <div className="m3-calendar__modal-header">
-        <span className="m3-calendar__header-label">Select date</span>
-        <div className="m3-calendar__header-row">
-          <span className="m3-calendar__header-date">
-            {formatHeadlineDate(selectedDate)}
-          </span>
+    <div className="m3-calendar" onClick={handleCloseMenus}>
+      {/* M3 Nav: < Month ▼ >   < Year ▼ > */}
+      <div className="m3-calendar__nav" onClick={(e) => e.stopPropagation()}>
+        {/* Month navigation */}
+        <div className="m3-calendar__nav-group">
+          <button 
+            type="button" 
+            className="m3-calendar__arrow-btn" 
+            onClick={handlePrevMonth}
+            aria-label="Previous month"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+          </button>
+          <div className="m3-calendar__dropdown-wrapper">
+            <button 
+              type="button"
+              className="m3-calendar__dropdown-btn"
+              onClick={() => { setShowMonthMenu(!showMonthMenu); setShowYearMenu(false) }}
+              aria-expanded={showMonthMenu}
+              aria-haspopup="listbox"
+            >
+              {SHORT_MONTHS[currentMonth]}
+              <svg className={`m3-calendar__caret ${showMonthMenu ? 'm3-calendar__caret--open' : ''}`} width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M7 10l5 5 5-5z"/>
+              </svg>
+            </button>
+            {showMonthMenu && (
+              <div className="m3-calendar__dropdown-menu" role="listbox" aria-label="Select month">
+                {SHORT_MONTHS.map((m, idx) => (
+                  <button
+                    key={m}
+                    type="button"
+                    role="option"
+                    aria-selected={idx === currentMonth}
+                    className={`m3-calendar__dropdown-option ${idx === currentMonth ? 'm3-calendar__dropdown-option--selected' : ''}`}
+                    onClick={() => {
+                      setCurrentDate(new Date(currentYear, idx, 1))
+                      setShowMonthMenu(false)
+                    }}
+                  >
+                    {m}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+          <button 
+            type="button" 
+            className="m3-calendar__arrow-btn" 
+            onClick={handleNextMonth}
+            aria-label="Next month"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+          </button>
+        </div>
+
+        {/* Year navigation */}
+        <div className="m3-calendar__nav-group">
+          <button 
+            type="button" 
+            className="m3-calendar__arrow-btn" 
+            onClick={handlePrevYear}
+            aria-label="Previous year"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+          </button>
+          <div className="m3-calendar__dropdown-wrapper">
+            <button 
+              type="button"
+              className="m3-calendar__dropdown-btn"
+              onClick={() => { setShowYearMenu(!showYearMenu); setShowMonthMenu(false) }}
+              aria-expanded={showYearMenu}
+              aria-haspopup="listbox"
+            >
+              {currentYear}
+              <svg className={`m3-calendar__caret ${showYearMenu ? 'm3-calendar__caret--open' : ''}`} width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M7 10l5 5 5-5z"/>
+              </svg>
+            </button>
+            {showYearMenu && (
+              <div className="m3-calendar__dropdown-menu m3-calendar__dropdown-menu--year" role="listbox" aria-label="Select year" ref={yearGridRef}>
+                {years.map(y => (
+                  <button
+                    key={y}
+                    type="button"
+                    role="option"
+                    aria-selected={y === currentYear}
+                    className={`m3-calendar__year-option ${y === currentYear ? 'm3-calendar__year-option--selected' : ''}`}
+                    onClick={() => {
+                      setCurrentDate(new Date(y, currentMonth, 1))
+                      setShowYearMenu(false)
+                    }}
+                  >
+                    {y}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+          <button 
+            type="button" 
+            className="m3-calendar__arrow-btn" 
+            onClick={handleNextYear}
+            aria-label="Next year"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+          </button>
         </div>
       </div>
 
-      {/* Navigation */}
-      <div className="m3-calendar__nav">
-        <button 
-          className="m3-calendar__month-year-btn" 
-          onClick={() => setViewMode(viewMode === 'date' ? 'year' : 'date')}
-          aria-label="Change year"
-        >
-          {MONTHS[currentMonth]} {currentYear}
-          <svg 
-            className={`m3-calendar__dropdown-arrow ${viewMode === 'year' ? 'm3-calendar__dropdown-arrow--open' : ''}`} 
-            width="18" height="18" viewBox="0 0 24 24" 
-            fill="currentColor"
-          >
-            <path d="M7 10l5 5 5-5z" />
-          </svg>
-        </button>
-
-        {viewMode === 'date' && (
-          <div className="m3-calendar__nav-arrows">
-            <IconButton 
-              ariaLabel="Previous month" 
-              onClick={handlePrevMonth}
-              icon={
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" />
-                </svg>
-              } 
-            />
-            <IconButton 
-              ariaLabel="Next month" 
-              onClick={handleNextMonth}
-              icon={
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
-                </svg>
-              } 
-            />
+      {/* Weekday Headers */}
+      <div className="m3-calendar__weekdays">
+        {WEEKDAYS.map((day, idx) => (
+          <div key={`weekday-${idx}`} className="m3-calendar__weekday" aria-hidden="true">
+            {day}
           </div>
-        )}
+        ))}
       </div>
 
-      {/* Calendar Body */}
-      <div className="m3-calendar__body">
-        {viewMode === 'date' && (
-          <>
-            <div className="m3-calendar__weekdays">
-              {WEEKDAYS.map((day, idx) => (
-                <div key={`weekday-${idx}`} className="m3-calendar__weekday" aria-hidden="true">
-                  {day}
-                </div>
-              ))}
-            </div>
-            <div className="m3-calendar__grid">
-              {cells}
-            </div>
-          </>
-        )}
-
-        {viewMode === 'year' && (
-          <div className="m3-calendar__year-grid" ref={yearGridRef}>
-            {years.map(y => (
-              <button 
-                key={y}
-                type="button"
-                className={[
-                  'm3-calendar__year-btn',
-                  y === currentYear ? 'm3-calendar__year-btn--selected' : '',
-                  y === new Date().getFullYear() ? 'm3-calendar__year-btn--current' : '',
-                ].filter(Boolean).join(' ')}
-                onClick={() => {
-                  setCurrentDate(new Date(y, currentMonth, 1))
-                  setViewMode('date')
-                }}
-              >
-                {y}
-              </button>
-            ))}
-          </div>
-        )}
+      {/* Day Grid */}
+      <div className="m3-calendar__grid">
+        {cells}
       </div>
 
       {/* M3 Action Buttons */}
       <div className="m3-calendar__actions">
-        <button 
-          type="button" 
-          className="m3-calendar__action-btn" 
-          onClick={onCancel}
-        >
+        <button type="button" className="m3-calendar__action-btn" onClick={onCancel}>
           Cancel
         </button>
         <button 
