@@ -301,6 +301,14 @@ Erwartung: Der Lauf bricht mit einem expliziten `[api-regression]`-Signal ab.
 - Jeder klassifizierte Fall muss auf einen kanonischen Known-Issue-Eintrag verweisen (oder einen neuen Eintrag anlegen), um Dubletten-Wissen zu vermeiden.
 - Konsistenznachweis fuer den Prozess: 3 reprasentative Triage-Faelle plus `cd react-md3 && npm run quality:gate`.
 
+## Story 5.2 Recovery-Playbooks fuer haeufige Fehlerszenarien
+
+- Operative Recovery-Playbooks (Single Source of Truth): [`react-md3/README.md` Abschnitt 6.13](react-md3/README.md#613-story-52-recovery-playbooks-fuer-haeufige-fehlerszenarien).
+- Verbindlicher Playbook-Standard pro Fall: Trigger, Severity, Diagnose, Sofortmassnahme, Verifikation, Rollback/Eskalation, Abschlussupdate.
+- Intake -> Triage -> Recovery -> Verifikation ist durchgaengig dokumentiert; `status:resolved` ist nur nach erfolgreicher Verifikation und dokumentiertem Ergebnis zulaessig.
+- Playbooks bleiben direkt auf Story-5.1-Klassen und kanonische Known-Issue-IDs ausgerichtet (`setup-fehler`, `toolchain-drift`, `api-regression`; `KI-001` bis `KI-003`).
+- Baseline-Guardrail und Recovery-Drills: `cd react-md3 && npm run quality:gate` plus drei reproduzierbare Dry-Run-Szenarien (je Klasse ein Drill).
+
 ## Initialisierung und Verifikation (Story 1.1)
 
 ```bash

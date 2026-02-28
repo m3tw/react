@@ -716,6 +716,141 @@ cd react-md3
 npm run quality:gate
 ```
 
+## 6.13) Story 5.2 Recovery-Playbooks fuer haeufige Fehlerszenarien
+
+### Zielbild und Scope
+
+- Diese Section liefert sofort nutzbare Recovery-Playbooks fuer die drei kanonischen Problemklassen aus Story 5.1.
+- Fokus bleibt auf operativer Stabilisierung (Diagnose -> Sofortmassnahme -> Verifikation) ohne neuen Runtime-/Backend-Scope.
+- Intake, Klassenmodell, Known-Issue-IDs und Labeling aus Abschnitt 6.12 bleiben verbindlich.
+
+### Verbindlicher Recovery-Playbook-Standard
+
+Jeder Recovery-Fall MUSS im folgenden Format dokumentiert und ausgefuehrt werden:
+
+1. Trigger/Symptom
+2. Severity + Prioritaet (`P1`-`P4`)
+3. Diagnose
+4. Sofortmassnahme (time-critical mitigation)
+5. Verifikation
+6. Rollback/Eskalation
+7. Abschlussupdate (inkl. Known-Issue-Link und Ergebnis)
+
+Verlinkungsregeln:
+
+- Problemklasse muss einer der triage-Klassen entsprechen: `setup-fehler`, `toolchain-drift`, `api-regression`.
+- Jeder Fall verweist auf einen kanonischen Known-Issue-Eintrag (`KI-001` bis `KI-003`) oder dokumentiert explizit einen neuen kanonischen Eintrag.
+
+### Rollenmodell fuer Incident-Bearbeitung (Maintainer-Setup)
+
+| Rolle | Verantwortung | Standardbesetzung im Repo |
+| --- | --- | --- |
+| Incident Commander/Owner | Priorisierung, Entscheidung ueber Rollback vs. Forward-Fix, Abschlussfreigabe | Maintainer on Duty (bei `api-regression` gemeinsam mit API Owner) |
+| Ops Driver | Operative Ausfuehrung der Playbook-Schritte, Command-Ausfuehrung, Artefaktlinks | CI-/Toolchain-Owner oder DX Owner je Problemklasse |
+| Kommunikation | Stakeholder-Update, Issue-Statuspflege (`status:*`), Abschlussdokumentation | Product-/Maintainer-Vertretung |
+
+### Operativer Ablauf: Intake -> Triage -> Recovery -> Verifikation
+
+1. Intake ueber `.github/ISSUE_TEMPLATE/support-triage.yml` mit allen Pflichtfeldern.
+2. Triage in Abschnitt 6.12: Klasse + Prioritaet festlegen, Labels setzen, Known-Issue-Link (`KI-*`) hinterlegen.
+3. Passendes Recovery-Playbook ausfuehren (dieser Abschnitt, pro Klasse).
+4. Verifikation mit Command-Nachweis und Ergebnisdokumentation im Issue.
+5. Abschluss nur bei erfolgreicher Verifikation; erst dann Label `status:resolved` setzen.
+
+### Eskalation und Rollback-vs-Forward-Fix
+
+| Bedingung | Entscheidung | Eskalation |
+| --- | --- | --- |
+| `P1` oder aktiver Release-Blocker | Sofort eskalieren, Stabilisierung vor Feature-Arbeit | Incident Commander -> Maintainer-Kreis (+ API/Toolchain Owner je Klasse) |
+| `P2` ohne verifizierten Workaround innerhalb der Zielzeit | Eskalation nach Prioritaetsmodell, parallele Analyse | Incident Commander -> zustaendiger Owner |
+| Forward-Fix in <= 1 Iteration reproduzierbar verifizierbar | Forward-Fix bevorzugen | Owner der Klasse + Incident Commander |
+| Ursache unsicher oder wiederholter Fehlschlag im gleichen Pfad | Rollback auf letzten stabilen Zustand | Incident Commander entscheidet, Kommunikation dokumentiert |
+
+### Recovery-Playbooks (sofort nutzbar)
+
+#### Playbook A: `setup-fehler` (Known Issue: KI-001)
+
+- Trigger/Symptom: Install-/Setup-Lauf bricht ab (`command not found`, Manager-Konflikte, inkonsistente Dependencies).
+- Severity: nach Impact (`P1`-`P4`), bei blockiertem Onboarding mindestens `P2`.
+- Diagnose:
+  - `node --version`
+  - `corepack --version` (falls vorhanden)
+  - Manager-Check: `npm --version`, optional `pnpm --version`/`yarn --version`
+  - Auf mehrere Lockfiles oder inkonsistente `node_modules` pruefen.
+- Sofortmassnahme:
+  - `corepack enable`
+  - Genau einen Package-Manager pro Working Copy verwenden
+  - Abhaengigkeiten frisch installieren
+- Verifikation:
+  - Manager-Versionen verfuegbar
+  - `cd react-md3 && npm run build` erfolgreich
+- Rollback/Eskalation:
+  - Wenn Setup weiterhin nicht reproduzierbar stabil ist: Eskalation an Maintainer on Duty / DX Owner.
+  - Bei `P1`-Blocker Rueckkehr auf letzte stabile Toolchain-/Lockfile-Kombination.
+- Abschlussupdate:
+  - Issue-Kommentar mit Root Cause + ausgefuehrten Commands + Ergebnis.
+  - `status:resolved` erst nach erfolgreicher Verifikation.
+
+#### Playbook B: `toolchain-drift` (Known Issue: KI-002)
+
+- Trigger/Symptom: Lint/Test/Build differieren lokal vs. CI oder zwischen Matrix-Zellen.
+- Severity: bei CI-Blockern mindestens `P2`, bei Release-Blockern `P1`.
+- Diagnose:
+  - Toolchain-Versionen lokal/CI gegen Supportfenster 22.x/24.x abgleichen
+  - Reproduzierbaren Lauf starten: `cd react-md3 && npm run quality:gate`
+- Sofortmassnahme:
+  - Node/Manager auf Matrix 22.x/24.x ausrichten
+  - Install-Basis bereinigen und Lauf wiederholen
+- Verifikation:
+  - `cd react-md3 && npm run quality:gate` erfolgreich
+  - Klassifikation bleibt nachvollziehbar als `toolchain-drift`
+- Rollback/Eskalation:
+  - Bei fortbestehendem Drift nach einer reproduzierbaren Iteration: Eskalation an CI-/Toolchain-Owner.
+  - Wenn Drift durch juengste Toolchain-Aenderung verursacht wurde: Rueckkehr auf zuletzt gruene Versionen.
+- Abschlussupdate:
+  - Matrix-Bezug + Verifikationsnachweis im Issue dokumentieren.
+  - `status:resolved` erst nach gruenem Guardrail-Lauf.
+
+#### Playbook C: `api-regression` (Known Issue: KI-003)
+
+- Trigger/Symptom: `npm run api:contract:check` oder Referenzintegration meldet API-Drift.
+- Severity: standardmaessig `P1` fuer releasekritische API-Brueche, sonst `P2`.
+- Diagnose:
+  - `cd react-md3 && npm run api:contract:check`
+  - Public API (`src/components/index.ts`), `public-api.contract.json` und `CHANGELOG.md` auf Drift pruefen
+- Sofortmassnahme:
+  - Contract + Changelog inkl. `migrationGuide` synchronisieren
+  - API-Aenderungsreihenfolge gem. Story 3.3 einhalten
+- Verifikation:
+  - `cd react-md3 && npm run api:contract:check && npm run quality:gate`
+  - Optional zur Absicherung: `cd react-md3/reference-integration && npm ci && npm run ci:smoke`
+- Rollback/Eskalation:
+  - Bei `P1`: sofortige Eskalation an API Owner + Maintainer.
+  - Wenn Forward-Fix nicht innerhalb einer Iteration verifizierbar ist: Rollback der ausloesenden API-Aenderung.
+- Abschlussupdate:
+  - Ursache, Sync-Aenderungen und Verifikationscommands im Issue festhalten.
+  - `status:resolved` erst nach erfolgreichem Contract- und Guardrail-Nachweis.
+
+### Reproduzierbare Recovery-Drills (Dry-Run-Nachweis)
+
+| Drill | Klasse | Dry-Run-Fokus | Nachweis |
+| --- | --- | --- | --- |
+| Drill R1 | `setup-fehler` | Setup-Baseline pruefen, Single-Manager-Regel anwenden, Build-Verifikation | Playbook A + Known-Issue-Link KI-001 + Build gruen |
+| Drill R2 | `toolchain-drift` | Matrix-Abgleich 22.x/24.x und Guardrail-Reproduktion | Playbook B + `cd react-md3 && npm run quality:gate` |
+| Drill R3 | `api-regression` | Contract-/Changelog-Synchronisierung mit API-Gate-Verifikation | Playbook C + `npm run api:contract:check` + `quality:gate` |
+
+Aktueller Dry-Run-Nachweis (2026-02-28, lokal):
+
+- Drill R1 (`setup-fehler`): `cd react-md3 && npm run quality:gate` -> Build-Schritt erfolgreich (PASS).
+- Drill R2 (`toolchain-drift`): `cd react-md3 && npm run quality:gate` -> Guardrail erfolgreich (PASS).
+- Drill R3 (`api-regression`): `cd react-md3 && npm run quality:gate` -> `api:contract:check` erfolgreich (PASS).
+
+Abschlusskriterium fuer alle Drills:
+
+- Diagnose, Sofortmassnahme und Verifikation sind explizit dokumentiert.
+- Klassifikation (`setup-fehler`/`toolchain-drift`/`api-regression`) und Known-Issue-Referenz sind gesetzt.
+- Fall wird erst dann auf `status:resolved` gesetzt, wenn der jeweilige Verifikationslauf erfolgreich war.
+
 ## 7) Troubleshooting (Schema: Symptom -> Diagnose -> Fix -> Verifikation)
 
 ### Package-Manager-Konflikte
