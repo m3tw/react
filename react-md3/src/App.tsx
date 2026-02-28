@@ -26,6 +26,7 @@ import {
   Sheet,
   Slider,
   Snackbar,
+  SplitButton,
   Surface,
   Switch,
   Tabs,
@@ -184,6 +185,21 @@ function App() {
                   ]}
                   defaultValue="star"
                 />
+              </div>
+              <div className="component-row">
+                <SplitButton label="XS" size="xs" menuItems={[{ label: 'Option', value: 'o' }]} />
+                <SplitButton label="Small" size="s" menuItems={[{ label: 'Option', value: 'o' }]} />
+                <SplitButton
+                  label="Medium"
+                  menuItems={[
+                    { label: 'Save as copy', value: 'copy' },
+                    { label: 'Save as template', value: 'template' },
+                    { label: 'Export as PDF', value: 'pdf' },
+                  ]}
+                  onMenuSelect={(v) => console.log('Split:', v)}
+                />
+                <SplitButton label="Large" size="l" variant="tonal" menuItems={[{ label: 'Schedule', value: 'schedule' }, { label: 'Draft', value: 'draft' }]} />
+                <SplitButton label="XL" size="xl" variant="outlined" menuItems={[{ label: 'Copy link', value: 'link' }, { label: 'Email', value: 'email' }]} />
               </div>
               <div className="component-row">
                 <Fab label="Small" size="small" />

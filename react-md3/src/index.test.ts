@@ -32,6 +32,7 @@ describe('public API barrel', () => {
       'Sheet',
       'Slider',
       'Snackbar',
+      'SplitButton',
       'Surface',
       'Switch',
       'Tabs',
