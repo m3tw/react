@@ -149,10 +149,12 @@ function App() {
               <h2>Buttons & Actions</h2>
               <Divider />
               <div className="component-row">
-                <Button>Filled Button</Button>
-                <Button variant="tonal">Tonal Button</Button>
-                <Button variant="text">Text Button</Button>
-                <Button disabled>Disabled Button</Button>
+                <Button variant="elevated">Elevated</Button>
+                <Button>Filled</Button>
+                <Button variant="tonal">Tonal</Button>
+                <Button variant="outlined">Outlined</Button>
+                <Button variant="text">Text</Button>
+                <Button disabled>Disabled</Button>
               </div>
               <div className="component-row">
                 <ButtonGroup
