@@ -23,7 +23,8 @@ import {
   ProgressIndicator,
   RadioGroup,
   SearchBar,
-  Sheet,
+  BottomSheet,
+  SideSheet,
   Slider,
   Snackbar,
   SplitButton,
@@ -91,6 +92,8 @@ function App() {
   const [showModalPicker, setShowModalPicker] = useState(false)
   const [showModalInputPicker, setShowModalInputPicker] = useState(false)
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false)
+  const [bottomSheetOpen, setBottomSheetOpen] = useState(false)
+  const [sideSheetOpen, setSideSheetOpen] = useState(false)
 
   return (
     <div className="app-shell">
@@ -497,17 +500,39 @@ function App() {
                 />
               </div>
               <div className="component-col sheet-demo">
-                <h3>Sheets & Drawers (inline preview)</h3>
+                <h3>Sheets & Drawers</h3>
+                <div className="component-row">
+                  <Button variant="outlined" onClick={() => setBottomSheetOpen(true)}>Open Bottom Sheet</Button>
+                  <Button variant="outlined" onClick={() => setSideSheetOpen(true)}>Open Side Sheet</Button>
+                </div>
+                <BottomSheet
+                  open={bottomSheetOpen}
+                  onOpenChange={setBottomSheetOpen}
+                  title="Quick Actions"
+                  variant="modal"
+                >
+                  <p>Bottom sheet content goes here.</p>
+                  <Button variant="tonal" onClick={() => setBottomSheetOpen(false)}>Dismiss</Button>
+                </BottomSheet>
+                <SideSheet
+                  open={sideSheetOpen}
+                  onOpenChange={setSideSheetOpen}
+                  headline="Details"
+                  variant="modal"
+                  onClose={() => setSideSheetOpen(false)}
+                >
+                  <p>Side sheet content goes here.</p>
+                </SideSheet>
                 <div className="sheet-row">
-                  <NavigationDrawer 
-                    destinations={navigationDestinations} 
-                    value={activeDestination} 
-                    onValueChange={setActiveDestination} 
+                  <NavigationDrawer
+                    destinations={navigationDestinations}
+                    value={activeDestination}
+                    onValueChange={setActiveDestination}
                     heading="Drawer Nav"
                   />
-                  <Sheet placement="side" title="Side Sheet">
+                  <SideSheet defaultOpen headline="Inline Side Sheet" divider>
                     <p>Information goes here.</p>
-                  </Sheet>
+                  </SideSheet>
                 </div>
               </div>
             </Surface>

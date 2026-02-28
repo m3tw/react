@@ -1,0 +1,93 @@
+.m3-side-sheet-scrim {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  justify-content: flex-end;
+  background-color: color-mix(in srgb, var(--md-sys-color-scrim) 32%, transparent);
+  z-index: 30;
+}
+
+@keyframes m3-side-sheet-slide-in {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes m3-side-sheet-scrim-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.m3-side-sheet-scrim {
+  animation: m3-side-sheet-scrim-fade-in var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized);
+}
+
+.m3-side-sheet {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 400px;
+  height: 100%;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.m3-side-sheet--standard {
+  background-color: var(--md-sys-color-surface);
+  position: relative;
+  border-inline-start: 1px solid var(--md-sys-color-outline-variant);
+}
+
+.m3-side-sheet--standard.m3-side-sheet--no-divider {
+  border-inline-start: none;
+}
+
+.m3-side-sheet--modal {
+  background-color: var(--md-sys-color-surface-container-low);
+  box-shadow: var(--md-sys-elevation-level1);
+  position: fixed;
+  inset-block: 0;
+  inset-inline-end: 0;
+  animation: m3-side-sheet-slide-in var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized);
+}
+
+.m3-side-sheet__header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 24px;
+  flex-shrink: 0;
+}
+
+.m3-side-sheet__headline {
+  margin: 0;
+  flex: 1;
+  color: var(--md-sys-color-on-surface-variant);
+  font-family: var(--md-sys-typescale-title-large-font-family);
+  font-weight: var(--md-sys-typescale-title-large-font-weight);
+  font-size: var(--md-sys-typescale-title-large-font-size);
+  line-height: var(--md-sys-typescale-title-large-line-height);
+  letter-spacing: var(--md-sys-typescale-title-large-letter-spacing);
+}
+
+.m3-side-sheet__content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0 24px;
+}
+
+.m3-side-sheet__actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  height: 72px;
+  padding: 16px 24px 24px;
+  flex-shrink: 0;
+}

@@ -7,6 +7,7 @@ describe('public API barrel', () => {
     expect(Object.keys(publicApi).sort()).toEqual([
       'AlertDialog',
       'Badge',
+      'BottomSheet',
       'Button',
       'ButtonGroup',
       'Card',
@@ -28,7 +29,7 @@ describe('public API barrel', () => {
       'RadioGroup',
       'Ripple',
       'SearchBar',
-      'Sheet',
+      'SideSheet',
       'Slider',
       'Snackbar',
       'SplitButton',
