@@ -164,8 +164,16 @@ function App() {
                 />
               </div>
               <div className="component-row">
-                <Fab label="Add" />
+                <Fab label="Small" size="small" />
+                <Fab label="Medium" />
+                <Fab label="Large" size="large" />
                 <Fab label="Create new" variant="extended" />
+              </div>
+              <div className="component-row">
+                <Fab label="Surface" color="surface" />
+                <Fab label="Primary" color="primary" />
+                <Fab label="Secondary" color="secondary" />
+                <Fab label="Tertiary" color="tertiary" />
                 <Fab
                   label="Actions"
                   menuItems={[
