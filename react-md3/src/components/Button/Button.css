@@ -3,49 +3,138 @@
   --m3-button-color: var(--md-sys-color-primary);
   --m3-button-outline-color: transparent;
   --md-ripple-color: var(--m3-button-color);
+  /* Default = S (40dp) */
+  --m3-btn-height: 40px;
+  --m3-btn-padding: 16px;
+  --m3-btn-icon-size: 20px;
+  --m3-btn-gap: 8px;
+  --m3-btn-font-size: 14px;
+  --m3-btn-outline-width: 1px;
+  --m3-btn-radius: calc(var(--m3-btn-height) / 2); /* Round = pill */
 
-  position: relative; /* for ripple */
+  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
-  min-width: 64px;
-  height: 40px; /* Standard M3 button height */
+  min-width: 48px;
+  height: var(--m3-btn-height);
   border: none;
-  border-radius: 20px; /* Fully rounded */
-  padding: 0 24px;
+  border-radius: var(--m3-btn-radius);
+  padding: 0 var(--m3-btn-padding);
   background-color: var(--m3-button-bg);
   color: var(--m3-button-color);
   box-shadow: var(--m3-button-elevation, var(--md-sys-elevation-level0));
+  gap: var(--m3-btn-gap);
   
-  /* Typography */
   font-family: var(--md-sys-typescale-label-large-font-family);
   font-weight: var(--md-sys-typescale-label-large-font-weight);
-  font-size: var(--md-sys-typescale-label-large-font-size);
-  line-height: var(--md-sys-typescale-label-large-line-height);
+  font-size: var(--m3-btn-font-size);
+  line-height: 1.4;
   letter-spacing: var(--md-sys-typescale-label-large-letter-spacing);
   
   cursor: pointer;
-  transition: background-color var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard),
-              color var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard),
-              box-shadow var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard),
-              opacity var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard);
+  transition: background-color 200ms cubic-bezier(0.2, 0, 0, 1),
+              color 200ms cubic-bezier(0.2, 0, 0, 1),
+              box-shadow 200ms cubic-bezier(0.2, 0, 0, 1),
+              opacity 200ms cubic-bezier(0.2, 0, 0, 1);
   
-  overflow: hidden; /* Contains the ripple */
+  overflow: hidden;
   -webkit-tap-highlight-color: transparent;
 }
 
-/* Base outline logic */
+/* =========================
+   Sizes (M3 spec values)
+   ========================= */
+
+/* XS: 32dp */
+.m3-button--xs {
+  --m3-btn-height: 32px;
+  --m3-btn-padding: 12px;
+  --m3-btn-icon-size: 20px;
+  --m3-btn-gap: 8px;
+  --m3-btn-font-size: 12px;
+  --m3-btn-outline-width: 1px;
+}
+
+/* S: 40dp (default) */
+.m3-button--s {
+  --m3-btn-height: 40px;
+  --m3-btn-padding: 16px;
+  --m3-btn-icon-size: 20px;
+  --m3-btn-gap: 8px;
+  --m3-btn-font-size: 14px;
+  --m3-btn-outline-width: 1px;
+}
+
+/* M: 56dp */
+.m3-button--m {
+  --m3-btn-height: 56px;
+  --m3-btn-padding: 24px;
+  --m3-btn-icon-size: 24px;
+  --m3-btn-gap: 8px;
+  --m3-btn-font-size: 14px;
+  --m3-btn-outline-width: 1px;
+}
+
+/* L: 96dp */
+.m3-button--l {
+  --m3-btn-height: 96px;
+  --m3-btn-padding: 48px;
+  --m3-btn-icon-size: 32px;
+  --m3-btn-gap: 12px;
+  --m3-btn-font-size: 16px;
+  --m3-btn-outline-width: 2px;
+}
+
+/* XL: 136dp */
+.m3-button--xl {
+  --m3-btn-height: 136px;
+  --m3-btn-padding: 64px;
+  --m3-btn-icon-size: 40px;
+  --m3-btn-gap: 16px;
+  --m3-btn-font-size: 18px;
+  --m3-btn-outline-width: 3px;
+}
+
+/* =========================
+   Shapes
+   ========================= */
+
+/* Round = pill (default via calc(height/2)) */
+.m3-button--round {
+  --m3-btn-radius: calc(var(--m3-btn-height) / 2);
+}
+
+/* Square shape corner radii per size */
+.m3-button--square {
+  --m3-btn-radius: 12px;
+}
+.m3-button--square.m3-button--m {
+  --m3-btn-radius: 16px;
+}
+.m3-button--square.m3-button--l,
+.m3-button--square.m3-button--xl {
+  --m3-btn-radius: 28px;
+}
+
+/* =========================
+   Outline (before pseudo)
+   ========================= */
 .m3-button::before {
   content: '';
   position: absolute;
   inset: 0;
   border-radius: inherit;
-  border: 1px solid var(--m3-button-outline-color);
+  border: var(--m3-btn-outline-width) solid var(--m3-button-outline-color);
   pointer-events: none;
 }
 
-/* Elevated Button */
+/* =========================
+   Color Variants
+   ========================= */
+
+/* Elevated */
 .m3-button--elevated {
   --m3-button-bg: var(--md-sys-color-surface-container-low);
   --m3-button-color: var(--md-sys-color-primary);
@@ -59,7 +148,7 @@
   --m3-button-elevation: var(--md-sys-elevation-level1);
 }
 
-/* Filled Button */
+/* Filled */
 .m3-button--filled {
   --m3-button-bg: var(--md-sys-color-primary);
   --m3-button-color: var(--md-sys-color-on-primary);
@@ -68,7 +157,7 @@
   --m3-button-elevation: var(--md-sys-elevation-level1);
 }
 
-/* Filled Tonal Button */
+/* Tonal */
 .m3-button--tonal {
   --m3-button-bg: var(--md-sys-color-secondary-container);
   --m3-button-color: var(--md-sys-color-on-secondary-container);
@@ -77,7 +166,7 @@
   --m3-button-elevation: var(--md-sys-elevation-level1);
 }
 
-/* Outlined Button */
+/* Outlined */
 .m3-button--outlined {
   --m3-button-bg: transparent;
   --m3-button-color: var(--md-sys-color-primary);
@@ -87,32 +176,43 @@
   --m3-button-outline-color: var(--md-sys-color-primary);
 }
 
-/* Text Button */
+/* Text */
 .m3-button--text {
   --m3-button-bg: transparent;
   --m3-button-color: var(--md-sys-color-primary);
-  padding: 0 12px; /* Text buttons have less padding */
+  padding: 0 calc(var(--m3-btn-padding) * 0.75);
 }
 
-/* Focus indicator (Focus ring is less common when state layer is active, but accessibility requires a reliable focus) */
+/* =========================
+   Toggle selected state
+   ========================= */
+.m3-button--selected {
+  --m3-button-bg: var(--md-sys-color-primary);
+  --m3-button-color: var(--md-sys-color-on-primary);
+}
+
+/* =========================
+   Focus
+   ========================= */
 .m3-button:focus-visible {
   outline: 2px solid var(--md-sys-color-secondary);
   outline-offset: 2px;
 }
 
-/* Disabled state */
+/* =========================
+   Disabled
+   ========================= */
 .m3-button:disabled,
 .m3-button[aria-disabled="true"] {
   cursor: not-allowed;
   box-shadow: none;
-  --md-ripple-color: transparent; /* No ripple when disabled */
+  --md-ripple-color: transparent;
 }
 
 .m3-button:disabled {
   --m3-button-elevation: var(--md-sys-elevation-level0);
 }
 
-/* Specific disabled styles per variant based on M3 spec */
 .m3-button--elevated:disabled,
 .m3-button--filled:disabled,
 .m3-button--tonal:disabled {
@@ -129,16 +229,37 @@
   --m3-button-color: color-mix(in srgb, var(--md-sys-color-on-surface) 38%, transparent);
 }
 
-/* Loading state */
+/* =========================
+   Loading state
+   ========================= */
 .m3-button--loading {
   opacity: 0.72;
 }
 
-/* Content wrapper */
+/* =========================
+   Icon slot
+   ========================= */
+.m3-button__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--m3-btn-icon-size);
+  height: var(--m3-btn-icon-size);
+  position: relative;
+  z-index: 1;
+}
+
+.m3-button__icon svg {
+  width: var(--m3-btn-icon-size);
+  height: var(--m3-btn-icon-size);
+}
+
+/* =========================
+   Label
+   ========================= */
 .m3-button__label {
-  position: relative; /* ensures label is above the absolute ripple */
+  position: relative;
   z-index: 1;
   display: flex;
   align-items: center;
-  gap: 8px; /* For icon+text spacing */
 }
