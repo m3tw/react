@@ -109,3 +109,76 @@
     color: var(--md-sys-color-on-surface-variant, #cbd5e1);
   }
 }
+
+/* ==============================
+   Mobile Drawer Overlay
+   ============================== */
+.mobile-drawer-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+}
+
+.mobile-drawer-scrim {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.32);
+  z-index: -1;
+}
+
+.mobile-drawer-container {
+  width: 280px;
+  height: 100%;
+  background: var(--md-sys-color-surface-container-low, var(--md-sys-color-surface));
+  box-shadow: var(--md-sys-elevation-level3);
+  animation: drawer-slide-in 250ms cubic-bezier(0.2, 0, 0, 1);
+}
+
+@keyframes drawer-slide-in {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+/* ==============================
+   Responsive Layout: Desktop (≥840px)
+   ============================== */
+
+/* Desktop: hide hamburger icon in TopAppBar */
+.m3-top-app-bar__nav-icon {
+  display: none;
+}
+
+/* Desktop: show rail */
+.desktop-rail {
+  display: block;
+}
+
+/* ==============================
+   Responsive Layout: Mobile (<840px)
+   ============================== */
+@media (max-width: 839px) {
+  /* Show hamburger icon */
+  .m3-top-app-bar__nav-icon {
+    display: flex;
+  }
+
+  /* Hide desktop rail */
+  .desktop-rail {
+    display: none;
+  }
+
+  /* Adjust content */
+  .content-container {
+    padding: 1rem;
+  }
+
+  /* Stack component grid on mobile */
+  .component-grid {
+    grid-template-columns: 1fr;
+  }
+}
