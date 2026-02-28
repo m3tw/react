@@ -624,6 +624,98 @@ Positivbeispiel (`go` bei vollstaendiger Evidenz):
 - Alle Story-4.2-Gates stehen auf `PASS`, Pflichtlinks sind vollstaendig, keine offenen High/Critical-Risiken, Nutzungsmetriken liegen ueber Schwellwert.
 - Ergebnis: `go`, Sign-off durch Release Owner + Product Owner + technischer Reviewer (verschiedene Personen).
 
+## 6.12) Story 5.1 Support-Triage und Known-Issues-Katalog
+
+### Zielbild und Scope
+
+- Diese Section definiert den verbindlichen Support-Triage-Prozess fuer Epic 5 ohne neuen Runtime-/Backend-Scope.
+- Bestehende Guardrails bleiben Grundlage: Root-README als Einstieg, diese Datei als operative Detaildokumentation.
+- Fokus: schnelle Klassifikation, eindeutige Priorisierung, zentraler Known-Issues-Katalog und reproduzierbare Verifikation.
+
+### Verbindliche Problemklassen (Klassifikationsmodell)
+
+| Problemklasse | Typische Signale | Erstmassnahme | Standard-Loesungspfad |
+| --- | --- | --- | --- |
+| `setup-fehler` | Installation/Voraussetzungen schlagen fehl (`command not found`, Manager-Konflikte, fehlende Dependencies) | Tooling-Baseline pruefen (Node, Manager, Corepack, Lockfiles) | [7) Package-Manager-Konflikte](#package-manager-konflikte), [README Story 1.4](../README.md#story-14-troubleshooting-basis-schema-symptom---diagnose---fix---verifikation) |
+| `toolchain-drift` | Lint/Test/Build differieren zwischen Umgebungen oder CI-Zellen | Versionen gegen Matrix 22/24 abgleichen, reproduzierbaren Lauf herstellen | [README Story 3.1](../README.md#story-31-kompatibilitaetsmatrix-und-ci-absicherung), [7) Build-Konflikte](#build-konflikte) |
+| `api-regression` | Contract-/API-Verhalten weicht ab (`api:contract:check` rot, Referenzintegration bricht mit API-Fehler) | Public-API + Contract + Changelog gemeinsam pruefen und synchronisieren | [6.8) Story 3.3](#68-story-33-migrationspfad-fuer-api-aenderungen), [6.9) Story 3.4](#69-story-34-referenzintegration-in-ci-als-nachweis) |
+
+### Prioritaetsstufen (P1-P4) mit Reaktionszeit
+
+| Prioritaet | Kriterien (Impact) | Erwartete Erstreaktion |
+| --- | --- | --- |
+| `P1` | Blockiert kritische Integrations-/Release-Pfade ohne akzeptablen Workaround | <= 1h |
+| `P2` | Starker Produktivitaetsverlust fuer aktive Integrationen, Workaround nur eingeschraenkt | <= 4h |
+| `P3` | Begrenzter Impact, stabiler Workaround vorhanden | <= 1 Arbeitstag |
+| `P4` | Dokumentations-/Komfortproblem mit niedrigem Risiko | <= 3 Arbeitstage |
+
+### Pflichtfelder pro Support-Fall
+
+Jeder Fall muss mindestens enthalten:
+
+1. Kontext (Umgebung, Toolchain, betroffener Pfad)
+2. Symptom (beobachtetes Fehlverhalten)
+3. Reproduktion (Schritte/Command)
+4. Problemklasse (`setup-fehler`/`toolchain-drift`/`api-regression`)
+5. Prioritaet (`P1`-`P4`)
+6. Owner (verantwortliche Rolle/Person)
+7. Verifikationsstatus (nicht verifiziert/in Verifikation/verifiziert)
+8. Verlinkten Loesungspfad (bestehender oder neuer Known-Issue-Eintrag)
+
+### Zentraler Known-Issues-Katalog (kanonische Eintraege)
+
+| Titel | Problemklasse | Symptome | Root Cause | Workaround/Fix | Verifikationsschritte | Referenzlinks | Status |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| KI-001: Package-Manager oder Setup-Baseline fehlt | `setup-fehler` | `pnpm`/`yarn` nicht verfuegbar, Install-Lauf nach Manager-Wechsel instabil | Corepack nicht aktiv oder Lockfile-/`node_modules`-Konflikt | `corepack enable`; genau einen Manager pro Working Copy verwenden; Dependencies frisch installieren | `pnpm --version`/`yarn --version`; danach `cd react-md3 && npm run build` | [7) Package-Manager-Konflikte](#package-manager-konflikte), [README Story 1.4](../README.md#story-14-troubleshooting-basis-schema-symptom---diagnose---fix---verifikation) | aktiv |
+| KI-002: Toolchain-Versionen sind zwischen lokal und CI auseinandergezogen | `toolchain-drift` | `lint`/`test`/`build` nur in einzelnen Umgebungen rot | Node-/Manager-Version ausserhalb Matrix 22/24 oder inkonsistente Install-Basis | Toolchain auf Matrix ausrichten, Install erneut ausfuehren, Guardrail-Lauf wiederholen | `cd react-md3 && npm run quality:gate` | [README Story 3.1](../README.md#story-31-kompatibilitaetsmatrix-und-ci-absicherung), [7) Build-Konflikte](#build-konflikte) | aktiv |
+| KI-003: Public-API/Contract-Drift | `api-regression` | `npm run api:contract:check` fehlschlaegt oder Referenzintegration signalisiert API-Fehler | API-Aenderung ohne konsistente Pflege von `public-api.contract.json` und `CHANGELOG.md` | Contract + Changelog (`migrationGuide` inkl. Token) synchronisieren und Referenzintegration erneut pruefen | `cd react-md3 && npm run api:contract:check && npm run quality:gate` | [6.8) Story 3.3](#68-story-33-migrationspfad-fuer-api-aenderungen), [6.9) Story 3.4](#69-story-34-referenzintegration-in-ci-als-nachweis) | aktiv |
+
+### Duplikatstrategie (kein fragmentiertes Wissen)
+
+- Jeder neue Fall erhaelt genau einen kanonischen Known-Issue-Bezug (`KI-001`, `KI-002`, `KI-003` oder neuer Eintrag).
+- Dubletten werden als eigene Issues geschlossen/verlinkt, behalten aber den Verweis auf den kanonischen Issue-Link.
+- Der kanonische Eintrag enthaelt die aktuell gueltige Fix-/Verifikationsbeschreibung; Dubletten enthalten nur Kontextabweichungen.
+
+### Triage-Intake und Routing (operativer Ablauf)
+
+- **Eintrittspunkt:** GitHub Issues mit strukturierter Form unter `.github/ISSUE_TEMPLATE/support-triage.yml`.
+- **Standardlabels:**
+  - Problemklasse: `triage:setup-fehler`, `triage:toolchain-drift`, `triage:api-regression`
+  - Prioritaet: `priority:p1`, `priority:p2`, `priority:p3`, `priority:p4`
+  - Prozessstatus: `status:incoming`, `status:classified`, `status:known-issue-linked`, `status:resolved`
+- **Routing-Matrix:**
+
+| Klasse | Primaerer Owner | Erwartete Erstreaktion |
+| --- | --- | --- |
+| `setup-fehler` | Maintainer on Duty / DX Owner | nach Prioritaetsmodell |
+| `toolchain-drift` | CI-/Toolchain-Owner | nach Prioritaetsmodell |
+| `api-regression` | API Owner + Maintainer | nach Prioritaetsmodell |
+
+Pflichtablauf pro Fall:
+
+1. Intake via Issue Form mit allen Pflichtfeldern.
+2. Klassifikation + Priorisierung und Setzen der Labels.
+3. Link auf bestehenden Known-Issue-Eintrag oder Anlage eines neuen kanonischen Eintrags.
+4. Owner setzen und Verifikationsstatus pflegen.
+5. Abschluss erst nach erfolgreicher Verifikation mit referenziertem Loesungspfad.
+
+Hinweis: Label-Automation kann optional per GitHub Actions ergaenzt werden; die fachliche Klassifikation bleibt explizit und nachvollziehbar.
+
+### Verifikation (3 reprasentative Support-Faelle)
+
+| Fall | Eingangssymptom | Klassifikation | Verlinkter Loesungspfad | Ergebnis |
+| --- | --- | --- | --- | --- |
+| Fall A | `pnpm` fehlt nach frischem Checkout | `setup-fehler`, `P3` | KI-001 | Setup mit Corepack + Single-Manager-Regel reproduzierbar stabilisiert |
+| Fall B | Build nur unter Node 20 rot, Node 22/24 gruen | `toolchain-drift`, `P2` | KI-002 | Matrix-konforme Versionen wiederhergestellt, Guardrail-Lauf gruen |
+| Fall C | `api:contract:check` meldet Drift nach API-Aenderung | `api-regression`, `P1` | KI-003 | Contract/Changelog synchronisiert, API-Gate wieder gruen |
+
+Baseline-Check fuer Repo-Konsistenz:
+
+```bash
+cd react-md3
+npm run quality:gate
+```
+
 ## 7) Troubleshooting (Schema: Symptom -> Diagnose -> Fix -> Verifikation)
 
 ### Package-Manager-Konflikte
@@ -640,8 +732,8 @@ Positivbeispiel (`go` bei vollstaendiger Evidenz):
 ### Build-Konflikte
 
 - **Symptom:** Build stoppt mit Engine-/Syntax-Fehlern.
-  - **Diagnose:** `node --version` ist nicht 24.x LTS.
-  - **Fix:** Node auf 24.x LTS aktualisieren und Dependencies neu installieren.
+  - **Diagnose:** `node --version` liegt ausserhalb des Supportfensters (22.x/24.x LTS).
+  - **Fix:** Node auf 22.x oder 24.x LTS aktualisieren und Dependencies neu installieren.
   - **Verifikation:** `npm run build` laeuft erfolgreich.
 - **Symptom:** Typecheck/Build meldet Import- oder Entry-Fehler.
   - **Diagnose:** Deep-Import statt Public Barrel wird verwendet.

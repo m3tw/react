@@ -64,8 +64,8 @@ development_status:
   4-2-automatisierte-release-gate-pipeline-umsetzen: done
   4-3-go-no-go-entscheidungsprozess-fuer-phasenwechsel-verankern: done
   epic-4-retrospective: optional
-  epic-5: backlog
-  5-1-support-triage-und-known-issues-katalog-aufbauen: backlog
+  epic-5: in-progress
+  5-1-support-triage-und-known-issues-katalog-aufbauen: done
   5-2-recovery-playbooks-fuer-haeufige-fehlerszenarien-liefern: backlog
   5-3-kpi-tracking-fuer-adoption-und-time-to-value-etablieren: backlog
   5-4-feedback-loop-fuer-priorisierung-und-roadmap-verankern: backlog

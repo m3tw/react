@@ -293,6 +293,14 @@ Erwartung: Der Lauf bricht mit einem expliziten `[api-regression]`-Signal ab.
 - Harte Blocker bleiben unveraendert (`setup-fehler`, `toolchain-drift`, `api-regression`, fehlende Pflicht-Evidenz) und erzwingen `no-go`.
 - Entscheidungsstatus ist konsistent als `go`/`no-go` dokumentiert; kritische Entscheidungen erfordern 2-Augen-Freigabe ohne Self-Approval.
 
+## Story 5.1 Support-Triage und Known-Issues-Katalog
+
+- Verbindlicher operativer Prozess (Single Source of Truth): [`react-md3/README.md` Abschnitt 6.12](react-md3/README.md#612-story-51-support-triage-und-known-issues-katalog).
+- Problemklassen bleiben repo-weit konsistent: `setup-fehler`, `toolchain-drift`, `api-regression`; Priorisierung erfolgt ueber P1-P4 mit klaren Reaktionszeiten.
+- Strukturierter Intake ist ueber `.github/ISSUE_TEMPLATE/support-triage.yml` vorbereitet; Routing erfolgt ueber standardisierte Labels (`triage:*`, `priority:*`, `status:*`).
+- Jeder klassifizierte Fall muss auf einen kanonischen Known-Issue-Eintrag verweisen (oder einen neuen Eintrag anlegen), um Dubletten-Wissen zu vermeiden.
+- Konsistenznachweis fuer den Prozess: 3 reprasentative Triage-Faelle plus `cd react-md3 && npm run quality:gate`.
+
 ## Initialisierung und Verifikation (Story 1.1)
 
 ```bash

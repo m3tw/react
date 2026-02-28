@@ -1,0 +1,99 @@
+name: Support Triage Intake
+description: Strukturierter Intake fuer Integrations- und Support-Faelle
+title: "[support-triage] ${{ inputs.summary }}"
+labels:
+  - status:incoming
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Bitte alle Pflichtfelder ausfuellen, damit der Fall direkt klassifiziert und einem Loesungspfad zugeordnet werden kann.
+  - type: input
+    id: summary
+    attributes:
+      label: Kurzbeschreibung
+      description: Kurzer, eindeutiger Titel des Support-Falls
+      placeholder: "Beispiel: api:contract:check failt nach Export-Aenderung"
+    validations:
+      required: true
+  - type: dropdown
+    id: problem_class
+    attributes:
+      label: Problemklasse
+      description: Waehl die beste Start-Klassifikation.
+      options:
+        - setup-fehler
+        - toolchain-drift
+        - api-regression
+    validations:
+      required: true
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Prioritaet
+      description: Impact-basierte Erstpriorisierung
+      options:
+        - P1
+        - P2
+        - P3
+        - P4
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Kontext
+      description: Umgebung, betroffener Pfad, Versionen
+      placeholder: "Beispiel: Node 22.12.0, npm 11.x, react-md3/reference-integration"
+    validations:
+      required: true
+  - type: textarea
+    id: symptom
+    attributes:
+      label: Symptom
+      description: Was ist beobachtbar fehlgeschlagen?
+      placeholder: "Beispiel: npm run ci:smoke bricht mit [api-regression] ab"
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduktion
+      description: Schritte/Kommandos, um den Fehler reproduzierbar auszufuehren
+      placeholder: "1) cd react-md3/reference-integration\n2) npm ci\n3) npm run ci:smoke"
+    validations:
+      required: true
+  - type: input
+    id: owner
+    attributes:
+      label: Owner
+      description: Verantwortliche Rolle/Person fuer den naechsten Schritt
+      placeholder: "Maintainer on Duty"
+    validations:
+      required: true
+  - type: dropdown
+    id: verification_status
+    attributes:
+      label: Verifikationsstatus
+      options:
+        - nicht verifiziert
+        - in verifikation
+        - verifiziert
+    validations:
+      required: true
+  - type: input
+    id: known_issue_ref
+    attributes:
+      label: Known-Issue-Referenz
+      description: Bestehenden kanonischen Eintrag angeben oder NEW fuer neuen Eintrag
+      placeholder: "KI-001 oder NEW"
+    validations:
+      required: true
+  - type: input
+    id: solution_path
+    attributes:
+      label: Link auf Loesungspfad
+      description: README-/Issue-Link mit Workaround/Fix und Verifikation
+      placeholder: "https://github.com/<org>/<repo>/blob/main/react-md3/README.md#..."
+    validations:
+      required: true
