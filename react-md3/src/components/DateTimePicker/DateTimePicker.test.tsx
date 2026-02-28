@@ -26,6 +26,10 @@ describe('DateTimePicker', () => {
     const dayButton = getByRole('button', { name: new RegExp(`15, ${new Date().getFullYear()}$`, 'i') })
     fireEvent.click(dayButton)
 
+    // Confirm selection by clicking OK
+    const okButton = getByRole('button', { name: /ok/i })
+    fireEvent.click(okButton)
+
     const currentMonth = String(new Date().getMonth() + 1).padStart(2, '0')
     const currentYear = new Date().getFullYear()
 

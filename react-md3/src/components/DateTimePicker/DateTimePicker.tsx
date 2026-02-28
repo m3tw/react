@@ -3,8 +3,6 @@ import { useId, useState } from 'react'
 import { Calendar } from './Calendar'
 import './DateTimePicker.css'
 
-import './DateTimePicker.css'
-
 type DateTimePickerProps = {
   label: string
   value?: string
@@ -38,7 +36,7 @@ export function DateTimePicker({
     onValueChange?.(nextValue)
   }
 
-  // Format YYYY-MM-DD
+  // Format YYYY-MM-DD for display
   const formatDate = (dateString: string) => {
     if (!dateString) return ''
     const match = dateString.match(/^(\d{4})-(\d{2})-(\d{2})/)
@@ -71,9 +69,9 @@ export function DateTimePicker({
       </div>
       
       {isCalendarOpen && (
-        <div className="m3-date-time-picker__popover" role="dialog" aria-modal="false" aria-label={label}>
-          <div className="m3-date-time-picker__backdrop" onClick={() => setIsCalendarOpen(false)} aria-hidden="true" />
-          <div className="m3-date-time-picker__calendar-container">
+        <div className="m3-date-time-picker__modal-overlay" role="dialog" aria-modal="true" aria-label={label}>
+          <div className="m3-date-time-picker__scrim" onClick={() => setIsCalendarOpen(false)} aria-hidden="true" />
+          <div className="m3-date-time-picker__modal-container">
             <Calendar 
               value={currentValue ? new Date(currentValue) : undefined} 
               onChange={(date) => {
@@ -81,8 +79,9 @@ export function DateTimePicker({
                 const month = String(date.getMonth() + 1).padStart(2, '0');
                 const day = String(date.getDate()).padStart(2, '0');
                 updateValue(`${year}-${month}-${day}`);
-                setIsCalendarOpen(false); // Auto-close on selection
+                setIsCalendarOpen(false);
               }}
+              onCancel={() => setIsCalendarOpen(false)}
               minDate={min ? new Date(min) : undefined}
               maxDate={max ? new Date(max) : undefined}
             />
@@ -92,3 +91,4 @@ export function DateTimePicker({
     </div>
   )
 }
+
