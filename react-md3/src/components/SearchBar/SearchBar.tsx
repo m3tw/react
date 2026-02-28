@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { IconButton } from "../IconButton";
 
 import './SearchBar.css'
@@ -18,6 +18,8 @@ export function SearchBar({
 }: SearchBarProps) {
   const [query, setQuery] = useState(defaultValue)
   const [error, setError] = useState<string | null>(null)
+  
+  const inputRef = useRef<HTMLInputElement>(null)
 
   const submit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -32,6 +34,12 @@ export function SearchBar({
     onSearch?.(nextQuery)
   }
 
+  const handleClear = () => {
+    setQuery('')
+    setError(null)
+    inputRef.current?.focus()
+  }
+
   return (
     <form aria-label={label} className="m3-search-bar" onSubmit={submit} role="search">
       <div className="m3-search-bar__container">
@@ -42,6 +50,7 @@ export function SearchBar({
           </svg>
         </div>
         <input
+          ref={inputRef}
           aria-label={label}
           className="m3-search-bar__input"
           id="m3-search-bar-input"
@@ -51,6 +60,19 @@ export function SearchBar({
           value={query}
         />
         <div className="m3-search-bar__trailing-actions">
+          {query.length > 0 && (
+            <IconButton
+              ariaLabel="Löschen"
+              icon={
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <line x1="18" y1="6" x2="6" y2="18" />
+                  <line x1="6" y1="6" x2="18" y2="18" />
+                </svg>
+              }
+              onClick={handleClear}
+              type="button"
+            />
+          )}
           <IconButton
             ariaLabel="Suchen"
             icon={
