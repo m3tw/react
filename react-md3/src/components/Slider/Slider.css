@@ -31,7 +31,7 @@
   opacity: 0;
   margin: 0;
   cursor: pointer;
-  z-index: 2; /* Needs to be above everything to catch clicks/drags */
+  z-index: 3; /* Needs to be above everything to catch clicks/drags */
   -webkit-tap-highlight-color: transparent;
 }
 
@@ -52,7 +52,7 @@
   right: 0;
   height: 16px; 
   border-radius: 8px;
-  background-color: var(--md-sys-color-surface-container-highest);
+  background-color: var(--md-sys-color-secondary-container); /* M3 Spec */
 }
 
 .m3-slider__track--active {
@@ -60,27 +60,57 @@
   left: 0;
   height: 16px;
   border-radius: 8px;
-  background-color: var(--md-sys-color-primary);
+  background-color: var(--md-sys-color-primary); /* M3 Spec */
   /* width is set via inline styles in TSX */
 }
 
-/* Thumb */
+/* Thumb Container */
 .m3-slider__thumb-container {
   position: absolute;
-  /* Top 50% translation handles vertical alignment relative to container */
   top: 50%;
   transform: translate(-50%, -50%);
   width: 40px; /* Ripple size */
-  height: 40px;
+  height: 48px; /* Give room in container */
   display: flex;
   align-items: center;
   justify-content: center;
   pointer-events: none;
+  z-index: 2;
   /* left is set via inline styles in TSX */
 }
 
+/* State Layer (Hover/Focus) */
+.m3-slider__thumb-container::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: transparent;
+  transition: background-color var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard);
+}
+
+.m3-slider__input:hover:not(:disabled) ~ .m3-slider__thumb-container::before {
+  background-color: color-mix(in srgb, var(--md-sys-color-primary) 8%, transparent);
+}
+
+.m3-slider__input:focus-visible:not(:disabled) ~ .m3-slider__thumb-container::before {
+  background-color: color-mix(in srgb, var(--md-sys-color-primary) 12%, transparent);
+}
+
+.m3-slider__input:active:not(:disabled) ~ .m3-slider__thumb-container::before {
+  background-color: color-mix(in srgb, var(--md-sys-color-primary) 12%, transparent);
+}
+
+/* Ripple */
 .m3-slider__ripple {
   position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   width: 40px;
   height: 40px;
   border-radius: 50%;
@@ -88,33 +118,70 @@
   --md-ripple-color: var(--md-sys-color-primary);
 }
 
+/* Thumb (M3 vertical pill) */
 .m3-slider__thumb {
   position: relative;
   z-index: 1;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
+  width: 4px; /* Unpressed */
+  height: 44px;
+  border-radius: 2px;
   background-color: var(--md-sys-color-primary);
-  box-shadow: var(--md-sys-elevation-level1);
-  transition: transform var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard);
+  transition: width var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard),
+              transform var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard),
+              background-color var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard);
+  transform-origin: center center;
 }
 
-/* Hover & Focus Interactions via the native input state */
-.m3-slider__input:hover:not(:disabled) ~ .m3-slider__thumb-container .m3-slider__thumb {
-  box-shadow: 0 0 0 10px color-mix(in srgb, var(--md-sys-color-primary) 8%, transparent);
-}
-
-.m3-slider__input:focus-visible ~ .m3-slider__thumb-container .m3-slider__thumb {
-  box-shadow: 0 0 0 10px color-mix(in srgb, var(--md-sys-color-primary) 12%, transparent);
-}
-
+/* Active Thumb Shrink animation */
 .m3-slider__input:active:not(:disabled) ~ .m3-slider__thumb-container .m3-slider__thumb {
-  box-shadow: 0 0 0 10px color-mix(in srgb, var(--md-sys-color-primary) 12%, transparent);
+  width: 2px;
 }
 
-/* Firefox doesn't support :has or :active on siblings well, 
-   so we are using standard state layers above using box-shadow instead of actual ripple component targeting 
-   for the slider. The Ripple component was added for visual completeness and touch devices. */
+/* Value Indicator Tooltip */
+.m3-slider__value-indicator {
+  position: absolute;
+  top: -46px; /* Place above the thumb */
+  left: 50%;
+  opacity: 0;
+  transform: translateX(-50%) scale(0.5);
+  transform-origin: bottom center;
+  background-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+  border-radius: 12px;
+  padding: 6px 12px;
+  font-family: var(--md-sys-typescale-label-large-font-family);
+  font-size: var(--md-sys-typescale-label-large-font-size);
+  font-weight: var(--md-sys-typescale-label-large-font-weight);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  pointer-events: none;
+  transition: transform var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard),
+              opacity var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard);
+  box-shadow: var(--md-sys-elevation-level1);
+}
+
+/* Triangle for tooltip */
+.m3-slider__value-indicator::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 50%;
+  transform: translateX(-50%) rotate(45deg);
+  width: 10px;
+  height: 10px;
+  background-color: var(--md-sys-color-primary);
+  border-radius: 1px;
+}
+
+/* Show Value Indicator on hover, focus, active */
+.m3-slider__input:hover:not(:disabled) ~ .m3-slider__thumb-container .m3-slider__value-indicator,
+.m3-slider__input:focus-visible:not(:disabled) ~ .m3-slider__thumb-container .m3-slider__value-indicator,
+.m3-slider__input:active:not(:disabled) ~ .m3-slider__thumb-container .m3-slider__value-indicator {
+  opacity: 1;
+  transform: translateX(-50%) scale(1);
+}
 
 /* Disabled state */
 .m3-slider--disabled .m3-slider__input {
@@ -135,7 +202,6 @@
 
 .m3-slider--disabled .m3-slider__thumb {
   background-color: color-mix(in srgb, var(--md-sys-color-on-surface) 38%, transparent);
-  box-shadow: none;
 }
 
 .m3-slider--disabled .m3-slider__ripple {
