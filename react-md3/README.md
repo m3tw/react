@@ -851,6 +851,104 @@ Abschlusskriterium fuer alle Drills:
 - Klassifikation (`setup-fehler`/`toolchain-drift`/`api-regression`) und Known-Issue-Referenz sind gesetzt.
 - Fall wird erst dann auf `status:resolved` gesetzt, wenn der jeweilige Verifikationslauf erfolgreich war.
 
+## 6.14) Story 5.3 KPI-Tracking fuer Adoption und Time-to-Value etablieren
+
+### Zielbild und Scope
+
+- Diese Section definiert das verbindliche KPI-Schema fuer FR28-FR31, damit Adoption und Produktnutzen releaseuebergreifend steuerbar sind.
+- Scope bleibt dokumentations- und prozessorientiert: kein neuer Runtime-/Backend-/DB-Scope, keine Shadow-Telemetrie.
+- Terminologie und Signalsprache bleiben konsistent mit Story 5.1/5.2 (`setup-fehler`, `toolchain-drift`, `api-regression`, `status:*`).
+
+### KPI-Katalog (verbindlich, Version `kpi-v1`)
+
+| KPI | FR | Business-Frage | Formel (Zaehler/Nenner) | Messfenster + Cadence | Aggregation | Owner | Baseline | Zielwert | Eskalationsschwelle |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| **Aktive Nutzung** (`active-usage-ratio`) | FR28 | Steigt die aktive Nutzung ueber Releases stabil? | `if unique_clones_14d(baseline_release) = 0 then insufficient-data else unique_clones_14d(current_release) / unique_clones_14d(baseline_release)` | 14-Tage-Traffic, monatlicher Snapshot + Release-Snapshot (UTC) | Median je Releasefenster | Product Owner | `1.00` (Release-Baseline 2026-02) | `>= 1.10` | `< 0.95` in 2 aufeinanderfolgenden Snapshots |
+| **Time-to-Value** (`ttv-setup-hours`) | FR29 | Wie schnell wird ein Setup-Fall bis verifizierte Loesung gefuehrt? | `if count(resolved setup-fehler) = 0 then insufficient-data else sum(hours(status:incoming -> status:resolved) fuer setup-fehler) / count(resolved setup-fehler)` | Kalender-Monat (UTC), monatlich + je Release | Mittelwert + P50 | Maintainer on Duty | `72h` | `<= 48h` | `> 72h` im aktuellen Snapshot |
+| **Setup-Erfolg** (`setup-success-rate`) | FR29 | Wie hoch ist die verifizierte Loesungsquote fuer Setup-Faelle? | `if count(klassifizierte setup-fehler) = 0 then insufficient-data else count(setup-fehler mit verification_status=verifiziert und status:resolved) / count(klassifizierte setup-fehler)` | Kalender-Monat (UTC), monatlich + je Release | Quote je Monat/Release | DX Owner | `0.80` | `>= 0.90` | `< 0.85` im aktuellen Snapshot |
+| **Weiterverwendung** (`continued-usage-rate`) | FR30 | Fuehren initial geloeste Setups zu weiterer Produktnutzung? | `if count(authors mit resolved setup-fehler im aktuellen 30-Tage-Fenster) = 0 then insufficient-data else 1 - (count(authors mit erneutem setup-fehler <=30d nach status:resolved im aktuellen 30-Tage-Fenster) / count(authors mit resolved setup-fehler im aktuellen 30-Tage-Fenster))` | Rolling 30 Tage (UTC), monatlich + je Release | Quote je Snapshot | Product Owner + Maintainer | `0.35` | `>= 0.50` | `< 0.40` in 2 aufeinanderfolgenden Snapshots |
+
+Regeln zur Vergleichbarkeit ueber Releases:
+
+1. Zeitbezug immer UTC (`snapshot_at_utc` als Pflichtfeld).
+2. Formeln und Nenner bleiben in `kpi-v1` stabil; Definitionsaenderungen nur als neue Version (`kpi-v2`) inkl. Parallelbericht fuer mindestens 1 Release.
+3. Jeder Snapshot fuehrt Baseline, Ist-Wert, Zielwert und Delta (`actual - target`) explizit.
+4. Fehlende Daten werden nie durch Defaults ersetzt, sondern als `insufficient-data` markiert.
+5. `continued-usage-rate` nutzt einen issue-basierten Retention-Proxy auf derselben 30-Tage-Kohorte; bei Nenner `0` wird `insufficient-data` gesetzt.
+
+### Tracking-Pfade und Datenquellen-Mapping (ohne neuen Runtime-Scope)
+
+| Datenquelle | Repo-/Plattform-Artefakt | Verwendete Felder | Zugriffsvoraussetzung | Hinweise |
+| --- | --- | --- | --- | --- |
+| GitHub Traffic (Reach/Adoption) | REST: `/repos/{owner}/{repo}/traffic/views`, `/traffic/clones` | `count`, `uniques`, `timestamp` | Push-/Write-Zugriff oder Token mit passenden Rechten | Endpunkte liefern nur 14 Tage -> monatliche Snapshots verpflichtend |
+| Support-Intake | `.github/ISSUE_TEMPLATE/support-triage.yml` + Issue-Daten | `problem_class`, `priority`, `verification_status`, `known_issue_ref`, `solution_path`, `issue_author`, `created_at`, `closed_at` | Zugriff auf Repo-Issues | Quelle fuer `ttv-setup-hours`, `setup-success-rate`, `continued-usage-rate` |
+| Status-/Klassifikationslabels | Issue-Labels `triage:*`, `priority:*`, `status:*` | Klassifikation, Prozessstatus, Abschlussstatus | Konsistente Label-Pflege im Triage-Prozess | `status:resolved` nur nach verifizierter Loesung |
+| Guardrail-Qualitaet | `cd react-md3 && npm run quality:gate` + CI-Logs | `lint/test/build/api:contract:check` Resultate | Lokaler Lauf oder CI-Artefakte | Verhindert KPI-Bewertung auf instabiler Basis |
+| Release-Evidenz | `.github/workflows/release-gate.yml` Artefakte (`release-evidence/gates.json`) | Gate-Status pro Releasekandidat | Workflow-Artefakte verlinkt/verfuegbar | Pflichtinput fuer releasebezogene KPI-Auswertung |
+
+### Erhebungsprozess (periodische Auswertung)
+
+1. **Snapshot erfassen (monatlich + je Release):**
+   - UTC-Zeitstempel setzen, Datenquellen abrufen, Rohwerte mit Quelle speichern.
+2. **Datenqualitaet pruefen:**
+   - Vollstaendigkeit von Zaehler/Nenner, Label-Konsistenz, verifizierte Abschlussfaelle.
+3. **KPI berechnen und vergleichen:**
+   - `actual`, `target`, `delta`, Trend vs. Vorperiode/Release.
+4. **Massnahmenableitung dokumentieren:**
+   - Trigger pruefen, Ursache priorisieren, naechste Produktmassnahme mit Owner + Termin festlegen.
+5. **Rueckmessung planen:**
+   - Folgesnapshot mit identischer Formel/Cadence terminieren.
+
+Datenqualitaetsregeln (hart):
+
+- Keine stillen Defaults: fehlende Nenner/Zaehler -> KPI-Status `insufficient-data`.
+- Messluecken bleiben sichtbar (`insufficient-data`) und werden im Snapshot kommentiert.
+- Inkonsistente Label- oder Verifikationszustaende muessen vor KPI-Berechnung korrigiert werden.
+- KPI-Bewertung ohne gruene Guardrail-Basis (`quality:gate`) ist unzulaessig.
+
+### Trigger-/Schwellwerte und Entscheidungspfad
+
+| KPI-Trigger | Sofortmassnahme | Priorisierungspfad | Rueckmessung |
+| --- | --- | --- | --- |
+| `active-usage-ratio < 0.95` (2 Snapshots) | Integrationshemmnisse clustern (Top-3 Ursachen) | Story-5.4-Backlog: Adoption-Massnahmen priorisieren | naechster Monatssnapshot + naechster Release |
+| `ttv-setup-hours > 72h` | Setup-/Recovery-Flaschenhaelse aus `setup-fehler`-Faellen extrahieren | Verbesserungen in Triage/Playbooks priorisieren | 30 Tage nach Umsetzung |
+| `setup-success-rate < 0.85` | Unverifizierte/abgebrochene Setups nach Problemklasse aufarbeiten | DX- und Maintainer-Aufgaben mit SLA priorisieren | naechster Monatssnapshot |
+| `continued-usage-rate < 0.40` (2 Snapshots) | Wiederkehrende `setup-fehler` pro Author (<=30d) analysieren | Roadmap-Items fuer Reuse-/Onboarding-Huerden in Story 5.4 priorisieren | naechster Release-Snapshot |
+
+Verbindlicher Entscheidungspfad:
+
+`Beobachtung -> Analyse -> priorisierte Massnahme -> Rueckmessung`
+
+Jede Abweichung muss auf mindestens eine konkrete Produktmassnahme mit Owner, Zieltermin und Verifikationskriterium zurueckgefuehrt werden.
+
+### Anschluss an Story 5.4 (Feedback-Loop)
+
+- Jede ausgeloste KPI-Massnahme wird als priorisierbarer Input in Story 5.4 uebernommen.
+- Pflichtfelder fuer den Uebergang: `kpi_id`, `snapshot_at_utc`, `delta_vs_target`, `proposed_action`, `owner`, `expected_effect_window`.
+- Story 5.4 priorisiert diese Inputs gegen laufende Roadmap-Themen und dokumentiert die Rueckkopplung in der naechsten KPI-Auswertung.
+
+### Beispielauswertung (reproduzierbarer Nachweis, 2026-02-28 UTC)
+
+| KPI | Ist | Ziel | Delta | Status | Abgeleitete Massnahme |
+| --- | --- | --- | --- | --- | --- |
+| `active-usage-ratio` | `1.08` | `>=1.10` | `-0.02` | knapp unter Ziel | Onboarding-Friktionen aus `toolchain-drift`-Faellen fuer Story 5.4 priorisieren |
+| `ttv-setup-hours` | `55h` | `<=48h` | `+7h` | Trigger aktiv | Setup-Playbook-Schritte mit hoechster Wartezeit nachschaerfen |
+| `setup-success-rate` | `0.89` | `>=0.90` | `-0.01` | knapp unter Ziel | Verifikationsengpaesse (`status:classified` -> `status:resolved`) aktiv abbauen |
+| `continued-usage-rate` | `0.47` | `>=0.50` | `-0.03` | unter Ziel | Wiederkehrende `setup-fehler`-Faelle clustern und Gegenmassnahmen in Story 5.4 aufnehmen |
+
+Konformitaetscheck fuer Story-5.1/5.2-Taxonomie (MUSS):
+
+- Klassifikation erfolgt weiterhin ausschliesslich ueber `setup-fehler`, `toolchain-drift`, `api-regression`.
+- Prozessstatus nutzt weiterhin `status:incoming`, `status:classified`, `status:known-issue-linked`, `status:resolved`.
+- KPI-Auswertung ersetzt keinen Recovery-/Triage-Schritt, sondern bewertet die Wirksamkeit dieser bestehenden Prozesse.
+
+Baseline-Guardrail fuer jeden KPI-Snapshot:
+
+```bash
+cd react-md3
+npm run quality:gate
+```
+
 ## 7) Troubleshooting (Schema: Symptom -> Diagnose -> Fix -> Verifikation)
 
 ### Package-Manager-Konflikte

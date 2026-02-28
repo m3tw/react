@@ -309,6 +309,14 @@ Erwartung: Der Lauf bricht mit einem expliziten `[api-regression]`-Signal ab.
 - Playbooks bleiben direkt auf Story-5.1-Klassen und kanonische Known-Issue-IDs ausgerichtet (`setup-fehler`, `toolchain-drift`, `api-regression`; `KI-001` bis `KI-003`).
 - Baseline-Guardrail und Recovery-Drills: `cd react-md3 && npm run quality:gate` plus drei reproduzierbare Dry-Run-Szenarien (je Klasse ein Drill).
 
+## Story 5.3 KPI-Tracking fuer Adoption und Time-to-Value etablieren
+
+- Operatives KPI-Set (Single Source of Truth): [`react-md3/README.md` Abschnitt 6.14](react-md3/README.md#614-story-53-kpi-tracking-fuer-adoption-und-time-to-value-etablieren).
+- Verbindlich definierte Kernmetriken fuer FR28-FR31: aktive Nutzung, Time-to-Value, Setup-Erfolg und Weiterverwendung (inkl. Formel, Messfenster, Owner, Baseline/Zielwert, Eskalationsschwelle).
+- Tracking bleibt dokumentations-/prozessbasiert und nutzt nur bestehende Datenquellen: GitHub-Traffic, Issue-/Label-Signale aus Support-Triage sowie Guardrail-/Release-Evidenz.
+- Vergleichbarkeit ueber Releases ist fixiert (UTC-Snapshots, stabile KPI-Versionierung, explizite Definition-Change-Policy ohne stille Defaults).
+- KPI-Abweichungen werden ueber einen klaren Entscheidungspfad in priorisierte Produktmassnahmen ueberfuehrt (Beobachtung -> Analyse -> Massnahme -> Rueckmessung) und direkt als Input fuer Story 5.4 genutzt.
+
 ## Initialisierung und Verifikation (Story 1.1)
 
 ```bash
