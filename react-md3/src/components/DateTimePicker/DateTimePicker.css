@@ -1,20 +1,58 @@
 .m3-date-time-picker {
-  display: grid;
-  gap: 0.25rem;
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+  min-width: 200px;
 }
 
 .m3-date-time-picker__label {
-  font-size: 0.86rem;
-  font-weight: 600;
-  color: #334155;
+  position: absolute;
+  top: -8px;
+  left: 12px;
+  padding: 0 4px;
+  background-color: var(--md-sys-color-surface);
+  color: var(--md-sys-color-primary);
+  z-index: 1;
+  font-family: var(--md-sys-typescale-body-small-font-family);
+  font-weight: var(--md-sys-typescale-body-small-font-weight);
+  font-size: var(--md-sys-typescale-body-small-font-size);
+  line-height: var(--md-sys-typescale-body-small-line-height);
+  letter-spacing: var(--md-sys-typescale-body-small-letter-spacing);
 }
 
 .m3-date-time-picker input {
-  border: 1px solid #cbd5e1;
-  border-radius: 0.5rem;
-  padding: 0.45rem 0.55rem;
-  font: inherit;
+  height: 56px; /* M3 input height */
+  border: 1px solid var(--md-sys-color-outline);
+  border-radius: 4px; /* M3 extra small radius */
+  padding: 8px 16px;
+  background: transparent;
+  color: var(--md-sys-color-on-surface);
+  font-family: var(--md-sys-typescale-body-large-font-family);
+  font-weight: var(--md-sys-typescale-body-large-font-weight);
+  font-size: var(--md-sys-typescale-body-large-font-size);
+  line-height: var(--md-sys-typescale-body-large-line-height);
+  letter-spacing: var(--md-sys-typescale-body-large-letter-spacing);
+  transition: border-color var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard);
   width: 100%;
-  box-sizing: border-box;
-  min-width: 0;
+}
+
+.m3-date-time-picker input:hover {
+  border-color: var(--md-sys-color-on-surface);
+}
+
+.m3-date-time-picker input:focus-visible {
+  outline: none;
+  border-color: var(--md-sys-color-primary);
+  border-width: 2px;
+  padding: 7px 15px; /* Adjust padding to prevent layout shift */
+}
+
+.m3-date-time-picker input:disabled {
+  border-color: color-mix(in srgb, var(--md-sys-color-on-surface) 12%, transparent);
+  color: color-mix(in srgb, var(--md-sys-color-on-surface) 38%, transparent);
+  pointer-events: none;
+}
+
+.m3-date-time-picker:has(input:disabled) .m3-date-time-picker__label {
+  color: color-mix(in srgb, var(--md-sys-color-on-surface) 38%, transparent);
 }
