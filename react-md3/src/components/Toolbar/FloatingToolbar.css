@@ -1,0 +1,24 @@
+.m3-floating-toolbar {
+  display: inline-flex;
+  height: 64px;
+  padding: 8px;
+  gap: 4px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  box-shadow: var(--md-sys-elevation-level3);
+  box-sizing: border-box;
+  background-color: var(--md-sys-color-surface-container);
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.m3-floating-toolbar--vertical {
+  flex-direction: column;
+  height: auto;
+  width: 64px;
+}
+
+.m3-floating-toolbar--vibrant {
+  background-color: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+}

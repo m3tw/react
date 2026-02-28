@@ -24,6 +24,8 @@ import {
   RadioGroup,
   SearchBar,
   BottomSheet,
+  DockedToolbar,
+  FloatingToolbar,
   SideSheet,
   Slider,
   Snackbar,
@@ -497,6 +499,55 @@ function App() {
                 actionLabel="Undo"
                 onAction={() => setSnackbarOpen(false)}
               />
+            </Surface>
+
+            {/* Toolbars */}
+            <Surface as="section" elevation={1} className="component-section">
+              <h2>Toolbars</h2>
+              <Divider />
+              <div className="component-col">
+                <h3>Docked Toolbar</h3>
+                <DockedToolbar ariaLabel="Docked standard toolbar">
+                  <IconButton ariaLabel="Home" icon={IconDashboard} />
+                  <IconButton ariaLabel="Projects" icon={IconProjects} />
+                  <IconButton ariaLabel="Reports" icon={IconReports} />
+                </DockedToolbar>
+                <DockedToolbar color="vibrant" ariaLabel="Docked vibrant toolbar">
+                  <IconButton ariaLabel="Home" icon={IconDashboard} />
+                  <IconButton ariaLabel="Projects" icon={IconProjects} />
+                  <IconButton ariaLabel="Reports" icon={IconReports} />
+                </DockedToolbar>
+              </div>
+              <div className="component-col">
+                <h3>Floating Toolbar (Horizontal)</h3>
+                <div className="component-row">
+                  <FloatingToolbar ariaLabel="Floating standard toolbar">
+                    <IconButton ariaLabel="Home" icon={IconDashboard} />
+                    <IconButton ariaLabel="Projects" icon={IconProjects} />
+                    <IconButton ariaLabel="Reports" icon={IconReports} />
+                  </FloatingToolbar>
+                  <FloatingToolbar color="vibrant" ariaLabel="Floating vibrant toolbar">
+                    <IconButton ariaLabel="Home" icon={IconDashboard} />
+                    <IconButton ariaLabel="Projects" icon={IconProjects} />
+                    <IconButton ariaLabel="Reports" icon={IconReports} />
+                  </FloatingToolbar>
+                </div>
+              </div>
+              <div className="component-col">
+                <h3>Floating Toolbar (Vertical)</h3>
+                <div className="component-row">
+                  <FloatingToolbar orientation="vertical" ariaLabel="Vertical standard toolbar">
+                    <IconButton ariaLabel="Home" icon={IconDashboard} />
+                    <IconButton ariaLabel="Projects" icon={IconProjects} />
+                    <IconButton ariaLabel="Reports" icon={IconReports} />
+                  </FloatingToolbar>
+                  <FloatingToolbar orientation="vertical" color="vibrant" ariaLabel="Vertical vibrant toolbar">
+                    <IconButton ariaLabel="Home" icon={IconDashboard} />
+                    <IconButton ariaLabel="Projects" icon={IconProjects} />
+                    <IconButton ariaLabel="Reports" icon={IconReports} />
+                  </FloatingToolbar>
+                </div>
+              </div>
             </Surface>
 
             {/* Additional Navigation */}
