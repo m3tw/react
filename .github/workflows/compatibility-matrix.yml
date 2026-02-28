@@ -108,7 +108,7 @@ jobs:
               pnpm install --frozen-lockfile=false
               ;;
             yarn)
-              yarn install --mode=skip-build
+              yarn install --mode=skip-build --no-immutable
               ;;
             bun)
               bun install
