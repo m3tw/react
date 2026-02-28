@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { IconButton } from "../IconButton";
 
 import './SearchBar.css'
 
@@ -33,20 +34,36 @@ export function SearchBar({
 
   return (
     <form aria-label={label} className="m3-search-bar" onSubmit={submit} role="search">
-      <label className="m3-search-bar__label" htmlFor="m3-search-bar-input">
-        {label}
-      </label>
-      <div className="m3-search-bar__controls">
+      <div className="m3-search-bar__container">
+        <div className="m3-search-bar__leading-icon" aria-hidden="true">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <circle cx="11" cy="11" r="8" />
+            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+          </svg>
+        </div>
         <input
+          aria-label={label}
+          className="m3-search-bar__input"
           id="m3-search-bar-input"
           onChange={(event) => setQuery(event.target.value)}
           placeholder={placeholder}
           type="search"
           value={query}
         />
-        <button type="submit">Suchen</button>
+        <div className="m3-search-bar__trailing-actions">
+          <IconButton
+            ariaLabel="Suchen"
+            icon={
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12" />
+                <polyline points="12 5 19 12 12 19" />
+              </svg>
+            }
+            type="submit"
+          />
+        </div>
       </div>
-      {error ? <p role="alert">{error}</p> : null}
+      {error ? <p className="m3-search-bar__error" role="alert">{error}</p> : null}
     </form>
   )
 }

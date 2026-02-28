@@ -1,4 +1,5 @@
 import { useEffect, useId, useRef, useState } from 'react'
+import { Button } from "../Button";
 import type { KeyboardEvent, ReactNode } from 'react'
 
 import './Dialog.css'
@@ -179,16 +180,12 @@ export function Dialog({
         {children ? <div className="m3-dialog__content">{children}</div> : null}
 
         <div className="m3-dialog__actions">
-          <button className="m3-dialog__action" onClick={closeAsCancel} type="button">
+          <Button onClick={closeAsCancel} variant="text">
             {cancelLabel}
-          </button>
-          <button
-            className="m3-dialog__action m3-dialog__action--primary"
-            onClick={closeAsConfirm}
-            type="button"
-          >
+          </Button>
+          <Button onClick={closeAsConfirm} variant="text">
             {confirmLabel}
-          </button>
+          </Button>
         </div>
       </div>
     </div>

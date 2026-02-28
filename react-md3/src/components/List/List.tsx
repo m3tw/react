@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react'
+import { Ripple } from "../Ripple";
 
 import './List.css'
 
@@ -55,22 +56,26 @@ export function List({
 
   return (
     <ul aria-label={ariaLabel} className="m3-list" role="listbox">
-      {visibleItems.map((item) => (
-        <li key={item.value}>
-          <button
-            aria-selected={activeValue === item.value ? 'true' : 'false'}
-            className={['m3-list__item', activeValue === item.value ? 'm3-list__item--active' : '']
-              .filter(Boolean)
-              .join(' ')}
-            disabled={item.disabled}
-            onClick={() => selectItem(item)}
-            role="option"
-            type="button"
-          >
-            {item.label}
-          </button>
-        </li>
-      ))}
+      {visibleItems.map((item) => {
+        const isActive = activeValue === item.value
+        return (
+          <li key={item.value} className="m3-list__item-container">
+            <button
+              aria-selected={isActive ? 'true' : 'false'}
+              className={['m3-list__item', isActive ? 'm3-list__item--active' : '', item.disabled ? 'm3-list__item--disabled' : '']
+                .filter(Boolean)
+                .join(' ')}
+              disabled={item.disabled}
+              onClick={() => selectItem(item)}
+              role="option"
+              type="button"
+            >
+              <Ripple />
+              <span className="m3-list__item-text">{item.label}</span>
+            </button>
+          </li>
+        )
+      })}
     </ul>
   )
 }

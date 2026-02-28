@@ -31,7 +31,7 @@ export function IconButton({
       className={['m3-icon-button', selected ? 'm3-icon-button--selected' : '', className ?? '']
         .filter(Boolean)
         .join(' ')}
-      type="button"
+      type={props.type ?? 'button'}
     >
       <Ripple />
       <span aria-hidden="true">{icon}</span>

@@ -1,46 +1,57 @@
 .m3-carousel {
-  display: grid;
-  gap: 0.5rem;
-  border: 1px solid var(--md-sys-color-outline-variant, #cbd5e1);
-  border-radius: 0.75rem;
-  padding: 0.75rem;
-  background: var(--md-sys-color-surface-container-low, #f8fafc);
-  color: var(--md-sys-color-on-surface, #0f172a);
+  --m3-carousel-bg: var(--md-sys-color-surface-container-low);
+  --m3-carousel-color: var(--md-sys-color-on-surface);
+  
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  border-radius: 28px; /* M3 standard large component radius */
+  padding: 24px; /* Generous padding for a surface */
+  background-color: var(--m3-carousel-bg);
+  color: var(--m3-carousel-color);
+  box-shadow: var(--md-sys-elevation-level1);
 }
 
 .m3-carousel__item {
   margin: 0;
-  font-weight: 600;
+  font-family: var(--md-sys-typescale-headline-small-font-family);
+  font-weight: var(--md-sys-typescale-headline-small-font-weight);
+  font-size: var(--md-sys-typescale-headline-small-font-size);
+  line-height: var(--md-sys-typescale-headline-small-line-height);
+  letter-spacing: var(--md-sys-typescale-headline-small-letter-spacing);
 }
 
 .m3-carousel__actions {
   display: flex;
-  gap: 0.5rem;
+  gap: 8px;
+  margin-top: auto;
 }
 
+/* We will use the proper M3 Button component for the actions in the TSX file shortly, 
+   but for now styling the native buttons if they exist */
 .m3-carousel__actions button {
   background: transparent;
-  border: 1px solid var(--md-sys-color-outline, #64748b);
-  border-radius: 0.5rem;
-  color: inherit;
+  border: 1px solid var(--md-sys-color-outline);
+  border-radius: 20px;
+  color: var(--md-sys-color-primary);
   cursor: pointer;
-  padding: 0.5rem 1rem;
-  font-family: inherit;
-  font-weight: 500;
+  padding: 0 24px;
+  height: 40px;
+  
+  font-family: var(--md-sys-typescale-label-large-font-family);
+  font-weight: var(--md-sys-typescale-label-large-font-weight);
+  font-size: var(--md-sys-typescale-label-large-font-size);
+  line-height: var(--md-sys-typescale-label-large-line-height);
+  letter-spacing: var(--md-sys-typescale-label-large-letter-spacing);
+  
+  transition: background-color var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard);
 }
 
 .m3-carousel__actions button:hover {
-  background: var(--md-sys-color-surface-container-highest, #e2e8f0);
+  background-color: color-mix(in srgb, var(--md-sys-color-primary) 8%, transparent);
 }
 
-@media (prefers-color-scheme: dark) {
-  .m3-carousel {
-    border-color: var(--md-sys-color-outline-variant, #334155);
-    background: var(--md-sys-color-surface-container-low, #1e293b);
-    color: var(--md-sys-color-on-surface, #f8fafc);
-  }
-  
-  .m3-carousel__actions button:hover {
-    background: var(--md-sys-color-surface-container-highest, #334155);
-  }
+.m3-carousel__actions button:focus-visible {
+  outline: 2px solid var(--md-sys-color-secondary);
+  outline-offset: 2px;
 }

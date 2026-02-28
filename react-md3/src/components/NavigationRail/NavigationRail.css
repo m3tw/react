@@ -1,67 +1,119 @@
 .m3-navigation-rail {
-  min-width: 11rem;
-  border: 1px solid #d0d7de;
-  border-radius: 1rem;
-  padding: 0.75rem 0.5rem;
-  background: #ffffff;
+  --m3-rail-width: 80px;
+  --m3-rail-bg: var(--md-sys-color-surface);
+  
+  width: var(--m3-rail-width);
+  min-width: var(--m3-rail-width); /* Strict width per M3 */
+  height: 100%;
+  min-height: 100vh;
+  border: none;
+  border-right: 1px solid var(--md-sys-color-outline-variant); /* Separate rail from content */
+  background-color: var(--m3-rail-bg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 12px 0; /* Padding top/bottom */
 }
 
+/* We don't really use compact in M3 strict, but we leave the modifier for compatibility */
 .m3-navigation-rail--compact {
-  min-width: 8rem;
+  width: 72px;
+  min-width: 72px;
 }
 
 .m3-navigation-rail__list {
-  display: grid;
-  gap: 0.375rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
   list-style: none;
   margin: 0;
   padding: 0;
-}
-
-.m3-navigation-rail__button {
   width: 100%;
-  border: 1px solid transparent;
-  border-radius: 999px;
+}
+
+.m3-navigation-rail__item {
+  width: 100%;
+}
+
+.m3-navigation-rail__destination {
+  --m3-rail-color: var(--md-sys-color-on-surface-variant);
+  --md-ripple-color: var(--md-sys-color-on-surface); /* Unselected ripple */
+  
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  border: none;
   background: transparent;
-  color: inherit;
-  font: inherit;
-  font-weight: 600;
-  text-align: left;
-  padding: 0.5rem 0.75rem;
+  color: var(--m3-rail-color);
   cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  min-height: 56px;
+  padding: 4px 0 16px; /* Space for the pill and label */
 }
 
-.m3-navigation-rail__button--compact {
-  font-size: 0.9rem;
+.m3-navigation-rail__indicator {
+  position: relative;
+  width: 56px;
+  height: 32px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard);
+  /* The icon would go here */
 }
 
-.m3-navigation-rail__button--active {
-  border-color: #3554d1;
-  background: #dbe3ff;
+.m3-navigation-rail__indicator .m3-ripple-container {
+  border-radius: inherit;
 }
 
-.m3-navigation-rail__button:focus-visible {
-  outline: 2px solid #3554d1;
+.m3-navigation-rail__label {
+  font-family: var(--md-sys-typescale-label-medium-font-family);
+  font-weight: var(--md-sys-typescale-label-medium-font-weight);
+  font-size: var(--md-sys-typescale-label-medium-font-size);
+  line-height: var(--md-sys-typescale-label-medium-line-height);
+  letter-spacing: var(--md-sys-typescale-label-medium-letter-spacing);
+  transition: opacity var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard);
+  z-index: 1;
+}
+
+/* Active State */
+.m3-navigation-rail__destination--active {
+  --m3-rail-color: var(--md-sys-color-on-surface);
+  --md-ripple-color: var(--md-sys-color-on-secondary-container);
+}
+
+.m3-navigation-rail__destination--active .m3-navigation-rail__indicator {
+  background-color: var(--md-sys-color-secondary-container);
+}
+
+.m3-navigation-rail__destination--active .m3-navigation-rail__label {
+  font-weight: 700;
+}
+
+/* Focus */
+.m3-navigation-rail__destination:focus-visible .m3-navigation-rail__indicator {
+  outline: 2px solid var(--md-sys-color-secondary);
   outline-offset: 2px;
 }
 
-.m3-navigation-rail__button:disabled {
+/* Disabled */
+.m3-navigation-rail__destination--disabled {
+  --m3-rail-color: color-mix(in srgb, var(--md-sys-color-on-surface) 38%, transparent);
   cursor: not-allowed;
-  opacity: 0.6;
+  pointer-events: none;
+  --md-ripple-color: transparent;
 }
 
-@media (prefers-color-scheme: dark) {
-  .m3-navigation-rail {
-    border-color: #334155;
-    background: #0f172a;
-  }
-
-  .m3-navigation-rail__button--active {
-    border-color: #93c5fd;
-    background: #1e293b;
-  }
-
-  .m3-navigation-rail__button:focus-visible {
-    outline-color: #93c5fd;
-  }
+.m3-navigation-rail__icon {
+  z-index: 1;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

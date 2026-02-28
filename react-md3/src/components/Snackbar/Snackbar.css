@@ -1,71 +1,65 @@
 .m3-snackbar {
+  --m3-snackbar-bg: var(--md-sys-color-inverse-surface);
+  --m3-snackbar-color: var(--md-sys-color-inverse-on-surface);
+  
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 0.75rem;
-  border: 1px solid #d0d7de;
-  border-radius: 0.75rem;
-  padding: 0.75rem 0.875rem;
-  background: #0f172a;
-  color: #f8fafc;
+  gap: 12px;
+  border: none;
+  border-radius: 4px; /* M3 Snackbar uses extra small shape */
+  padding: 14px 16px;
+  background-color: var(--m3-snackbar-bg);
+  color: var(--m3-snackbar-color);
+  box-shadow: var(--md-sys-elevation-level3);
+  min-width: 300px;
+  max-width: 600px;
 }
 
 .m3-snackbar--success {
-  border-color: #16a34a;
+  /* In M3, snackbars usually don't change background colors based on tone, but if they do, 
+     they might use custom color containers, we override bg here for legacy support */
+  --m3-snackbar-bg: #16a34a; 
+  --m3-snackbar-color: #ffffff;
 }
 
 .m3-snackbar--warning {
-  border-color: #d97706;
+  --m3-snackbar-bg: #d97706;
+  --m3-snackbar-color: #ffffff;
 }
 
 .m3-snackbar--error {
-  border-color: #dc2626;
+  /* M3 actually defines error containers */
+  --m3-snackbar-bg: var(--md-sys-color-error-container);
+  --m3-snackbar-color: var(--md-sys-color-on-error-container);
 }
 
 .m3-snackbar__message {
   margin: 0;
-  font-weight: 500;
+  font-family: var(--md-sys-typescale-body-medium-font-family);
+  font-weight: var(--md-sys-typescale-body-medium-font-weight);
+  font-size: var(--md-sys-typescale-body-medium-font-size);
+  line-height: var(--md-sys-typescale-body-medium-line-height);
+  letter-spacing: var(--md-sys-typescale-body-medium-letter-spacing);
 }
 
 .m3-snackbar__actions {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 8px;
 }
 
-.m3-snackbar__action,
-.m3-snackbar__dismiss {
-  border: 1px solid transparent;
-  border-radius: 999px;
-  background: transparent;
-  color: inherit;
-  font: inherit;
-  font-weight: 600;
-  cursor: pointer;
-  padding: 0.375rem 0.75rem;
-}
-
+/* Force standard Buttons used in Snackbar to adopt inverse colors where appropriate */
 .m3-snackbar__action {
-  border-color: #93c5fd;
+  --md-sys-color-primary: var(--md-sys-color-inverse-primary);
 }
 
 .m3-snackbar__dismiss {
-  border-color: #94a3b8;
+  --md-sys-color-primary: var(--m3-snackbar-color); /* Matches text color */
 }
 
-.m3-snackbar__action:focus-visible,
-.m3-snackbar__dismiss:focus-visible {
-  outline: 2px solid #93c5fd;
-  outline-offset: 2px;
-}
-
-@media (prefers-color-scheme: dark) {
-  .m3-snackbar {
-    border-color: #334155;
-    background: #020617;
-  }
-
-  .m3-snackbar__dismiss {
-    border-color: #475569;
-  }
+/* Specific overrides for error tone buttons to remain visible */
+.m3-snackbar--error .m3-snackbar__action,
+.m3-snackbar--error .m3-snackbar__dismiss {
+  --md-sys-color-primary: var(--md-sys-color-on-error-container);
 }

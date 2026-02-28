@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react'
+import { Ripple } from "../Ripple";
 
 import './Tabs.css'
 
@@ -63,7 +64,9 @@ export function Tabs({
             role="tab"
             type="button"
           >
-            {tab.label}
+            <Ripple />
+            <span className="m3-tabs__label">{tab.label}</span>
+            {isActive ? <div className="m3-tabs__indicator" /> : null}
           </button>
         )
       })}

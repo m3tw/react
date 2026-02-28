@@ -1,3 +1,5 @@
+import './M3ReferenceCard.css'
+
 type M3ReferenceCardProps = {
   title: string
   supportingText?: string

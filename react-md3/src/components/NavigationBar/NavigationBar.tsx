@@ -1,10 +1,12 @@
 import { useMemo, useState } from 'react'
+import { Ripple } from "../Ripple";
 
 import './NavigationBar.css'
 
 type NavigationBarDestination = {
   label: string
   value: string
+  icon?: React.ReactNode
   disabled?: boolean
   hidden?: boolean
 }
@@ -66,8 +68,9 @@ export function NavigationBar({
           <button
             aria-current={isActive ? 'page' : undefined}
             className={[
-              'm3-navigation-bar__button',
-              isActive ? 'm3-navigation-bar__button--active' : '',
+              'm3-navigation-bar__destination',
+              isActive ? 'm3-navigation-bar__destination--active' : '',
+              destination.disabled ? 'm3-navigation-bar__destination--disabled' : '',
             ]
               .filter(Boolean)
               .join(' ')}
@@ -76,7 +79,11 @@ export function NavigationBar({
             onClick={() => selectDestination(destination)}
             type="button"
           >
-            {destination.label}
+            <div className="m3-navigation-bar__indicator">
+              <Ripple />
+              {destination.icon ? <span className="m3-navigation-bar__icon">{destination.icon}</span> : null}
+            </div>
+            <span className="m3-navigation-bar__label">{destination.label}</span>
           </button>
         )
       })}

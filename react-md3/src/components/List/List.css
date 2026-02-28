@@ -1,23 +1,69 @@
 .m3-list {
+  --m3-list-bg: var(--md-sys-color-surface);
+  --m3-list-color: var(--md-sys-color-on-surface);
+  --m3-list-item-height: 56px; /* 1-line standard list height */
+  
   margin: 0;
-  padding: 0;
+  padding: 8px 0; /* M3 standard vertical padding for lists */
   list-style: none;
-  display: grid;
-  gap: 0.25rem;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--m3-list-bg);
+  border-radius: 8px; /* Standard surface rounding for lists/menus in our context */
+}
+
+.m3-list__item-container {
+  display: flex;
 }
 
 .m3-list__item {
+  position: relative;
   width: 100%;
   text-align: left;
-  border: 1px solid #cbd5e1;
-  border-radius: 0.5rem;
-  background: #ffffff;
-  color: #0f172a;
-  padding: 0.45rem 0.65rem;
-  font: inherit;
+  min-height: var(--m3-list-item-height);
+  background: transparent;
+  color: var(--m3-list-color);
+  padding: 0 16px;
+  margin: 0;
+  border: none;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  
+  font-family: var(--md-sys-typescale-body-large-font-family);
+  font-weight: var(--md-sys-typescale-body-large-font-weight);
+  font-size: var(--md-sys-typescale-body-large-font-size);
+  line-height: var(--md-sys-typescale-body-large-line-height);
+  letter-spacing: var(--md-sys-typescale-body-large-letter-spacing);
+  
+  /* Setting the Ripple color */
+  --md-ripple-color: var(--md-sys-color-on-surface);
 }
 
+.m3-list__item-text {
+  position: relative;
+  z-index: 1; /* Keep above state layer */
+}
+
+/* Active/Selected state changes layout/color slightly */
 .m3-list__item--active {
-  border-color: #2563eb;
-  background: #dbeafe;
+  /* Actually background changes in M3 are state-based, but active selection gets secondary container */
+  background-color: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+  --md-ripple-color: var(--md-sys-color-on-secondary-container);
+}
+
+/* Focus */
+.m3-list__item:focus-visible {
+  outline: 2px solid var(--md-sys-color-secondary);
+  outline-offset: -2px; /* inside the item */
+}
+
+/* Disabled state */
+.m3-list__item--disabled {
+  color: color-mix(in srgb, var(--md-sys-color-on-surface) 38%, transparent);
+  cursor: not-allowed;
+  pointer-events: none;
+  --md-ripple-color: transparent;
 }

@@ -1,33 +1,80 @@
 .m3-button-group {
+  --m3-button-group-outline: var(--md-sys-color-outline);
+  
   display: inline-flex;
-  border-radius: 0.75rem;
-  overflow: hidden;
-  border: 1px solid #cbd5e1;
+  border-radius: 20px; /* Standard M3 Segmented Button full rounding */
+  border: 1px solid var(--m3-button-group-outline);
+  overflow: hidden; /* Ensures child ripples are clipped */
 }
 
+/* Base button inside group */
 .m3-button-group__button {
-  border: 0;
-  border-right: 1px solid #cbd5e1;
-  background: #f8fafc;
-  color: #0f172a;
-  padding: 0.45rem 0.8rem;
-  font: inherit;
+  --m3-button-group-bg: transparent;
+  --m3-button-group-color: var(--md-sys-color-on-surface);
+  --md-ripple-color: var(--md-sys-color-on-surface); /* Unselected ripple */
+  
+  position: relative;
+  border: none;
+  background-color: var(--m3-button-group-bg);
+  color: var(--m3-button-group-color);
+  padding: 0 16px;
+  height: 40px; /* Standard M3 Button height */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  
+  font-family: var(--md-sys-typescale-label-large-font-family);
+  font-weight: var(--md-sys-typescale-label-large-font-weight);
+  font-size: var(--md-sys-typescale-label-large-font-size);
+  line-height: var(--md-sys-typescale-label-large-line-height);
+  letter-spacing: var(--md-sys-typescale-label-large-letter-spacing);
+  
+  /* Inner borders to separate segments */
+  border-right: 1px solid var(--m3-button-group-outline);
 }
 
 .m3-button-group__button:last-child {
-  border-right: 0;
+  border-right: none;
 }
 
+.m3-button-group__label {
+  position: relative;
+  z-index: 1; /* Above ripple */
+}
+
+/* Active/Selected State */
 .m3-button-group__button--active {
-  background: #dbeafe;
-  color: #1d4ed8;
-  font-weight: 700;
+  --m3-button-group-bg: var(--md-sys-color-secondary-container);
+  --m3-button-group-color: var(--md-sys-color-on-secondary-container);
+  --md-ripple-color: var(--md-sys-color-on-secondary-container);
+}
+
+/* Focus handling (relies on ripple for hover/press visually, but needs outline) */
+.m3-button-group__button:focus-visible {
+  outline: 2px solid var(--md-sys-color-secondary);
+  outline-offset: -2px; /* Inner outline */
+  z-index: 2; /* Bring focused item above siblings */
+}
+
+/* Disabled State */
+.m3-button-group__button--disabled {
+  --m3-button-group-color: color-mix(in srgb, var(--md-sys-color-on-surface) 38%, transparent);
+  cursor: not-allowed;
+  pointer-events: none;
+  --md-ripple-color: transparent;
+}
+
+/* Variants */
+.m3-button-group--standard .m3-button-group__button {
+  /* Default handled above */
 }
 
 .m3-button-group--segmented .m3-button-group__button {
-  border-radius: 999px;
+  /* Actually standard and segmented are treated similarly in this implementation as M3 Segmented Buttons is the primary use-case for groups */
 }
 
 .m3-button-group--split .m3-button-group__button:first-child {
-  min-width: 7rem;
+  min-width: 112px; /* Wider first child */
 }

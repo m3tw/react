@@ -1,4 +1,5 @@
 import './TopAppBar.css'
+import { Button } from "../Button";
 
 type TopAppBarAction = {
   label: string
@@ -33,15 +34,15 @@ export function TopAppBar({
       {visibleActions.length > 0 ? (
         <div className="m3-top-app-bar__actions">
           {visibleActions.map((action) => (
-            <button
+            <Button
               className="m3-top-app-bar__action"
               disabled={action.disabled}
               key={action.label}
               onClick={action.onClick}
-              type="button"
+              variant="text"
             >
               {action.label}
-            </button>
+            </Button>
           ))}
         </div>
       ) : null}

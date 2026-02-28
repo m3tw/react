@@ -1,21 +1,70 @@
 .m3-search-bar {
-  display: grid;
-  gap: 0.4rem;
-}
-
-.m3-search-bar__label {
-  font-size: 0.86rem;
-  font-weight: 600;
-}
-
-.m3-search-bar__controls {
   display: flex;
-  gap: 0.4rem;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
 }
 
-.m3-search-bar input {
-  border: 1px solid #cbd5e1;
-  border-radius: 0.5rem;
-  padding: 0.42rem 0.52rem;
-  font: inherit;
+.m3-search-bar__container {
+  display: flex;
+  align-items: center;
+  height: 56px;
+  border-radius: 28px; /* Extra large shape for search bar */
+  background-color: var(--md-sys-color-surface-container-high);
+  box-shadow: var(--md-sys-elevation-level3);
+  padding: 0 16px;
+  gap: 16px;
+  transition: background-color var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard), box-shadow var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard);
+}
+
+.m3-search-bar__leading-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--md-sys-color-on-surface);
+  flex-shrink: 0;
+}
+
+.m3-search-bar__input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  padding: 0;
+  outline: none;
+  color: var(--md-sys-color-on-surface);
+  
+  font-family: var(--md-sys-typescale-body-large-font-family);
+  font-weight: var(--md-sys-typescale-body-large-font-weight);
+  font-size: var(--md-sys-typescale-body-large-font-size);
+  line-height: var(--md-sys-typescale-body-large-line-height);
+  letter-spacing: var(--md-sys-typescale-body-large-letter-spacing);
+}
+
+.m3-search-bar__input::placeholder {
+  color: var(--md-sys-color-on-surface-variant);
+  opacity: 1;
+}
+
+.m3-search-bar__trailing-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.m3-search-bar__error {
+  margin: 0;
+  padding-left: 16px;
+  color: var(--md-sys-color-error);
+  font-family: var(--md-sys-typescale-body-small-font-family);
+  font-weight: var(--md-sys-typescale-body-small-font-weight);
+  font-size: var(--md-sys-typescale-body-small-font-size);
+  line-height: var(--md-sys-typescale-body-small-line-height);
+  letter-spacing: var(--md-sys-typescale-body-small-letter-spacing);
+}
+
+/* Optional Focus States for the whole container */
+.m3-search-bar__container:focus-within {
+  background-color: var(--md-sys-color-surface-container-high); /* M3 specifies focus slightly changes or keeps same bg */
+  /* If active, maybe show a search view, but simple focus visible */
 }

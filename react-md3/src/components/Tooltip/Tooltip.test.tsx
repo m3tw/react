@@ -1,4 +1,4 @@
-import { cleanup, render } from '@testing-library/react'
+import { cleanup, fireEvent, render } from '@testing-library/react'
 import { afterEach, describe, expect, it } from 'vitest'
 
 import { Tooltip } from './Tooltip'
@@ -8,9 +8,10 @@ describe('Tooltip', () => {
     cleanup()
   })
 
-  it('renders tooltip content for standard state', () => {
-    const { getByRole } = render(<Tooltip content="Mehr Informationen" label="Info" />)
+  it('renders tooltip content on hover for standard state', () => {
+    const { getByText, getByRole } = render(<Tooltip content="Mehr Informationen" label="Info" />)
 
+    fireEvent.mouseEnter(getByText('Info'))
     expect(getByRole('tooltip')).toHaveTextContent('Mehr Informationen')
   })
 

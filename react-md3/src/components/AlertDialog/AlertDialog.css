@@ -1,25 +1,8 @@
-.m3-dialog.m3-alert-dialog--warning {
-  border-color: #d97706;
-}
-
-.m3-dialog.m3-alert-dialog--error {
-  border-color: #dc2626;
-}
-
-.m3-dialog.m3-alert-dialog .m3-dialog__title {
-  color: #7f1d1d;
-}
-
+/* M3 Dialogs don't use colored borders to indicate severity, they use icons or colored titles */
 .m3-dialog.m3-alert-dialog--warning .m3-dialog__title {
-  color: #78350f;
+  color: #d97706; /* M3 doesn't have a specific warning token, keeping a distinct color */
 }
 
-@media (prefers-color-scheme: dark) {
-  .m3-dialog.m3-alert-dialog .m3-dialog__title {
-    color: #fecaca;
-  }
-
-  .m3-dialog.m3-alert-dialog--warning .m3-dialog__title {
-    color: #fed7aa;
-  }
+.m3-dialog.m3-alert-dialog--error .m3-dialog__title {
+  color: var(--md-sys-color-error);
 }

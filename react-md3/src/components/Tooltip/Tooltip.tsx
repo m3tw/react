@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import './Tooltip.css'
 
 type TooltipPosition = 'top' | 'bottom'
@@ -12,11 +13,23 @@ type TooltipProps = {
 export function Tooltip({
   label,
   content,
-  open = true,
+  open: controlledOpen,
   position = 'top',
 }: TooltipProps) {
+  const [isHovered, setIsHovered] = useState(false)
+  const [isFocused, setIsFocused] = useState(false)
+  
+  const open = controlledOpen !== undefined ? controlledOpen : (isHovered || isFocused)
+
   return (
-    <span className="m3-tooltip-anchor">
+    <span 
+      className="m3-tooltip-anchor"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      onFocus={() => setIsFocused(true)}
+      onBlur={() => setIsFocused(false)}
+      tabIndex={0}
+    >
       <span className="m3-tooltip-anchor__label">{label}</span>
       {open ? (
         <span className={['m3-tooltip', `m3-tooltip--${position}`].join(' ')} role="tooltip">

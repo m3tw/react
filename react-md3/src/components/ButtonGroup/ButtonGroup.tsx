@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react'
+import { Ripple } from "../Ripple";
 
 import './ButtonGroup.css'
 
@@ -68,15 +69,14 @@ export function ButtonGroup({
         return (
           <button
             aria-pressed={isActive ? 'true' : 'false'}
-            className={['m3-button-group__button', isActive ? 'm3-button-group__button--active' : '']
-              .filter(Boolean)
-              .join(' ')}
+            className={['m3-button-group__button', isActive ? 'm3-button-group__button--active' : '', option.disabled ? 'm3-button-group__button--disabled' : ''].filter(Boolean).join(' ')}
             disabled={option.disabled}
             key={option.value}
             onClick={() => selectOption(option)}
             type="button"
           >
-            {option.label}
+            <Ripple />
+            <span className="m3-button-group__label">{option.label}</span>
           </button>
         )
       })}

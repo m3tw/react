@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react'
+import { Button } from "../Button";
 
 import './Carousel.css'
 
@@ -57,12 +58,12 @@ export function Carousel({
     <section aria-label={ariaLabel} className="m3-carousel" role="region">
       <p className="m3-carousel__item">{safeItems[index]}</p>
       <div className="m3-carousel__actions">
-        <button onClick={() => setIndex(index - 1)} type="button">
-          Zurueck
-        </button>
-        <button onClick={() => setIndex(index + 1)} type="button">
+        <Button onClick={() => setIndex(index - 1)} variant="outlined">
+          Zurück
+        </Button>
+        <Button onClick={() => setIndex(index + 1)} variant="outlined">
           Weiter
-        </button>
+        </Button>
       </div>
     </section>
   )

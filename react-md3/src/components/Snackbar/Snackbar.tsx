@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
+import { Button } from "../Button";
 
 import './Snackbar.css'
 
@@ -95,13 +96,13 @@ export function Snackbar({
       <p className="m3-snackbar__message">{message}</p>
       <div className="m3-snackbar__actions">
         {actionLabel ? (
-          <button className="m3-snackbar__action" onClick={handleAction} type="button">
+          <Button className="m3-snackbar__action" onClick={handleAction} variant="text">
             {actionLabel}
-          </button>
+          </Button>
         ) : null}
-        <button className="m3-snackbar__dismiss" onClick={closeSnackbar} type="button">
+        <Button className="m3-snackbar__dismiss" onClick={closeSnackbar} variant="text">
           {dismissLabel}
-        </button>
+        </Button>
       </div>
     </div>
   )

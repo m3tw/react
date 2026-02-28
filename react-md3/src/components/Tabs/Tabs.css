@@ -1,21 +1,68 @@
 .m3-tabs {
   display: flex;
-  gap: 0.35rem;
-  border-bottom: 1px solid #cbd5e1;
-  padding-bottom: 0.35rem;
+  height: 48px;
+  border-bottom: 1px solid var(--md-sys-color-surface-variant);
+  background-color: transparent;
+  width: 100%;
 }
 
 .m3-tabs__tab {
-  border: 0;
-  border-radius: 0.5rem;
-  background: #f8fafc;
-  color: #334155;
-  padding: 0.35rem 0.65rem;
-  font: inherit;
+  --md-ripple-color: var(--md-sys-color-on-surface); /* Unselected ripple */
+  
+  flex: 1; /* Tabs usually distribute space evenly in M3 */
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background-color: transparent;
+  color: var(--md-sys-color-on-surface-variant);
+  padding: 0 16px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
 }
 
+.m3-tabs__label {
+  position: relative;
+  z-index: 1;
+  font-family: var(--md-sys-typescale-title-small-font-family);
+  font-weight: var(--md-sys-typescale-title-small-font-weight);
+  font-size: var(--md-sys-typescale-title-small-font-size);
+  line-height: var(--md-sys-typescale-title-small-line-height);
+  letter-spacing: var(--md-sys-typescale-title-small-letter-spacing);
+  transition: color var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard);
+}
+
+.m3-tabs__indicator {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background-color: var(--md-sys-color-primary);
+  border-radius: 3px 3px 0 0; /* Rounded top corners only */
+  z-index: 1;
+}
+
+/* Active State */
 .m3-tabs__tab--active {
-  background: #dbeafe;
-  color: #1d4ed8;
-  font-weight: 700;
+  --md-ripple-color: var(--md-sys-color-primary);
+}
+
+.m3-tabs__tab--active .m3-tabs__label {
+  color: var(--md-sys-color-primary);
+}
+
+/* Focus */
+.m3-tabs__tab:focus-visible {
+  outline: 2px solid var(--md-sys-color-secondary);
+  outline-offset: -2px; /* Inset outline to avoid clipping */
+}
+
+/* Disabled */
+.m3-tabs__tab:disabled {
+  color: color-mix(in srgb, var(--md-sys-color-on-surface) 38%, transparent);
+  cursor: not-allowed;
+  pointer-events: none;
+  --md-ripple-color: transparent;
 }

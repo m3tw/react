@@ -1,23 +1,96 @@
 .m3-navigation-bar {
+  --m3-navigation-bar-height: 80px;
+  --m3-navigation-bar-bg: var(--md-sys-color-surface-container);
+  
   display: flex;
-  gap: 0.5rem;
-  border: 1px solid #cbd5e1;
-  border-radius: 999px;
-  padding: 0.35rem;
-  background: #f8fafc;
+  justify-content: center; /* In a real app this would likely span the bottom of the screen */
+  width: 100%;
+  height: var(--m3-navigation-bar-height);
+  background-color: var(--m3-navigation-bar-bg);
+  box-shadow: var(--md-sys-elevation-level2);
 }
 
-.m3-navigation-bar__button {
-  border: 0;
-  border-radius: 999px;
-  padding: 0.45rem 0.8rem;
+.m3-navigation-bar__destination {
+  --m3-nav-color: var(--md-sys-color-on-surface-variant);
+  --md-ripple-color: var(--md-sys-color-on-surface); /* Unselected ripple */
+  
+  flex: 1;
+  max-width: 168px; /* Max width per M3 spec */
+  min-width: 48px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 12px 0 16px;
+  border: none;
   background: transparent;
-  color: #1e293b;
-  font: inherit;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  color: var(--m3-nav-color);
 }
 
-.m3-navigation-bar__button--active {
-  background: #dbeafe;
-  color: #1d4ed8;
+.m3-navigation-bar__indicator {
+  position: relative;
+  width: 64px;
+  height: 32px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard);
+  /* The icon would go here, we are using just the label for this simple version initially, 
+     but keeping the M3 structure so it's correct */
+}
+
+/* Make sure ripple is contained in the indicator pill */
+.m3-navigation-bar__indicator .m3-ripple-container {
+  border-radius: inherit;
+}
+
+.m3-navigation-bar__label {
+  font-family: var(--md-sys-typescale-label-medium-font-family);
+  font-weight: var(--md-sys-typescale-label-medium-font-weight);
+  font-size: var(--md-sys-typescale-label-medium-font-size);
+  line-height: var(--md-sys-typescale-label-medium-line-height);
+  letter-spacing: var(--md-sys-typescale-label-medium-letter-spacing);
+  transition: opacity var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard);
+  z-index: 1;
+}
+
+/* Active State */
+.m3-navigation-bar__destination--active {
+  --m3-nav-color: var(--md-sys-color-on-surface);
+  --md-ripple-color: var(--md-sys-color-on-secondary-container);
+}
+
+.m3-navigation-bar__destination--active .m3-navigation-bar__indicator {
+  background-color: var(--md-sys-color-secondary-container);
+}
+
+.m3-navigation-bar__destination--active .m3-navigation-bar__label {
   font-weight: 700;
+}
+
+/* Focus */
+.m3-navigation-bar__destination:focus-visible .m3-navigation-bar__indicator {
+  outline: 2px solid var(--md-sys-color-secondary);
+  outline-offset: 2px;
+}
+
+/* Disabled */
+.m3-navigation-bar__destination--disabled {
+  --m3-nav-color: color-mix(in srgb, var(--md-sys-color-on-surface) 38%, transparent);
+  cursor: not-allowed;
+  pointer-events: none;
+  --md-ripple-color: transparent;
+}
+
+.m3-navigation-bar__icon {
+  z-index: 1;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

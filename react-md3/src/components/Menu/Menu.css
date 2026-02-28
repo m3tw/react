@@ -1,18 +1,63 @@
 .m3-menu {
-  display: grid;
-  gap: 0.25rem;
-  padding: 0.35rem;
-  border: 1px solid #cbd5e1;
-  border-radius: 0.75rem;
-  background: #ffffff;
+  --m3-menu-bg: var(--md-sys-color-surface-container);
+  --m3-menu-border: transparent;
+  --m3-menu-elevation: var(--md-sys-elevation-level2);
+  --m3-menu-radius: 4px; /* Standard M3 Menu radius */
+  
+  display: inline-flex;
+  flex-direction: column;
+  background-color: var(--m3-menu-bg);
+  border: 1px solid var(--m3-menu-border);
+  border-radius: var(--m3-menu-radius);
+  box-shadow: var(--m3-menu-elevation);
+  padding: 8px 0;
+  min-width: 112px;
+  max-width: 280px;
+}
+
+.m3-menu__content {
+  display: flex;
+  flex-direction: column;
 }
 
 .m3-menu__item {
-  border: 0;
-  border-radius: 0.45rem;
-  background: #f8fafc;
-  color: #0f172a;
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: 48px; /* M3 Menu Item height */
+  padding: 0 12px;
+  border: none;
+  background: transparent;
+  color: var(--md-sys-color-on-surface);
   text-align: left;
-  padding: 0.4rem 0.6rem;
-  font: inherit;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  
+  font-family: var(--md-sys-typescale-label-large-font-family);
+  font-weight: var(--md-sys-typescale-label-large-font-weight);
+  font-size: var(--md-sys-typescale-label-large-font-size);
+  line-height: var(--md-sys-typescale-label-large-line-height);
+  letter-spacing: var(--md-sys-typescale-label-large-letter-spacing);
+  
+  /* Ripple color for menu items */
+  --md-ripple-color: var(--md-sys-color-on-surface);
+}
+
+.m3-menu__item-text {
+  position: relative;
+  z-index: 1; /* Keep above state layer */
+}
+
+/* Hover/Focus managed by Ripple/State Layer implicitly, but we need focus outline */
+.m3-menu__item:focus-visible {
+  outline: 2px solid var(--md-sys-color-secondary);
+  outline-offset: -2px;
+}
+
+/* Disabled State */
+.m3-menu__item--disabled {
+  color: color-mix(in srgb, var(--md-sys-color-on-surface) 38%, transparent);
+  cursor: not-allowed;
+  --md-ripple-color: transparent;
 }

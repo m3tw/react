@@ -1,10 +1,12 @@
 import { useMemo, useRef, useState } from 'react'
+import { Ripple } from "../Ripple";
 
 import './NavigationDrawer.css'
 
 type NavigationDrawerDestination = {
   label: string
   value: string
+  icon?: React.ReactNode
   disabled?: boolean
   hidden?: boolean
 }
@@ -95,6 +97,7 @@ export function NavigationDrawer({
                   className={[
                     'm3-navigation-drawer__button',
                     isActive ? 'm3-navigation-drawer__button--active' : '',
+                    destination.disabled ? 'm3-navigation-drawer__button--disabled' : '',
                   ]
                     .filter(Boolean)
                     .join(' ')}
@@ -116,7 +119,9 @@ export function NavigationDrawer({
                   }}
                   type="button"
                 >
-                  {destination.label}
+                  <Ripple />
+                  {destination.icon ? <span className="m3-navigation-drawer__icon">{destination.icon}</span> : null}
+                  <span className="m3-navigation-drawer__label">{destination.label}</span>
                 </button>
               </li>
             )

@@ -1,46 +1,33 @@
-.m3-sheet {
-  --m3-sheet-bg: var(--md-sys-color-surface-container-low);
+.m3-reference-card {
+  --m3-card-bg: var(--md-sys-color-surface-container-low);
+  --m3-card-color: var(--md-sys-color-on-surface);
   
-  background-color: var(--m3-sheet-bg);
-  padding: 16px 24px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  padding: 16px;
+  border-radius: 12px;
+  background-color: var(--m3-card-bg);
+  color: var(--m3-card-color);
   box-shadow: var(--md-sys-elevation-level1);
-  border: none;
-  min-width: 280px;
+  transition: box-shadow var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard);
 }
 
-.m3-sheet--center {
-  border-radius: 28px;
-}
-
-.m3-sheet--bottom {
-  border-radius: 28px 28px 0 0;
-  padding-top: 22px; /* Accounts for drag handle area typically present */
-}
-
-/* Assuming a right-side trailing sheet by default for side variant */
-.m3-sheet--side {
-  border-radius: 28px 0 0 28px;
-  height: 100%;
-}
-
-.m3-sheet__title {
-  margin: 0;
-  color: var(--md-sys-color-on-surface);
+.m3-reference-card h2 {
+  margin: 0 0 8px 0;
   font-family: var(--md-sys-typescale-title-large-font-family);
   font-weight: var(--md-sys-typescale-title-large-font-weight);
   font-size: var(--md-sys-typescale-title-large-font-size);
   line-height: var(--md-sys-typescale-title-large-line-height);
   letter-spacing: var(--md-sys-typescale-title-large-letter-spacing);
+  color: var(--md-sys-color-on-surface);
 }
 
-.m3-sheet__content {
-  color: var(--md-sys-color-on-surface-variant);
+.m3-reference-card p {
+  margin: 0;
   font-family: var(--md-sys-typescale-body-medium-font-family);
   font-weight: var(--md-sys-typescale-body-medium-font-weight);
   font-size: var(--md-sys-typescale-body-medium-font-size);
   line-height: var(--md-sys-typescale-body-medium-line-height);
   letter-spacing: var(--md-sys-typescale-body-medium-letter-spacing);
+  color: var(--md-sys-color-on-surface-variant);
 }

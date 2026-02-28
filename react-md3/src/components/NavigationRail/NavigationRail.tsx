@@ -1,10 +1,12 @@
 import { useMemo, useRef, useState } from 'react'
+import { Ripple } from "../Ripple";
 
 import './NavigationRail.css'
 
 type NavigationRailDestination = {
   label: string
   value: string
+  icon?: React.ReactNode
   disabled?: boolean
   hidden?: boolean
 }
@@ -113,9 +115,10 @@ export function NavigationRail({
               <button
                 aria-current={isActive ? 'page' : undefined}
                 className={[
-                  'm3-navigation-rail__button',
-                  compact ? 'm3-navigation-rail__button--compact' : '',
-                  isActive ? 'm3-navigation-rail__button--active' : '',
+                  'm3-navigation-rail__destination',
+                  compact ? 'm3-navigation-rail__destination--compact' : '',
+                  isActive ? 'm3-navigation-rail__destination--active' : '',
+                  destination.disabled ? 'm3-navigation-rail__destination--disabled' : '',
                 ]
                   .filter(Boolean)
                   .join(' ')}
@@ -147,6 +150,10 @@ export function NavigationRail({
                 }}
                 type="button"
               >
+                <div className="m3-navigation-rail__indicator">
+                  <Ripple />
+                  {destination.icon ? <span className="m3-navigation-rail__icon">{destination.icon}</span> : null}
+                </div>
                 <span className="m3-navigation-rail__label">{destination.label}</span>
               </button>
             </li>
