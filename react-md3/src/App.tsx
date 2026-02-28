@@ -32,7 +32,8 @@ import {
   Switch,
   Tabs,
   TextField,
-  Tooltip,
+  PlainTooltip,
+  RichTooltip,
   TopAppBar,
 } from './index'
 import './App.css'
@@ -344,7 +345,12 @@ function App() {
                 <Chip label="Filter Chip" selected />
                 <Chip label="Input Chip" dismissible onDismiss={() => {}} />
                 <Chip label="Disabled Chip" disabled />
-                <Tooltip label="Hover me" content="This is a tooltip message!" />
+                <PlainTooltip content="This is a plain tooltip!">
+                  <IconButton ariaLabel="Info" icon={<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>} />
+                </PlainTooltip>
+                <RichTooltip supportingText="Rich tooltips can contain detailed information and actions." subhead="Rich Tooltip" actionLabel="Learn more" onAction={() => console.log('Rich tooltip action')}>
+                  <Button variant="outlined">Hover for details</Button>
+                </RichTooltip>
               </div>
               <div className="component-row">
                 <ProgressIndicator label="Determinate (72%)" value={72} />

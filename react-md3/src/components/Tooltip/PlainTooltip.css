@@ -1,43 +1,51 @@
-.m3-tooltip-anchor {
+.m3-plain-tooltip-anchor {
   position: relative;
   display: inline-flex;
-  align-items: center;
-  justify-content: center;
 }
 
-.m3-tooltip-anchor__label {
-  color: var(--md-sys-color-on-surface);
-  font-family: var(--md-sys-typescale-body-medium-font-family);
-  font-weight: var(--md-sys-typescale-body-medium-font-weight);
-  font-size: var(--md-sys-typescale-body-medium-font-size);
-  line-height: var(--md-sys-typescale-body-medium-line-height);
-  letter-spacing: var(--md-sys-typescale-body-medium-letter-spacing);
-}
-
-.m3-tooltip {
+.m3-plain-tooltip {
   position: absolute;
   z-index: 100;
   white-space: nowrap;
-  border-radius: 4px; /* M3 extra small shape */
+  pointer-events: none;
+
+  min-height: 24px;
+  padding: 4px 8px;
+  border-radius: 4px;
   background-color: var(--md-sys-color-inverse-surface);
   color: var(--md-sys-color-inverse-on-surface);
-  padding: 4px 8px; /* M3 plain tooltip padding */
-  
+
   font-family: var(--md-sys-typescale-body-small-font-family);
   font-weight: var(--md-sys-typescale-body-small-font-weight);
   font-size: var(--md-sys-typescale-body-small-font-size);
   line-height: var(--md-sys-typescale-body-small-line-height);
   letter-spacing: var(--md-sys-typescale-body-small-letter-spacing);
+
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
 }
 
-.m3-tooltip--top {
+.m3-plain-tooltip--top {
   bottom: 100%;
   left: 50%;
   transform: translateX(-50%) translateY(-4px);
 }
 
-.m3-tooltip--bottom {
+.m3-plain-tooltip--bottom {
   top: 100%;
   left: 50%;
   transform: translateX(-50%) translateY(4px);
+}
+
+.m3-plain-tooltip--left {
+  right: 100%;
+  top: 50%;
+  transform: translateY(-50%) translateX(-4px);
+}
+
+.m3-plain-tooltip--right {
+  left: 100%;
+  top: 50%;
+  transform: translateY(-50%) translateX(4px);
 }
