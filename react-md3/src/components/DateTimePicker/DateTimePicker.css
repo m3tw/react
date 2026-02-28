@@ -1,8 +1,13 @@
+.m3-date-time-picker-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
 .m3-date-time-picker {
   position: relative;
   display: inline-flex;
   flex-direction: column;
-  min-width: 200px;
+  min-width: 250px;
 }
 
 .m3-date-time-picker__label {
@@ -11,16 +16,26 @@
   left: 12px;
   padding: 0 4px;
   background-color: var(--md-sys-color-surface);
-  color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-surface-variant);
   z-index: 1;
   font-family: var(--md-sys-typescale-body-small-font-family);
   font-weight: var(--md-sys-typescale-body-small-font-weight);
   font-size: var(--md-sys-typescale-body-small-font-size);
   line-height: var(--md-sys-typescale-body-small-line-height);
   letter-spacing: var(--md-sys-typescale-body-small-letter-spacing);
+  transition: color var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard);
 }
 
-.m3-date-time-picker input {
+.m3-date-time-picker--focused .m3-date-time-picker__label {
+  color: var(--md-sys-color-primary);
+}
+
+.m3-date-time-picker__input-btn {
+  display: flex;
+  position: relative;
+  align-items: center;
+  justify-content: space-between;
+  text-align: left;
   height: 56px; /* M3 input height */
   border: 1px solid var(--md-sys-color-outline);
   border-radius: 4px; /* M3 extra small radius */
@@ -34,25 +49,49 @@
   letter-spacing: var(--md-sys-typescale-body-large-letter-spacing);
   transition: border-color var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard);
   width: 100%;
+  cursor: pointer;
 }
 
-.m3-date-time-picker input:hover {
+.m3-date-time-picker__icon {
+  color: var(--md-sys-color-on-surface-variant);
+  margin-left: 12px;
+}
+
+.m3-date-time-picker__input-btn:not(:disabled):hover {
   border-color: var(--md-sys-color-on-surface);
 }
 
-.m3-date-time-picker input:focus-visible {
+.m3-date-time-picker--focused .m3-date-time-picker__input-btn,
+.m3-date-time-picker__input-btn:focus-visible {
   outline: none;
   border-color: var(--md-sys-color-primary);
   border-width: 2px;
   padding: 7px 15px; /* Adjust padding to prevent layout shift */
 }
 
-.m3-date-time-picker input:disabled {
+.m3-date-time-picker__input-btn:disabled {
   border-color: color-mix(in srgb, var(--md-sys-color-on-surface) 12%, transparent);
   color: color-mix(in srgb, var(--md-sys-color-on-surface) 38%, transparent);
   pointer-events: none;
 }
 
-.m3-date-time-picker:has(input:disabled) .m3-date-time-picker__label {
+.m3-date-time-picker:has(.m3-date-time-picker__input-btn:disabled) .m3-date-time-picker__label {
   color: color-mix(in srgb, var(--md-sys-color-on-surface) 38%, transparent);
+}
+
+.m3-date-time-picker__popover {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin-top: 4px;
+  z-index: 100;
+  box-shadow: var(--md-sys-elevation-level3);
+  border-radius: 16px;
+  background: var(--md-sys-color-surface-container-high);
+}
+
+.m3-date-time-picker__backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
 }

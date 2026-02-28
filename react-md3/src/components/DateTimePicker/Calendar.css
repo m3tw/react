@@ -1,0 +1,131 @@
+.m3-calendar {
+  width: 328px; /* Standard M3 Datepicker width */
+  padding: 16px;
+  background-color: var(--md-sys-color-surface-container-high);
+  border-radius: 16px; /* M3 Medium shape */
+}
+
+.m3-calendar__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  height: 48px;
+}
+
+.m3-calendar__title {
+  color: var(--md-sys-color-on-surface-variant);
+  font-family: var(--md-sys-typescale-title-small-font-family);
+  font-weight: var(--md-sys-typescale-title-small-font-weight);
+  font-size: var(--md-sys-typescale-title-small-font-size);
+  line-height: var(--md-sys-typescale-title-small-line-height);
+  letter-spacing: var(--md-sys-typescale-title-small-letter-spacing);
+}
+
+.m3-calendar__weekdays,
+.m3-calendar__grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+
+.m3-calendar__weekdays {
+  margin-bottom: 8px;
+}
+
+.m3-calendar__weekday {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  width: 40px;
+  color: var(--md-sys-color-on-surface);
+  
+  font-family: var(--md-sys-typescale-body-large-font-family);
+  font-weight: var(--md-sys-typescale-body-large-font-weight);
+  font-size: var(--md-sys-typescale-body-large-font-size);
+  line-height: var(--md-sys-typescale-body-large-line-height);
+  letter-spacing: var(--md-sys-typescale-body-large-letter-spacing);
+}
+
+.m3-calendar__cell {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  border: none;
+  background: transparent;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  color: var(--md-sys-color-on-surface);
+  
+  font-family: var(--md-sys-typescale-body-large-font-family);
+  font-weight: var(--md-sys-typescale-body-large-font-weight);
+  font-size: var(--md-sys-typescale-body-large-font-size);
+  line-height: var(--md-sys-typescale-body-large-line-height);
+  letter-spacing: var(--md-sys-typescale-body-large-letter-spacing);
+  
+  overflow: hidden; /* For ripple isolation */
+}
+
+.m3-calendar__cell:disabled {
+  color: color-mix(in srgb, var(--md-sys-color-on-surface) 38%, transparent);
+  cursor: default;
+}
+
+/* Hover/Focus state layers */
+.m3-calendar__day:not(:disabled):hover::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-color: var(--md-sys-color-on-surface);
+  opacity: var(--md-sys-state-hover);
+  border-radius: 50%;
+}
+
+.m3-calendar__day:not(:disabled):focus-visible {
+  outline: none;
+}
+
+.m3-calendar__day:not(:disabled):focus-visible::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-color: var(--md-sys-color-on-surface);
+  opacity: var(--md-sys-state-focus);
+  border-radius: 50%;
+}
+
+/* Today indicator */
+.m3-calendar__day--today {
+  border: 1px solid var(--md-sys-color-primary);
+  color: var(--md-sys-color-primary);
+}
+
+/* Selected state */
+.m3-calendar__day--selected {
+  background-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+}
+
+.m3-calendar__day--selected:hover::before {
+  background-color: var(--md-sys-color-on-primary);
+}
+
+.m3-calendar__day--selected:focus-visible::before {
+  background-color: var(--md-sys-color-on-primary);
+}
+
+.m3-calendar__day-text {
+  position: relative;
+  z-index: 1; /* Keep text above ripple */
+}
+
+.m3-calendar__cell--empty {
+  cursor: default;
+  pointer-events: none;
+}

@@ -8,51 +8,61 @@ describe('DateTimePicker', () => {
     cleanup()
   })
 
-  it('renders a date picker and emits value changes', () => {
+  it('renders a date picker button and emits value changes from calendar', () => {
     const onValueChange = vi.fn()
-    const { getByLabelText } = render(<DateTimePicker label="Datum" mode="date" onValueChange={onValueChange} />)
+    const { getByRole, queryByRole } = render(<DateTimePicker label="Datum" onValueChange={onValueChange} />)
 
-    const input = getByLabelText('Datum')
-    expect(input).toHaveAttribute('type', 'date')
+    const btn = getByRole('button', { name: /mm \/ dd \/ yyyy/i })
+    expect(btn).toBeInTheDocument()
 
-    fireEvent.change(input, { target: { value: '2026-02-28' } })
-    expect(onValueChange).toHaveBeenCalledWith('2026-02-28')
+    // Calendar is closed initially
+    expect(queryByRole('dialog')).not.toBeInTheDocument()
+
+    // Open calendar
+    fireEvent.click(btn)
+    expect(getByRole('dialog', { name: 'Datum' })).toBeInTheDocument()
+
+    // Select the 15th of the current month
+    const dayButton = getByRole('button', { name: new RegExp(`15, ${new Date().getFullYear()}$`, 'i') })
+    fireEvent.click(dayButton)
+
+    const currentMonth = String(new Date().getMonth() + 1).padStart(2, '0')
+    const currentYear = new Date().getFullYear()
+
+    expect(onValueChange).toHaveBeenCalledWith(`${currentYear}-${currentMonth}-15`)
   })
 
-  it('renders disabled time picker edge case', () => {
-    const { getByLabelText } = render(<DateTimePicker disabled label="Uhrzeit" mode="time" />)
+  it('renders disabled date picker edge case', () => {
+    const { getByRole } = render(<DateTimePicker disabled label="Datum" />)
 
-    expect(getByLabelText('Uhrzeit')).toBeDisabled()
+    const btn = getByRole('button', { name: /mm \/ dd \/ yyyy/i })
+    expect(btn).toBeDisabled()
   })
 
   it('prefers controlled value when value and defaultValue are both provided', () => {
     const onValueChange = vi.fn()
-    const { getByLabelText, rerender } = render(
+    const { getByRole, rerender } = render(
       <DateTimePicker
-        defaultValue="2026-02-28T08:00"
+        defaultValue="2026-02-14"
         label="Termin"
-        mode="datetime"
         onValueChange={onValueChange}
-        value="2026-02-28T09:00"
+        value="2026-02-28"
       />,
     )
 
-    const input = getByLabelText('Termin') as HTMLInputElement
-    expect(input.value).toBe('2026-02-28T09:00')
-
-    fireEvent.change(input, { target: { value: '2026-02-28T10:00' } })
-    expect(onValueChange).toHaveBeenCalledWith('2026-02-28T10:00')
+    // Button should display the formatted value
+    const btn = getByRole('button', { name: /02 \/ 28 \/ 2026/ })
+    expect(btn).toBeInTheDocument()
 
     rerender(
       <DateTimePicker
-        defaultValue="2026-02-28T08:00"
+        defaultValue="2026-02-14"
         label="Termin"
-        mode="datetime"
         onValueChange={onValueChange}
-        value="2026-02-28T11:00"
+        value="2026-03-10"
       />,
     )
 
-    expect((getByLabelText('Termin') as HTMLInputElement).value).toBe('2026-02-28T11:00')
+    expect(getByRole('button', { name: /03 \/ 10 \/ 2026/ })).toBeInTheDocument()
   })
 })
