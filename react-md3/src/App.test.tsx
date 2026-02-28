@@ -24,8 +24,9 @@ describe('App Kitchen Sink demo flow', () => {
     expect(getByText('Pickers & Complex')).toBeInTheDocument()
     expect(getByText('Overlays & Feedback')).toBeInTheDocument()
 
-    // Check specific buttons rendered
-    expect(getByRole('button', { name: 'Filled' })).toBeInTheDocument()
+    // Check some buttons rendered (use getAll since labels may be shared across Button/IconButton)
+    const filledButtons = getAllByRole('button', { name: 'Filled' })
+    expect(filledButtons.length).toBeGreaterThan(0)
     const disabledButtons = getAllByRole('button', { name: 'Disabled' })
     expect(disabledButtons[0]).toBeDisabled()
   })

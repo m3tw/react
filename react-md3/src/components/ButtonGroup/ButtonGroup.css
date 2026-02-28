@@ -17,13 +17,15 @@
   border: none;
   background-color: var(--m3-button-group-bg);
   color: var(--m3-button-group-color);
-  padding: 0 16px;
+  padding: 0 12px;
   height: 40px; /* Standard M3 Button height */
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: 8px;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
+  flex: 1 1 0%; /* Equal width for all segments */
   
   font-family: var(--md-sys-typescale-label-large-font-family);
   font-weight: var(--md-sys-typescale-label-large-font-weight);
@@ -42,6 +44,21 @@
 .m3-button-group__label {
   position: relative;
   z-index: 1; /* Above ripple */
+}
+
+.m3-button-group__check,
+.m3-button-group__icon {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+}
+
+.m3-button-group__check--hidden {
+  visibility: hidden;
 }
 
 /* Active/Selected State */
@@ -66,14 +83,7 @@
   --md-ripple-color: transparent;
 }
 
-/* Variants */
-.m3-button-group--standard .m3-button-group__button {
-  /* Default handled above */
-}
-
-.m3-button-group--segmented .m3-button-group__button {
-  /* Actually standard and segmented are treated similarly in this implementation as M3 Segmented Buttons is the primary use-case for groups */
-}
+/* Variants: standard and segmented share base styles above */
 
 .m3-button-group--split .m3-button-group__button:first-child {
   min-width: 112px; /* Wider first child */
