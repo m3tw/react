@@ -166,6 +166,15 @@ function App() {
               <div className="component-row">
                 <Fab label="Add" />
                 <Fab label="Create new" variant="extended" />
+                <Fab
+                  label="Actions"
+                  menuItems={[
+                    { label: 'New File', value: 'new-file', icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 14h-3v3h-2v-3H8v-2h3v-3h2v3h3v2zm-3-7V3.5L18.5 9H13z"/></svg> },
+                    { label: 'New Folder', value: 'new-folder', icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M20 6h-8l-2-2H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm0 12H4V8h16v10z"/></svg> },
+                    { label: 'Upload', value: 'upload', icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z"/></svg> },
+                  ]}
+                  onMenuSelect={(v) => console.log('FAB menu:', v)}
+                />
                 <IconButton selected={true} ariaLabel="Favorite" />
                 <IconButton ariaLabel="Bookmark" />
                 <IconButton disabled ariaLabel="Disabled" />

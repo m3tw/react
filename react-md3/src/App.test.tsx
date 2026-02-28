@@ -9,7 +9,7 @@ describe('App Kitchen Sink demo flow', () => {
   })
 
   it('renders the Kitchen Sink layout and core components', () => {
-    const { getByRole, getByText } = render(<App />)
+    const { getAllByRole, getByRole, getByText } = render(<App />)
 
     expect(getByText('Component Overview')).toBeInTheDocument()
     expect(getByRole('banner', { name: 'App Header' })).toBeInTheDocument()
@@ -25,7 +25,8 @@ describe('App Kitchen Sink demo flow', () => {
     expect(getByText('Overlays & Feedback')).toBeInTheDocument()
 
     // Check specific buttons rendered
-    expect(getByRole('button', { name: 'Filled Button' })).toBeInTheDocument()
-    expect(getByRole('button', { name: 'Disabled Button' })).toBeDisabled()
+    expect(getByRole('button', { name: 'Filled' })).toBeInTheDocument()
+    const disabledButtons = getAllByRole('button', { name: 'Disabled' })
+    expect(disabledButtons[0]).toBeDisabled()
   })
 })
