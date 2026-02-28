@@ -338,10 +338,15 @@ function App() {
               <h2>Data Display & Indicators</h2>
               <Divider />
               <div className="component-row">
-                <Badge label="New" tone="success" />
-                <Badge label="Warning" tone="warning" />
-                <Badge label="Error" tone="error" />
-                <Badge label="Neutral" tone="neutral" />
+                <Badge label="3">
+                  <IconButton ariaLabel="Notifications" icon={<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm-2 1H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4.5v6z"/></svg>} />
+                </Badge>
+                <Badge>
+                  <IconButton ariaLabel="Messages" icon={<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>} />
+                </Badge>
+                <Badge label="999+">
+                  <IconButton ariaLabel="Alerts" icon={<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>} />
+                </Badge>
                 <Chip label="Filter Chip" selected />
                 <Chip label="Input Chip" dismissible onDismiss={() => {}} />
                 <Chip label="Disabled Chip" disabled />

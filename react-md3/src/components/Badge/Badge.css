@@ -1,40 +1,40 @@
-.m3-badge {
+.m3-badge-anchor {
+  position: relative;
+  display: inline-flex;
+}
+
+.m3-badge__indicator {
+  position: absolute;
+  top: 0;
+  right: 0;
+  transform: translate(50%, -50%);
+  z-index: 1;
+  pointer-events: none;
+  box-sizing: border-box;
+}
+
+.m3-badge__indicator--small {
+  width: 6px;
+  height: 6px;
+  border-radius: 3px;
+  background-color: var(--md-sys-color-error);
+}
+
+.m3-badge__indicator--large {
+  min-width: 16px;
+  height: 16px;
+  border-radius: 8px;
+  padding: 0 4px;
+  background-color: var(--md-sys-color-error);
+  color: var(--md-sys-color-on-error);
+
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  /* Use min-height so it scales up but fits standard M3 large badge if only numbers */
-  min-height: 16px;
-  min-width: 16px;
-  padding: 2px 8px; /* Extra padding for text clarity */
-  border-radius: 12px;
-  
+
   font-family: var(--md-sys-typescale-label-small-font-family);
   font-weight: var(--md-sys-typescale-label-small-font-weight);
   font-size: var(--md-sys-typescale-label-small-font-size);
   line-height: var(--md-sys-typescale-label-small-line-height);
   letter-spacing: var(--md-sys-typescale-label-small-letter-spacing);
-  
-  /* M3 Badges default to error color */
-  background-color: var(--md-sys-color-error);
-  color: var(--md-sys-color-on-error);
-}
-
-.m3-badge--neutral {
-  background-color: var(--md-sys-color-surface-variant);
-  color: var(--md-sys-color-on-surface-variant);
-}
-
-.m3-badge--success {
-  background-color: #16a34a;
-  color: #ffffff;
-}
-
-.m3-badge--warning {
-  background-color: #d97706;
-  color: #ffffff;
-}
-
-.m3-badge--error {
-  background-color: var(--md-sys-color-error);
-  color: var(--md-sys-color-on-error);
 }
