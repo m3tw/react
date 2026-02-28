@@ -21,6 +21,7 @@ const MONTHS = [
 
 export function Calendar({ value, onChange, minDate, maxDate }: CalendarProps) {
   const [currentDate, setCurrentDate] = useState(value || new Date())
+  const [viewMode, setViewMode] = useState<'date' | 'month' | 'year'>('date')
   
   const currentYear = currentDate.getFullYear()
   const currentMonth = currentDate.getMonth()
@@ -53,13 +54,8 @@ export function Calendar({ value, onChange, minDate, maxDate }: CalendarProps) {
     return false
   }
 
-  const handlePrevMonth = () => {
-    setCurrentDate(new Date(currentYear, currentMonth - 1, 1))
-  }
-
-  const handleNextMonth = () => {
-    setCurrentDate(new Date(currentYear, currentMonth + 1, 1))
-  }
+  const handlePrevMonth = () => setCurrentDate(new Date(currentYear, currentMonth - 1, 1))
+  const handleNextMonth = () => setCurrentDate(new Date(currentYear, currentMonth + 1, 1))
 
   const handleSelectDate = (day: number) => {
     if (isDisabled(day)) return
@@ -106,43 +102,97 @@ export function Calendar({ value, onChange, minDate, maxDate }: CalendarProps) {
     return grid
   }, [currentYear, currentMonth, daysInMonth, firstDay, value, minDate, maxDate])
 
+  const startYear = Math.max(1900, currentYear - 100)
+  const years = Array.from({ length: 200 }, (_, i) => startYear + i)
+
   return (
     <div className="m3-calendar">
       <div className="m3-calendar__header">
-        <IconButton 
-          ariaLabel="Previous month" 
-          onClick={handlePrevMonth}
-          icon={
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <polyline points="15 18 9 12 15 6" />
-            </svg>
-          } 
-        />
-        <div className="m3-calendar__title" aria-live="polite">
+        {viewMode === 'date' ? (
+          <IconButton 
+            ariaLabel="Previous month" 
+            onClick={handlePrevMonth}
+            icon={
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="15 18 9 12 15 6" />
+              </svg>
+            } 
+          />
+        ) : <div style={{ width: 40 }} />}
+        
+        <button 
+          className="m3-calendar__title-btn" 
+          onClick={() => setViewMode(viewMode === 'date' ? 'year' : 'date')}
+          aria-live="polite"
+        >
           {MONTHS[currentMonth]} {currentYear}
-        </div>
-        <IconButton 
-          ariaLabel="Next month" 
-          onClick={handleNextMonth}
-          icon={
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <polyline points="9 18 15 12 9 6" />
-            </svg>
-          } 
-        />
+          <svg className={`m3-calendar__title-arrow ${viewMode !== 'date' ? 'm3-calendar__title-arrow--open' : ''}`} width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <polyline points="6 9 12 15 18 9" />
+          </svg>
+        </button>
+
+        {viewMode === 'date' ? (
+          <IconButton 
+            ariaLabel="Next month" 
+            onClick={handleNextMonth}
+            icon={
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="9 18 15 12 9 6" />
+              </svg>
+            } 
+          />
+        ) : <div style={{ width: 40 }} />}
       </div>
       
-      <div className="m3-calendar__weekdays">
-        {WEEKDAYS.map((day, idx) => (
-          <div key={`weekday-${idx}`} className="m3-calendar__weekday" aria-hidden="true">
-            {day}
+      {viewMode === 'date' && (
+        <div className="m3-calendar__view m3-calendar__view--date">
+          <div className="m3-calendar__weekdays">
+            {WEEKDAYS.map((day, idx) => (
+              <div key={`weekday-${idx}`} className="m3-calendar__weekday" aria-hidden="true">
+                {day}
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
-      
-      <div className="m3-calendar__grid">
-        {cells}
-      </div>
+          <div className="m3-calendar__grid">
+            {cells}
+          </div>
+        </div>
+      )}
+
+      {viewMode === 'year' && (
+        <div className="m3-calendar__view m3-calendar__view--year">
+          {years.map(y => (
+            <button 
+              key={y}
+              className={`m3-calendar__year-btn ${y === currentYear ? 'm3-calendar__year-btn--selected' : ''}`}
+              onClick={() => {
+                setCurrentDate(new Date(y, currentMonth, 1))
+                setViewMode('month')
+              }}
+              ref={(el) => { if (y === currentYear && el) el.scrollIntoView({ block: 'center' }) }}
+            >
+              {y}
+            </button>
+          ))}
+        </div>
+      )}
+
+      {viewMode === 'month' && (
+        <div className="m3-calendar__view m3-calendar__view--month">
+          {MONTHS.map((m, idx) => (
+            <button 
+              key={m}
+              className={`m3-calendar__month-btn ${idx === currentMonth ? 'm3-calendar__month-btn--selected' : ''}`}
+              onClick={() => {
+                setCurrentDate(new Date(currentYear, idx, 1))
+                setViewMode('date')
+              }}
+            >
+              {m.substring(0, 3)}
+            </button>
+          ))}
+        </div>
+      )}
     </div>
   )
 }

@@ -129,3 +129,93 @@
   cursor: default;
   pointer-events: none;
 }
+
+/* Nav Title Button */
+.m3-calendar__title-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: transparent;
+  border: none;
+  border-radius: 8px; /* M3 small shape */
+  padding: 8px 12px;
+  cursor: pointer;
+  color: var(--md-sys-color-on-surface-variant);
+  font-family: var(--md-sys-typescale-title-small-font-family);
+  font-weight: var(--md-sys-typescale-title-small-font-weight);
+  font-size: var(--md-sys-typescale-title-small-font-size);
+  line-height: var(--md-sys-typescale-title-small-line-height);
+  letter-spacing: var(--md-sys-typescale-title-small-letter-spacing);
+  transition: background-color var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard);
+}
+
+.m3-calendar__title-btn:hover {
+  background-color: color-mix(in srgb, var(--md-sys-color-on-surface) var(--md-sys-state-hover), transparent);
+}
+
+.m3-calendar__title-arrow {
+  transition: transform var(--md-sys-motion-duration-medium1) var(--md-sys-motion-easing-standard);
+}
+
+.m3-calendar__title-arrow--open {
+  transform: rotate(180deg);
+}
+
+/* Scrollable Views */
+.m3-calendar__view {
+  min-height: 256px;
+}
+
+.m3-calendar__view--year,
+.m3-calendar__view--month {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  height: 280px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+/* Scrollbar styling for webkit */
+.m3-calendar__view::-webkit-scrollbar {
+  width: 4px;
+}
+.m3-calendar__view::-webkit-scrollbar-track {
+  background: transparent;
+}
+.m3-calendar__view::-webkit-scrollbar-thumb {
+  background-color: var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+}
+
+.m3-calendar__year-btn,
+.m3-calendar__month-btn {
+  height: 48px;
+  border: none;
+  background: transparent;
+  border-radius: 24px; /* Fully rounded */
+  cursor: pointer;
+  color: var(--md-sys-color-on-surface);
+  font-family: var(--md-sys-typescale-body-large-font-family);
+  font-weight: var(--md-sys-typescale-body-large-font-weight);
+  font-size: var(--md-sys-typescale-body-large-font-size);
+  line-height: var(--md-sys-typescale-body-large-line-height);
+  letter-spacing: var(--md-sys-typescale-body-large-letter-spacing);
+  transition: background-color var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard);
+}
+
+.m3-calendar__year-btn:hover,
+.m3-calendar__month-btn:hover {
+  background-color: color-mix(in srgb, var(--md-sys-color-on-surface) var(--md-sys-state-hover), transparent);
+}
+
+.m3-calendar__year-btn--selected,
+.m3-calendar__month-btn--selected {
+  background-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+}
+
+.m3-calendar__year-btn--selected:hover,
+.m3-calendar__month-btn--selected:hover {
+  background-color: color-mix(in srgb, var(--md-sys-color-primary) 80%, black);
+}
