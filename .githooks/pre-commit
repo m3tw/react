@@ -1,0 +1,10 @@
+#!/usr/bin/env sh
+set -eu
+
+repo_root="$(git rev-parse --show-toplevel)"
+
+cd "$repo_root/react-md3"
+npm run api:contract:sync
+npm run api:contract:check
+
+git -C "$repo_root" add react-md3/public-api.contract.json react-md3/CHANGELOG.md
