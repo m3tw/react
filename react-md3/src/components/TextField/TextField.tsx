@@ -17,6 +17,7 @@ export function TextField({
   errorText,
   supportingText,
   type = 'text',
+  placeholder,
   'aria-describedby': ariaDescribedBy,
   ...props
 }: TextFieldProps) {
@@ -29,6 +30,10 @@ export function TextField({
     .filter(Boolean)
     .join(' ')
 
+  // The floating label technique relies on the :placeholder-shown CSS selector.
+  // We must ensure the input always has a placeholder value, even if it's just a space.
+  const resolvedPlaceholder = placeholder || " "
+
   return (
     <div
       className={[
@@ -39,18 +44,21 @@ export function TextField({
         .filter(Boolean)
         .join(' ')}
     >
-      <label className="m3-text-field__label" htmlFor={inputId}>
-        {label}
-      </label>
-      <input
-        {...props}
-        aria-describedby={describedBy || undefined}
-        aria-invalid={hasError ? 'true' : undefined}
-        className={['m3-text-field__input', className ?? ''].filter(Boolean).join(' ')}
-        disabled={disabled}
-        id={inputId}
-        type={type}
-      />
+      <div className="m3-text-field__container">
+        <input
+          {...props}
+          aria-describedby={describedBy || undefined}
+          aria-invalid={hasError ? 'true' : undefined}
+          className={['m3-text-field__input', className ?? ''].filter(Boolean).join(' ')}
+          disabled={disabled}
+          id={inputId}
+          placeholder={resolvedPlaceholder}
+          type={type}
+        />
+        <label className="m3-text-field__label" htmlFor={inputId}>
+          {label}
+        </label>
+      </div>
       {message ? (
         <p
           className={['m3-text-field__supporting-text', hasError ? 'm3-text-field__supporting-text--error' : '']
