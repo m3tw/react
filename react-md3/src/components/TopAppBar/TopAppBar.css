@@ -97,14 +97,24 @@
 }
 
 /* ==============================
+   Variant: Medium & Large common flex traits
+   ============================== */
+.m3-top-app-bar--medium, .m3-top-app-bar--large {
+  --m3-top-app-bar-collapse-ratio: 0;
+}
+
+/* ==============================
    Variant: Medium
    ============================== */
 .m3-top-app-bar--medium .m3-top-app-bar__row {
   min-height: 64px;
 }
 
-.m3-top-app-bar--medium .m3-top-app-bar__headline {
+.m3-top-app-bar--medium .m3-top-app-bar__headline-wrapper {
   padding: 0 16px 20px;
+  /* Max height shrinks from roughly 48px to 0 as ratio goes 0->1 */
+  max-height: calc(48px * (1 - var(--m3-top-app-bar-collapse-ratio)));
+  overflow: hidden;
 }
 
 .m3-top-app-bar--medium .m3-top-app-bar__headline .m3-top-app-bar__title {
@@ -123,8 +133,11 @@
   min-height: 64px;
 }
 
-.m3-top-app-bar--large .m3-top-app-bar__headline {
+.m3-top-app-bar--large .m3-top-app-bar__headline-wrapper {
   padding: 0 16px 28px;
+  /* Max height shrinks from roughly 88px to 0 as ratio goes 0->1 */
+  max-height: calc(88px * (1 - var(--m3-top-app-bar-collapse-ratio)));
+  overflow: hidden;
 }
 
 .m3-top-app-bar--large .m3-top-app-bar__headline .m3-top-app-bar__title {

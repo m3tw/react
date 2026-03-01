@@ -39,8 +39,10 @@ import {
   PlainTooltip,
   RichTooltip,
   TopAppBar,
+  BottomAppBar
 } from './index'
 import './App.css'
+import { useRef } from 'react'
 
 const IconDashboard = <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2" /><line x1="3" y1="9" x2="21" y2="9" /><line x1="9" y1="21" x2="9" y2="9" /></svg>;
 const IconProjects = <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" /></svg>;
@@ -138,6 +140,8 @@ function App() {
   const [sideSheetOpen, setSideSheetOpen] = useState(false)
   const [fullScreenDialogOpen, setFullScreenDialogOpen] = useState(false)
 
+  const scrollRef = useRef<HTMLDivElement>(null)
+
   return (
     <div className="app-shell">
       <TopAppBar
@@ -147,6 +151,8 @@ function App() {
         ]}
         ariaLabel="App Header"
         title="Material 3 Kitchen Sink"
+        variant="medium"
+        scrollTarget={scrollRef}
         supportingText="React Components Demo"
         navigationIcon={
           <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
@@ -183,7 +189,7 @@ function App() {
           />
         </div>
 
-        <main className="content-container">
+        <main className="content-container" ref={scrollRef}>
           <header className="page-header">
             <h1>Component Overview</h1>
             <p>A comprehensive showcase of all implemented M3 components.</p>
@@ -657,10 +663,22 @@ function App() {
               />
             </Surface>
 
-            {/* Toolbars */}
+            {/* Toolbars & App Bars */}
             <Surface as="section" elevation={1} className="component-section">
-              <h2>Toolbars</h2>
+              <h2>Toolbars & App Bars</h2>
               <Divider />
+              <div className="component-col">
+                <h3>Bottom App Bar</h3>
+                <BottomAppBar
+                  navigationIcon={<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" /></svg>}
+                  actions={[
+                    { label: 'Edit', icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg> },
+                    { label: 'Archive', icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M20.54 5.23l-1.39-1.68C18.88 3.21 18.47 3 18 3H6c-.47 0-.88.21-1.16.55L3.46 5.23C3.17 5.57 3 6.02 3 6.5V19c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6.5c0-.48-.17-.93-.46-1.27zM6.24 5h11.52l.83 1H5.42l.82-1zM5 19V8h14v11H5zm8-5.5l-4-4h2.5V7h3v2.5H17l-4 4z"/></svg> }
+                  ]}
+                  fab={<Fab label="Add" size="medium" icon={<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>} />}
+                />
+              </div>
+
               <div className="component-col">
                 <h3>Docked Toolbar</h3>
                 <DockedToolbar ariaLabel="Docked standard toolbar">

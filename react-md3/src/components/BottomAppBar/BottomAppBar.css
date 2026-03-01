@@ -1,0 +1,48 @@
+/* ==============================
+   M3 Bottom App Bar
+   ============================== */
+
+.m3-bottom-app-bar {
+  display: flex;
+  background-color: var(--md-sys-color-surface-container);
+  color: var(--md-sys-color-on-surface);
+  border: none;
+  box-shadow: var(--md-sys-elevation-level2); /* standard elevation for bottom bar */
+  z-index: 10;
+  position: relative;
+  width: 100%;
+}
+
+.m3-bottom-app-bar__container {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* Standard internal spacing */
+  padding: 12px 16px; /* standard horizontal padding */
+  min-height: 80px; /* Exact M3 height specification */
+  width: 100%;
+}
+
+/* Spacer pushes the FAB to the right, or space between nav and actions depending on placement */
+.m3-bottom-app-bar__spacer {
+  flex: 1 1 0%;
+}
+
+/* Actions list */
+.m3-bottom-app-bar__actions {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* Spacing between standard identical icons */
+}
+
+.m3-bottom-app-bar__nav-icon {
+  flex-shrink: 0;
+}
+
+.m3-bottom-app-bar__fab-container {
+  position: relative;
+  /* Adjusts the FAB natively slightly if needed */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 11;
+}

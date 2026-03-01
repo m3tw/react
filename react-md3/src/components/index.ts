@@ -1,6 +1,6 @@
-export * from "./Ripple";
 export * from './AlertDialog'
 export * from './Badge'
+export * from './BottomAppBar'
 export * from './Button'
 export * from './ButtonGroup'
 export * from './Carousel'
