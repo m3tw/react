@@ -7,6 +7,7 @@ describe('public API barrel', () => {
     expect(Object.keys(publicApi).sort()).toEqual([
       'AlertDialog',
       'Badge',
+      'BottomAppBar',
       'BottomSheet',
       'Button',
       'ButtonGroup',
@@ -33,7 +34,6 @@ describe('public API barrel', () => {
       'ProgressIndicator',
       'RadioGroup',
       'RichTooltip',
-      'Ripple',
       'SearchBar',
       'SideSheet',
       'Slider',
@@ -43,6 +43,7 @@ describe('public API barrel', () => {
       'Switch',
       'Tabs',
       'TextField',
+      'TimePicker',
       'Tooltip',
       'TopAppBar',
     ])

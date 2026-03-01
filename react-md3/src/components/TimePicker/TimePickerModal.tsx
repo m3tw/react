@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { TimeDial } from './TimeDial'
 import './TimePicker.css'
 
@@ -38,6 +38,29 @@ export function TimePickerModal({
   onConfirm,
   onCancel,
 }: TimePickerModalProps) {
+  if (!open) return null
+
+  return (
+    <TimePickerModalContent
+      key={`${value ?? ''}-${is24Hour ? '24h' : '12h'}-${initialMode}`}
+      value={value}
+      is24Hour={is24Hour}
+      initialMode={initialMode}
+      onConfirm={onConfirm}
+      onCancel={onCancel}
+    />
+  )
+}
+
+type TimePickerModalContentProps = Omit<TimePickerModalProps, 'open'>
+
+function TimePickerModalContent({
+  value,
+  is24Hour = false,
+  initialMode = 'dial',
+  onConfirm,
+  onCancel,
+}: TimePickerModalContentProps) {
   const [mode, setMode] = useState<'dial' | 'input'>(initialMode)
   const [dialMode, setDialMode] = useState<'hour' | 'minute'>('hour')
   
@@ -53,25 +76,6 @@ export function TimePickerModal({
   const [inputHour, setInputHour] = useState(String(dHour).padStart(2, '0'))
   const [inputMinute, setInputMinute] = useState(String(minute).padStart(2, '0'))
   const [inputError, setInputError] = useState(false)
-
-  // Reset state when modal opens
-  useEffect(() => {
-    if (open) {
-      const parsed = parseTime(value)
-      setHour(parsed.hour)
-      setMinute(parsed.minute)
-      setIsPM(parsed.hour >= 12)
-      setDialMode('hour')
-      setMode(initialMode)
-      setInputError(false)
-      
-      const dh = is24Hour ? parsed.hour : (parsed.hour % 12 === 0 ? 12 : parsed.hour % 12)
-      setInputHour(String(dh).padStart(2, '0'))
-      setInputMinute(String(parsed.minute).padStart(2, '0'))
-    }
-  }, [open, value, is24Hour, initialMode])
-
-  if (!open) return null
 
   // Derived 12-hour values for display in Dial mode blocks
   const displayHour = is24Hour ? hour : (hour % 12 === 0 ? 12 : hour % 12)
