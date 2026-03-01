@@ -1,5 +1,5 @@
 .m3-chip {
-  --m3-chip-bg: transparent;
+  --m3-chip-bg: var(--md-sys-color-surface);
   --m3-chip-color: var(--md-sys-color-on-surface-variant);
   --m3-chip-outline: var(--md-sys-color-outline);
   --md-ripple-color: var(--md-sys-color-on-surface-variant);
@@ -9,7 +9,7 @@
   height: 32px;
   border-radius: 8px; /* M3 chip corner radius */
   background-color: var(--m3-chip-bg);
-  box-shadow: inset 0 0 0 1px var(--m3-chip-outline); /* box-shadow as border so inner buttons can stretch and we avoid sizing issues */
+  box-shadow: inset 0 0 0 1px var(--m3-chip-outline); 
   color: var(--m3-chip-color);
   
   font-family: var(--md-sys-typescale-label-large-font-family);
@@ -39,14 +39,44 @@
   -webkit-tap-highlight-color: transparent;
 }
 
+/* Default Paddings for Assist, Filter, Suggestion */
 .m3-chip__button {
   padding: 0 16px;
   border-radius: 8px; /* For state layer/ripple to mask correctly */
   overflow: hidden;
+  gap: 8px; /* M3 standard gap between elements inside chip */
 }
 
-/* If dismissible, pad right of main button less */
-.m3-chip:has(.m3-chip__dismiss) .m3-chip__button {
+/* Leading element adjustments */
+.m3-chip--has-leading .m3-chip__button {
+  padding-left: 8px;
+}
+
+.m3-chip__leading-element {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px; /* Standard icon bounding box */
+  height: 18px;
+  color: var(--md-sys-color-primary); /* Default icon color often primary but matches semantics */
+}
+
+/* Base adjustment for Input chips (which have defaults differently) */
+.m3-chip--input .m3-chip__button {
+  padding-left: 12px;
+  padding-right: 12px;
+}
+.m3-chip--input.m3-chip--has-leading .m3-chip__button {
+  padding-left: 4px; /* Avatar padding mapping */
+}
+.m3-chip--input.m3-chip--has-trailing .m3-chip__button {
+  padding-right: 8px;
+}
+
+/* Trailing Dismiss Action */
+.m3-chip--has-trailing .m3-chip__button {
   padding-right: 8px;
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
@@ -61,7 +91,7 @@
 .m3-chip__icon {
   position: relative;
   z-index: 1;
-  font-size: 18px; /* M3 chip trailing icons are usually 18px */
+  font-size: 18px; 
   display: flex;
   align-items: center;
   justify-content: center;
@@ -74,18 +104,44 @@
   z-index: 1;
 }
 
-/* Base focus handling: button handles its own state layer */
+/* State Layers via pseudo-elements mapping */
+.m3-chip__button::after,
+.m3-chip__dismiss::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-color: transparent;
+  transition: background-color var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard);
+  z-index: 0;
+}
+
+.m3-chip__button:hover::after,
+.m3-chip__dismiss:hover::after {
+  background-color: color-mix(in srgb, var(--m3-chip-color) 8%, transparent);
+}
+
+.m3-chip__button:focus-visible::after,
+.m3-chip__dismiss:focus-visible::after {
+  background-color: color-mix(in srgb, var(--m3-chip-color) 12%, transparent);
+}
+
+.m3-chip__button:active::after,
+.m3-chip__dismiss:active::after {
+  background-color: color-mix(in srgb, var(--m3-chip-color) 12%, transparent);
+}
+
+/* Base focus handling */
 .m3-chip__button:focus-visible,
 .m3-chip__dismiss:focus-visible {
   outline: 2px solid var(--md-sys-color-secondary);
-  outline-offset: 2px;
+  outline-offset: -2px; /* Pull into container */
 }
 
 /* M3 Variants */
 /* 1. Assist / Suggestion (Outline default) */
 .m3-chip--assist,
 .m3-chip--suggestion {
-  --m3-chip-bg: transparent;
+  --m3-chip-bg: var(--md-sys-color-surface);
   --m3-chip-color: var(--md-sys-color-on-surface);
   --m3-chip-outline: var(--md-sys-color-outline);
   --md-ripple-color: var(--md-sys-color-on-surface);
@@ -94,7 +150,7 @@
 /* 2. Filter / Input (with Selection state) */
 .m3-chip--filter,
 .m3-chip--input {
-  --m3-chip-bg: transparent;
+  --m3-chip-bg: var(--md-sys-color-surface); /* Uses surface standard natively before selection */
   --m3-chip-color: var(--md-sys-color-on-surface-variant);
   --m3-chip-outline: var(--md-sys-color-outline);
   --md-ripple-color: var(--md-sys-color-on-surface-variant);
@@ -105,6 +161,11 @@
   --m3-chip-color: var(--md-sys-color-on-secondary-container);
   --m3-chip-outline: transparent;
   --md-ripple-color: var(--md-sys-color-on-secondary-container);
+}
+
+/* Override leading icon color if selected */
+.m3-chip--selected .m3-chip__leading-element {
+  color: var(--md-sys-color-on-secondary-container);
 }
 
 /* Disabled */
@@ -120,6 +181,10 @@
 .m3-chip--disabled.m3-chip--selected {
   --m3-chip-bg: color-mix(in srgb, var(--md-sys-color-on-surface) 12%, transparent) !important;
   --m3-chip-outline: transparent !important;
+}
+
+.m3-chip--disabled .m3-chip__leading-element {
+  color: color-mix(in srgb, var(--md-sys-color-on-surface) 38%, transparent) !important;
 }
 
 .m3-chip__button:disabled,
