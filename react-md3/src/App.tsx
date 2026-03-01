@@ -91,7 +91,24 @@ const radioOptions = [
   { label: 'Option C', value: 'c' },
 ]
 
-const carouselItems = ['Slide 1', 'Slide 2', 'Slide 3']
+const carouselItems = Array.from({ length: 6 }).map((_, i) => (
+  <div 
+    style={{ 
+      width: '100%', 
+      height: '100%', 
+      display: 'flex', 
+      alignItems: 'center', 
+      justifyContent: 'center', 
+      backgroundColor: `hsl(${i * 60 + 200}, 70%, 80%)`,
+      color: `hsl(${i * 60 + 200}, 90%, 20%)`,
+      fontSize: '2rem',
+      fontWeight: 'bold',
+      borderRadius: '28px'
+    }}
+  >
+    {i + 1}
+  </div>
+))
 
 function App() {
   // Navigation & Tabs
@@ -114,7 +131,6 @@ function App() {
   // Other components
   const [buttonGroupValue, setButtonGroupValue] = useState('day')
   const [listValue, setListValue] = useState('inbox')
-  const [carouselIndex, setCarouselIndex] = useState(0)
   const [showModalPicker, setShowModalPicker] = useState(false)
   const [showModalInputPicker, setShowModalInputPicker] = useState(false)
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false)
@@ -518,12 +534,23 @@ function App() {
                     defaultValue="explore" 
                   />
                 </div>
-                <div className="carousel-container">
-                  <Carousel 
-                    items={carouselItems} 
-                    activeIndex={carouselIndex} 
-                    onActiveIndexChange={setCarouselIndex} 
-                  />
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '32px', marginTop: '24px' }}>
+                  
+                  <div>
+                    <h4 style={{ marginBottom: '16px' }}>Multi-browse (Default)</h4>
+                    <Carousel items={carouselItems} layout="multi-browse" />
+                  </div>
+
+                  <div>
+                    <h4 style={{ marginBottom: '16px' }}>Uncontained</h4>
+                    <Carousel items={carouselItems} layout="uncontained" />
+                  </div>
+
+                  <div>
+                    <h4 style={{ marginBottom: '16px' }}>Hero Layout</h4>
+                    <Carousel items={carouselItems} layout="hero" />
+                  </div>
+
                 </div>
               </div>
             </Surface>

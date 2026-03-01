@@ -1,57 +1,140 @@
+/* M3 Carousel Baseline Mechanics */
 .m3-carousel {
-  --m3-carousel-bg: var(--md-sys-color-surface-container-low);
-  --m3-carousel-color: var(--md-sys-color-on-surface);
-  
+  position: relative;
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  border-radius: 28px; /* M3 standard large component radius */
-  padding: 24px; /* Generous padding for a surface */
-  background-color: var(--m3-carousel-bg);
-  color: var(--m3-carousel-color);
-  box-shadow: var(--md-sys-elevation-level1);
+  width: 100%;
+}
+
+.m3-carousel__container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.m3-carousel__track {
+  display: flex;
+  flex-direction: row;
+  gap: 8px; /* M3 standard gap between items */
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  list-style: none;
+  
+  /* Hide Scrollbar */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;  /* IE and Edge */
+}
+
+.m3-carousel__track::-webkit-scrollbar {
+  display: none;
 }
 
 .m3-carousel__item {
-  margin: 0;
-  font-family: var(--md-sys-typescale-headline-small-font-family);
-  font-weight: var(--md-sys-typescale-headline-small-font-weight);
-  font-size: var(--md-sys-typescale-headline-small-font-size);
-  line-height: var(--md-sys-typescale-headline-small-line-height);
-  letter-spacing: var(--md-sys-typescale-headline-small-letter-spacing);
-}
-
-.m3-carousel__actions {
+  scroll-snap-align: start;
+  flex-shrink: 0;
+  border-radius: 28px; /* M3 standard large component radius */
+  overflow: hidden;
+  transition: width 0.3s cubic-bezier(0.2, 0, 0, 1), transform 0.3s cubic-bezier(0.2, 0, 0, 1);
   display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--md-sys-color-surface-container);
+  will-change: transform, width;
+}
+
+/* Base item defaults if not specifically overridden by layout */
+.m3-carousel__item > * {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Navigation Controls Overlay */
+.m3-carousel__nav-control {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  transition: opacity 0.2s ease;
+  pointer-events: auto;
+}
+
+.m3-carousel__nav-control.is-hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.m3-carousel__nav-control--prev {
+  left: 16px;
+}
+
+.m3-carousel__nav-control--next {
+  right: 16px;
+}
+
+/* =========================================
+   Layout: MULTI-BROWSE (Default M3 Example)
+   ========================================= */
+.m3-carousel--multi-browse .m3-carousel__track {
+  padding: 0 16px; /* standard edge paddings */
+}
+
+.m3-carousel--multi-browse .m3-carousel__item {
+  /* Using specific widths mapping roughly to M3 "Large", "Medium", "Small" slots dynamically using pure CSS grids/flex */
+  /* For pure CSS fallback, we assign flex-basis sizes */
+  width: 280px; /* Base 'Large' size. Can be overridden dynamically by React IntersectionObserver mapped classes */
+  max-width: 80vw;
+  height: 320px;
+}
+
+/* =========================================
+   Layout: UNCONTAINED
+   ========================================= */
+.m3-carousel--uncontained .m3-carousel__track {
+  padding: 0; /* edge-to-edge bleed */
   gap: 8px;
-  margin-top: auto;
 }
 
-/* We will use the proper M3 Button component for the actions in the TSX file shortly, 
-   but for now styling the native buttons if they exist */
-.m3-carousel__actions button {
-  background: transparent;
-  border: 1px solid var(--md-sys-color-outline);
-  border-radius: 20px;
-  color: var(--md-sys-color-primary);
-  cursor: pointer;
-  padding: 0 24px;
-  height: 40px;
-  
-  font-family: var(--md-sys-typescale-label-large-font-family);
-  font-weight: var(--md-sys-typescale-label-large-font-weight);
-  font-size: var(--md-sys-typescale-label-large-font-size);
-  line-height: var(--md-sys-typescale-label-large-line-height);
-  letter-spacing: var(--md-sys-typescale-label-large-letter-spacing);
-  
-  transition: background-color var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard);
+.m3-carousel--uncontained .m3-carousel__item {
+  width: 320px; /* uncontained specific default */
+  height: 360px;
 }
 
-.m3-carousel__actions button:hover {
-  background-color: color-mix(in srgb, var(--md-sys-color-primary) 8%, transparent);
+/* =========================================
+   Layout: HERO
+   ========================================= */
+.m3-carousel--hero .m3-carousel__track {
+  padding: 0 16px;
 }
 
-.m3-carousel__actions button:focus-visible {
-  outline: 2px solid var(--md-sys-color-secondary);
-  outline-offset: 2px;
+.m3-carousel--hero .m3-carousel__item:first-child {
+  width: 100%; /* The Hero item takes up almost full width */
+  max-width: 480px;
+  height: 480px;
+}
+
+.m3-carousel--hero .m3-carousel__item:not(:first-child) {
+  width: 120px; /* The secondary tiny items */
+  height: 480px;
+}
+
+/* =========================================
+   Layout: FULL-SCREEN
+   ========================================= */
+.m3-carousel--full-screen .m3-carousel__track {
+  padding: 0;
+  gap: 0;
+  scroll-snap-type: x mandatory;
+}
+
+.m3-carousel--full-screen .m3-carousel__item {
+  width: 100%;
+  height: 100vh;
+  border-radius: 0;
 }
