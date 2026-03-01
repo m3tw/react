@@ -212,6 +212,31 @@ import {
   - `migrationGuide`
 - Changelog-Eintrag muss den Contract-Token `[api-contract-hash:...]` enthalten.
 
+### Git-Hook-Automation (Contract-Sync bei Commit)
+
+Einmal pro Clone Hooks aktivieren:
+
+```bash
+cd react-md3
+npm run hooks:install
+```
+
+Danach fuehrt der Repo-Hook `.githooks/pre-commit` bei jedem Commit automatisch aus:
+
+1. `npm run api:contract:sync`
+2. `npm run api:contract:check`
+3. `git add react-md3/public-api.contract.json react-md3/CHANGELOG.md`
+
+Manueller Fallback (falls Hooks lokal deaktiviert sind):
+
+```bash
+cd react-md3
+npm run api:contract:sync
+npm run api:contract:check
+```
+
+Wichtig: Der Sync aktualisiert Exportliste, Hash/Token und Changelog-Metadatenzeilen. Die fachliche `migrationGuide`-Aussage bleibt eine Maintainer-Verantwortung und muss bei API-Aenderungen bewusst gepflegt werden.
+
 ## 6) Quality Gates
 
 Pflicht-Gates fuer diese Story:
