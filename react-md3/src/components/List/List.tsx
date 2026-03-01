@@ -1,16 +1,20 @@
-import { useMemo, useState } from 'react'
+import { useMemo, useState, useRef } from 'react'
+import type { KeyboardEvent, ReactNode } from 'react'
 import { Ripple } from "../Ripple";
 
 import './List.css'
 
-type ListItem = {
-  label: string
+export type ListItem = {
   value: string
+  headline: ReactNode
+  supportingText?: ReactNode
+  leadingElement?: ReactNode
+  trailingElement?: ReactNode
   disabled?: boolean
   hidden?: boolean
 }
 
-type ListProps = {
+export type ListProps = {
   items: readonly ListItem[]
   value?: string
   defaultValue?: string
@@ -31,6 +35,8 @@ export function List({
   onValueChange,
   ariaLabel = 'List',
 }: ListProps) {
+  const listRef = useRef<HTMLUListElement>(null)
+
   const visibleItems = useMemo(
     () => items.filter((item) => !item.hidden),
     [items],
@@ -54,25 +60,100 @@ export function List({
     onValueChange?.(item.value)
   }
 
+  const handleKeyDown = (e: KeyboardEvent<HTMLUListElement>) => {
+    if (!listRef.current) return
+
+    const getEnabledItems = () => {
+      const elements = Array.from(listRef.current?.querySelectorAll<HTMLDivElement>('[role="option"]:not([aria-disabled="true"])') || [])
+      return elements
+    }
+
+    const enabledItems = getEnabledItems()
+    if (enabledItems.length === 0) return
+
+    const currentIndex = enabledItems.findIndex((el) => el === document.activeElement)
+    let nextIndex = currentIndex
+
+    switch (e.key) {
+      case 'ArrowDown':
+        e.preventDefault()
+        nextIndex = currentIndex < enabledItems.length - 1 ? currentIndex + 1 : 0
+        break
+      case 'ArrowUp':
+        e.preventDefault()
+        nextIndex = currentIndex > 0 ? currentIndex - 1 : enabledItems.length - 1
+        break
+      case 'Home':
+        e.preventDefault()
+        nextIndex = 0
+        break
+      case 'End':
+        e.preventDefault()
+        nextIndex = enabledItems.length - 1
+        break
+      case 'Enter':
+      case ' ':
+        e.preventDefault()
+        if (currentIndex !== -1) {
+          enabledItems[currentIndex]?.click()
+        }
+        return
+      default:
+        return
+    }
+
+    enabledItems[nextIndex]?.focus()
+  }
+
   return (
-    <ul aria-label={ariaLabel} className="m3-list" role="listbox">
+    <ul 
+      aria-label={ariaLabel} 
+      className="m3-list" 
+      role="listbox" 
+      ref={listRef} 
+      onKeyDown={handleKeyDown}
+      tabIndex={-1}
+    >
       {visibleItems.map((item) => {
         const isActive = activeValue === item.value
+        const hasSupportingText = !!item.supportingText
+        
         return (
           <li key={item.value} className="m3-list__item-container">
-            <button
+            <div
               aria-selected={isActive ? 'true' : 'false'}
-              className={['m3-list__item', isActive ? 'm3-list__item--active' : '', item.disabled ? 'm3-list__item--disabled' : '']
-                .filter(Boolean)
-                .join(' ')}
-              disabled={item.disabled}
+              aria-disabled={item.disabled ? 'true' : undefined}
+              className={[
+                'm3-list__item', 
+                isActive ? 'm3-list__item--active' : '', 
+                item.disabled ? 'm3-list__item--disabled' : '',
+                hasSupportingText ? 'm3-list__item--multiline' : 'm3-list__item--single-line'
+              ].filter(Boolean).join(' ')}
               onClick={() => selectItem(item)}
               role="option"
-              type="button"
+              tabIndex={item.disabled ? -1 : 0}
             >
               <Ripple />
-              <span className="m3-list__item-text">{item.label}</span>
-            </button>
+              
+              {item.leadingElement && (
+                <div className="m3-list__item-leading">
+                  {item.leadingElement}
+                </div>
+              )}
+              
+              <div className="m3-list__item-content">
+                <span className="m3-list__item-headline">{item.headline}</span>
+                {item.supportingText && (
+                  <span className="m3-list__item-supporting-text">{item.supportingText}</span>
+                )}
+              </div>
+
+              {item.trailingElement && (
+                <div className="m3-list__item-trailing">
+                  {item.trailingElement}
+                </div>
+              )}
+            </div>
           </li>
         )
       })}

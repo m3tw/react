@@ -53,9 +53,30 @@ const navigationDestinations = [
 ]
 
 const listItems = [
-  { label: 'Inbox', value: 'inbox' },
-  { label: 'Review', value: 'review' },
-  { label: 'Archive', value: 'archive' },
+  { headline: 'Inbox', value: 'inbox' },
+  { headline: 'Review', value: 'review' },
+  { headline: 'Archive', value: 'archive' },
+]
+
+const complexListItems = [
+  { 
+    headline: 'Brunch this weekend?', 
+    supportingText: 'I\'ll be in your neighborhood doing errands this weekend. Do you want to grab brunch?',
+    leadingElement: <div style={{ width: 40, height: 40, borderRadius: '50%', background: 'var(--md-sys-color-primary-container)', color: 'var(--md-sys-color-on-primary-container)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold' }}>A</div>,
+    value: 'brunch'
+  },
+  { 
+    headline: 'Summer BBQ', 
+    supportingText: 'Wish I could come, but I\'m out of town this weekend.',
+    leadingElement: <div style={{ width: 40, height: 40, borderRadius: '50%', background: 'var(--md-sys-color-secondary-container)', color: 'var(--md-sys-color-on-secondary-container)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold' }}>B</div>,
+    value: 'bbq'
+  },
+  { 
+    headline: 'Oui Oui', 
+    supportingText: 'Do you have Paris recommendations? Have you ever been?',
+    leadingElement: <div style={{ width: 40, height: 40, borderRadius: '50%', background: 'var(--md-sys-color-tertiary-container)', color: 'var(--md-sys-color-on-tertiary-container)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold' }}>C</div>,
+    value: 'paris'
+  },
 ]
 
 const buttonGroupOptions = [
@@ -378,8 +399,15 @@ function App() {
                 </div>
               </div>
               <div className="component-col">
+                <h3>Standard 1-Line List</h3>
                 <List 
                   items={listItems} 
+                  value={listValue} 
+                  onValueChange={setListValue} 
+                />
+                <h3 style={{ marginTop: '24px' }}>Complex 2-Line List</h3>
+                <List 
+                  items={complexListItems} 
                   value={listValue} 
                   onValueChange={setListValue} 
                 />

@@ -1,63 +1,120 @@
 .m3-list {
   --m3-list-bg: var(--md-sys-color-surface);
   --m3-list-color: var(--md-sys-color-on-surface);
-  --m3-list-item-height: 56px; /* 1-line standard list height */
   
   margin: 0;
-  padding: 8px 0; /* M3 standard vertical padding for lists */
+  padding: 8px 0;
   list-style: none;
   display: flex;
   flex-direction: column;
   background-color: var(--m3-list-bg);
-  border-radius: 8px; /* Standard surface rounding for lists/menus in our context */
+  border-radius: 8px;
 }
 
 .m3-list__item-container {
   display: flex;
+  flex-direction: column;
 }
 
 .m3-list__item {
   position: relative;
   width: 100%;
   text-align: left;
-  min-height: var(--m3-list-item-height);
   background: transparent;
   color: var(--m3-list-color);
-  padding: 0 16px;
+  padding: 8px 16px;
   margin: 0;
   border: none;
-  display: flex;
-  align-items: center;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 16px;
+  align-items: center; /* Generally centered, multiline handles interior alignment */
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
   
+  /* Primary Text Baseline Typography */
   font-family: var(--md-sys-typescale-body-large-font-family);
   font-weight: var(--md-sys-typescale-body-large-font-weight);
   font-size: var(--md-sys-typescale-body-large-font-size);
   line-height: var(--md-sys-typescale-body-large-line-height);
   letter-spacing: var(--md-sys-typescale-body-large-letter-spacing);
   
-  /* Setting the Ripple color */
   --md-ripple-color: var(--md-sys-color-on-surface);
 }
 
-.m3-list__item-text {
-  position: relative;
-  z-index: 1; /* Keep above state layer */
+.m3-list__item--single-line {
+  min-height: 56px;
 }
 
-/* Active/Selected state changes layout/color slightly */
+.m3-list__item--multiline {
+  min-height: 72px; /* 2-line baseline */
+}
+
+/* Explicit internal elements */
+.m3-list__item-leading, 
+.m3-list__item-trailing {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.m3-list__item-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow: hidden; /* truncates long text */
+}
+
+.m3-list__item-headline {
+  color: var(--md-sys-color-on-surface);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.m3-list__item-supporting-text {
+  font-family: var(--md-sys-typescale-body-medium-font-family);
+  font-weight: var(--md-sys-typescale-body-medium-font-weight);
+  font-size: var(--md-sys-typescale-body-medium-font-size);
+  line-height: var(--md-sys-typescale-body-medium-line-height);
+  letter-spacing: var(--md-sys-typescale-body-medium-letter-spacing);
+  color: var(--md-sys-color-on-surface-variant);
+  
+  /* Up to 2 lines of text wrapping */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: 2px;
+}
+
+/* Active/Selected State */
 .m3-list__item--active {
-  /* Actually background changes in M3 are state-based, but active selection gets secondary container */
   background-color: var(--md-sys-color-secondary-container);
   color: var(--md-sys-color-on-secondary-container);
   --md-ripple-color: var(--md-sys-color-on-secondary-container);
 }
 
+/* Update child text colors organically if container is active */
+.m3-list__item--active .m3-list__item-headline,
+.m3-list__item--active .m3-list__item-supporting-text,
+.m3-list__item--active .m3-list__item-leading,
+.m3-list__item--active .m3-list__item-trailing {
+  color: var(--md-sys-color-on-secondary-container);
+}
+
 /* Focus */
 .m3-list__item:focus-visible {
   outline: 2px solid var(--md-sys-color-secondary);
-  outline-offset: -2px; /* inside the item */
+  outline-offset: -2px;
 }
 
 /* Disabled state */
@@ -66,4 +123,11 @@
   cursor: not-allowed;
   pointer-events: none;
   --md-ripple-color: transparent;
+}
+
+.m3-list__item--disabled .m3-list__item-headline,
+.m3-list__item--disabled .m3-list__item-supporting-text,
+.m3-list__item--disabled .m3-list__item-leading,
+.m3-list__item--disabled .m3-list__item-trailing {
+  color: color-mix(in srgb, var(--md-sys-color-on-surface) 38%, transparent);
 }
