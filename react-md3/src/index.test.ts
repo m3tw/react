@@ -24,6 +24,7 @@ describe('public API barrel', () => {
       'FullScreenDialog',
       'IconButton',
       'List',
+      'LoadingIndicator',
       'Menu',
       'NavigationBar',
       'NavigationDrawer',

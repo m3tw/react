@@ -17,6 +17,7 @@ import {
   FullScreenDialog,
   IconButton,
   List,
+  LoadingIndicator,
   Menu,
   NavigationBar,
   NavigationDrawer,
@@ -367,10 +368,10 @@ function App() {
                   <ProgressIndicator variant="linear" label="Linear Indeterminate" indeterminate />
                 </div>
                 <div className="component-col" style={{ alignItems: 'center', justifyContent: 'center', minWidth: '100px' }}>
-                  <ProgressIndicator variant="circular" label="Circular" value={sliderValue} />
+                  <ProgressIndicator variant="circular" label="Circular Progress" value={sliderValue} />
                 </div>
                 <div className="component-col" style={{ alignItems: 'center', justifyContent: 'center', minWidth: '100px' }}>
-                  <ProgressIndicator variant="circular" label="Loading" indeterminate />
+                  <LoadingIndicator />
                 </div>
               </div>
               <div className="component-col">

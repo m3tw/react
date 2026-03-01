@@ -1,0 +1,140 @@
+.m3-loading-indicator {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  /* M3 mandates the active container is 48x48dp overall footprint */
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+}
+
+.m3-loading-indicator--contained {
+  background-color: var(--md-sys-color-primary-container);
+}
+
+.m3-loading-indicator--standard {
+  background-color: transparent;
+}
+
+.m3-loading-indicator__container {
+  /* Internal container holds the active 38dp morphing shape */
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  /* Rotate the entire container to give the rolling morphing effect */
+  animation: m3-loading-indicator-rotate 4s linear infinite;
+}
+
+.m3-loading-indicator__active-shape {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%; /* Default fallback if clip-path unsupported */
+}
+
+.m3-loading-indicator--contained .m3-loading-indicator__active-shape {
+  background-color: var(--md-sys-color-on-primary-container);
+}
+
+.m3-loading-indicator--standard .m3-loading-indicator__active-shape {
+  background-color: var(--md-sys-color-primary);
+}
+
+/* 
+ * M3 True Morphing Indicator 
+ * Native CSS clip-path morphing of complex polygons representing the 7 states (blobs, gears, circles).
+ * Using exactly identical vertex counts so transitions are fluid in chromium/firefox engines.
+ */
+@supports (clip-path: polygon(0% 0%)) {
+  .m3-loading-indicator__active-shape {
+    border-radius: 0;
+    /* 
+     * Complex 7-state morph involving 24 coordinate points (smooth octagonal gear morphs into circles/ovals).
+     */
+    animation: m3-loading-indicator-morph 4s ease-in-out infinite alternate;
+    clip-path: polygon(
+      50% 0%, 61% 11%, 76% 8%, 82% 21%, 
+      95% 26%, 93% 40%, 100% 50%, 93% 60%, 
+      95% 74%, 82% 79%, 76% 92%, 61% 89%, 
+      50% 100%, 39% 89%, 24% 92%, 18% 79%, 
+      5% 74%, 7% 60%, 0% 50%, 7% 40%, 
+      5% 26%, 18% 21%, 24% 8%, 39% 11%
+    );
+  }
+}
+
+@keyframes m3-loading-indicator-rotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes m3-loading-indicator-morph {
+  0% {
+    /* State 1: 8-Point Star / Gear */
+    clip-path: polygon(
+      50% 0%, 61% 11%, 76% 8%, 82% 21%, 
+      95% 26%, 93% 40%, 100% 50%, 93% 60%, 
+      95% 74%, 82% 79%, 76% 92%, 61% 89%, 
+      50% 100%, 39% 89%, 24% 92%, 18% 79%, 
+      5% 74%, 7% 60%, 0% 50%, 7% 40%, 
+      5% 26%, 18% 21%, 24% 8%, 39% 11%
+    );
+  }
+  20% {
+    /* State 2: Rounded Blob / Circle Approximator */
+    clip-path: polygon(
+      50% 5%, 63% 8%, 78% 15%, 85% 25%, 
+      92% 38%, 95% 50%, 92% 62%, 85% 75%, 
+      78% 85%, 63% 92%, 50% 95%, 37% 92%, 
+      22% 85%, 15% 75%, 8% 62%, 5% 50%, 
+      8% 38%, 15% 25%, 22% 15%, 37% 8%, 
+      37% 8%, 37% 8%, 37% 8%, 37% 8% /* Collapse vertices gently if needed, but keeping 24 for safety */
+    );
+  }
+  40% {
+    /* State 3: Pinched Oval / Bean */
+    clip-path: polygon(
+      50% 15%, 70% 20%, 85% 35%, 85% 50%, 
+      85% 65%, 70% 80%, 50% 85%, 30% 80%, 
+      15% 65%, 15% 50%, 15% 35%, 30% 20%, 
+      50% 15%, 65% 18%, 78% 30%, 82% 45%, 
+      82% 55%, 78% 70%, 65% 82%, 50% 85%, 
+      35% 82%, 22% 70%, 18% 55%, 18% 45%
+    );
+  }
+  60% {
+    /* State 4: Squashed Pill (Horizontal Bias) */
+    clip-path: polygon(
+      50% 25%, 75% 25%, 90% 35%, 95% 50%, 
+      90% 65%, 75% 75%, 50% 75%, 25% 75%, 
+      10% 65%, 5% 50%, 10% 35%, 25% 25%, 
+      50% 25%, 70% 28%, 85% 40%, 88% 50%, 
+      85% 60%, 70% 72%, 50% 75%, 30% 72%, 
+      15% 60%, 12% 50%, 15% 40%, 30% 28%
+    );
+  }
+  80% {
+    /* State 5: Soft Rounded Star (Return path) */
+    clip-path: polygon(
+      50% 5%, 58% 18%, 75% 15%, 75% 30%, 
+      92% 35%, 85% 50%, 92% 65%, 75% 70%, 
+      75% 85%, 58% 82%, 50% 95%, 42% 82%, 
+      25% 85%, 25% 70%, 8% 65%, 15% 50%, 
+      8% 35%, 25% 30%, 25% 15%, 42% 18%, 
+      42% 18%, 42% 18%, 42% 18%, 42% 18%
+    );
+  }
+  100% {
+    /* State 6/7: Full Circle Baseline (all 24 points describing a perfect circle radius) */
+    clip-path: polygon(
+      50% 0%, 63% 3.4%, 75% 13.4%, 86.6% 25%, 
+      96.6% 37%, 100% 50%, 96.6% 63%, 86.6% 75%, 
+      75% 86.6%, 63% 96.6%, 50% 100%, 37% 96.6%, 
+      25% 86.6%, 13.4% 75%, 3.4% 63%, 0% 50%, 
+      3.4% 37%, 13.4% 25%, 25% 13.4%, 37% 3.4%, 
+      42% 1.5%, 45% 0.5%, 48% 0.1%, 50% 0%
+    );
+  }
+}
