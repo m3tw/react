@@ -34,11 +34,11 @@
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
   
-  font-family: var(--md-sys-typescale-label-large-font-family);
-  font-weight: var(--md-sys-typescale-label-large-font-weight);
-  font-size: var(--md-sys-typescale-label-large-font-size);
-  line-height: var(--md-sys-typescale-label-large-line-height);
-  letter-spacing: var(--md-sys-typescale-label-large-letter-spacing);
+  font-family: var(--md-sys-typescale-body-large-font-family);
+  font-weight: var(--md-sys-typescale-body-large-font-weight);
+  font-size: var(--md-sys-typescale-body-large-font-size);
+  line-height: var(--md-sys-typescale-body-large-line-height);
+  letter-spacing: var(--md-sys-typescale-body-large-letter-spacing);
   
   /* Ripple color for menu items */
   --md-ripple-color: var(--md-sys-color-on-surface);
