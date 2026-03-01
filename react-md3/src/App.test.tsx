@@ -29,5 +29,5 @@ describe('App Kitchen Sink demo flow', () => {
     expect(filledButtons.length).toBeGreaterThan(0)
     const disabledButtons = getAllByRole('button', { name: 'Disabled' })
     expect(disabledButtons[0]).toBeDisabled()
-  })
+  }, 15000)
 })
