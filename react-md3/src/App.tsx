@@ -371,6 +371,9 @@ function App() {
                   <ProgressIndicator variant="circular" label="Circular Progress" value={sliderValue} />
                 </div>
                 <div className="component-col" style={{ alignItems: 'center', justifyContent: 'center', minWidth: '100px' }}>
+                  <ProgressIndicator variant="circular" label="Circular Indeterminate" indeterminate />
+                </div>
+                <div className="component-col" style={{ alignItems: 'center', justifyContent: 'center', minWidth: '100px' }}>
                   <LoadingIndicator />
                 </div>
               </div>
