@@ -15,12 +15,12 @@
 
 ## 2026-02-28 - Story 2.6 42/42 Coverage Nachweis
 
-[api-contract-hash:f2c3991357ab858fb6950081d9aee78f97e1feb61a4223de9f59a4a5d74a98a7]
+[api-contract-hash:17d491e7e6e4cf13bebf0fdcaa19030fb6ff4be4e6190822cab7efdc12647cab]
 
 - changeType: minor
-- affectedExports: AlertDialog, Badge, BottomSheet, Button, ButtonGroup, ButtonProps, ButtonShape, ButtonSize, ButtonVariant, Card, CardProps, CardVariant, Carousel, Checkbox, Chip, ChipProps, ChipVariant, DatePickerModal, DateTimePicker, Dialog, Divider, DockedToolbar, Fab, FabColor, FabMenuItem, FabProps, FabSize, FabVariant, FloatingToolbar, FullScreenDialog, IconButton, IconButtonProps, IconButtonVariant, List, Menu, NavigationBar, NavigationDrawer, NavigationRail, PlainTooltip, ProgressIndicator, RadioGroup, RichTooltip, Ripple, SearchBar, SideSheet, Slider, Snackbar, SplitButton, Surface, Switch, TabItem, Tabs, TabsLayout, TabsProps, TabsVariant, TextField, Tooltip, TopAppBar
+- affectedExports: AlertDialog, Badge, BottomSheet, Button, ButtonGroup, ButtonProps, ButtonShape, ButtonSize, ButtonVariant, Card, CardProps, CardVariant, Carousel, Checkbox, Chip, ChipProps, ChipVariant, DatePickerModal, DateTimePicker, Dialog, Divider, DockedToolbar, Fab, FabColor, FabMenuItem, FabProps, FabSize, FabVariant, FloatingToolbar, FullScreenDialog, IconButton, IconButtonProps, IconButtonVariant, List, LoadingIndicator, LoadingIndicatorProps, Menu, NavigationBar, NavigationDrawer, NavigationRail, PlainTooltip, ProgressIndicator, ProgressIndicatorVariant, RadioGroup, RichTooltip, Ripple, SearchBar, SideSheet, Slider, Snackbar, SplitButton, Surface, Switch, TabItem, Tabs, TabsLayout, TabsProps, TabsVariant, TextField, Tooltip, TopAppBar
 - riskLevel: medium
-- migrationGuide: Trigger: additive Public-API-Erweiterung fuer Tabs-Typen; Migrationsaufwand: low; Alt -> Neu: bestehende Runtime-Nutzung bleibt unveraendert, zusaetzlich sind `TabItem`, `TabsLayout`, `TabsProps`, `TabsVariant` ueber den Public Entry verfuegbar; Betroffene Exports/Pfade: alle Public-Exports aus `src/index.ts` (kein Deep-Import); Verifikation: `cd react-md3 && npm run quality:gate`
+- migrationGuide: Trigger: additive Public-API-Erweiterung fuer Tabs-, Loading- und Progress-Typen; Migrationsaufwand: low; Alt -> Neu: bestehende Runtime-Nutzung bleibt unveraendert, zusaetzlich sind `TabItem`, `TabsLayout`, `TabsProps`, `TabsVariant`, `LoadingIndicator`, `LoadingIndicatorProps`, `ProgressIndicatorVariant` ueber den Public Entry verfuegbar; Betroffene Exports/Pfade: alle Public-Exports aus `src/index.ts` (kein Deep-Import); Verifikation: `cd react-md3 && npm run quality:gate`
 
 ## 2026-02-27 - Story 2.5 Feedback & Overlay Slice D
 

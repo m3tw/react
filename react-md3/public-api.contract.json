@@ -39,12 +39,15 @@
       "IconButtonProps",
       "IconButtonVariant",
       "List",
+      "LoadingIndicator",
+      "LoadingIndicatorProps",
       "Menu",
       "NavigationBar",
       "NavigationDrawer",
       "NavigationRail",
       "PlainTooltip",
       "ProgressIndicator",
+      "ProgressIndicatorVariant",
       "RadioGroup",
       "RichTooltip",
       "Ripple",
@@ -126,12 +129,15 @@
         "IconButtonProps",
         "IconButtonVariant",
         "List",
+        "LoadingIndicator",
+        "LoadingIndicatorProps",
         "Menu",
         "NavigationBar",
         "NavigationDrawer",
         "NavigationRail",
         "PlainTooltip",
         "ProgressIndicator",
+        "ProgressIndicatorVariant",
         "RadioGroup",
         "RichTooltip",
         "Ripple",
@@ -153,9 +159,9 @@
       ],
       "changeType": "minor",
       "riskLevel": "medium",
-      "migrationGuide": "Trigger: additive Public-API-Erweiterung fuer Tabs-Typen; Migrationsaufwand: low; Alt -> Neu: bestehende Runtime-Nutzung bleibt unveraendert, zusaetzlich sind `TabItem`, `TabsLayout`, `TabsProps`, `TabsVariant` ueber den Public Entry verfuegbar; Betroffene Exports/Pfade: alle Public-Exports aus `src/index.ts` (kein Deep-Import); Verifikation: `cd react-md3 && npm run quality:gate`",
-      "changelogToken": "[api-contract-hash:f2c3991357ab858fb6950081d9aee78f97e1feb61a4223de9f59a4a5d74a98a7]"
+      "migrationGuide": "Trigger: additive Public-API-Erweiterung fuer Tabs-, Loading- und Progress-Typen; Migrationsaufwand: low; Alt -> Neu: bestehende Runtime-Nutzung bleibt unveraendert, zusaetzlich sind `TabItem`, `TabsLayout`, `TabsProps`, `TabsVariant`, `LoadingIndicator`, `LoadingIndicatorProps`, `ProgressIndicatorVariant` ueber den Public Entry verfuegbar; Betroffene Exports/Pfade: alle Public-Exports aus `src/index.ts` (kein Deep-Import); Verifikation: `cd react-md3 && npm run quality:gate`",
+      "changelogToken": "[api-contract-hash:17d491e7e6e4cf13bebf0fdcaa19030fb6ff4be4e6190822cab7efdc12647cab]"
     }
   },
-  "contractHash": "f2c3991357ab858fb6950081d9aee78f97e1feb61a4223de9f59a4a5d74a98a7"
+  "contractHash": "17d491e7e6e4cf13bebf0fdcaa19030fb6ff4be4e6190822cab7efdc12647cab"
 }
