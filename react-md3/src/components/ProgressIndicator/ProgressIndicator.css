@@ -1,51 +1,153 @@
 .m3-progress-indicator {
   display: flex;
   flex-direction: column;
+  align-items: center; /* Center circular by default */
   gap: 8px;
   width: 100%;
 }
 
-.m3-progress-indicator__track {
+.m3-progress-indicator--linear {
+  align-items: flex-start; /* Linear anchors to top/left */
+}
+
+.m3-progress-indicator--circular {
+  width: auto;
+}
+
+/* --- Linear Variant --- */
+
+.m3-progress-indicator__track--linear {
   width: 100%;
   height: 4px; /* M3 standard height */
-  border-radius: 4px;
-  background-color: var(--md-sys-color-surface-container-highest);
+  border-radius: 2px; /* M3 standard 2dp rounding */
+  background-color: var(--md-sys-color-secondary-container); /* M3 track color */
   overflow: hidden;
   position: relative;
 }
 
-.m3-progress-indicator__fill {
+.m3-progress-indicator__fill--linear {
   display: block;
   height: 100%;
   background-color: var(--md-sys-color-primary);
-  border-radius: 4px;
+  border-radius: 2px;
   transition: width var(--md-sys-motion-duration-medium1) var(--md-sys-motion-easing-standard);
+  position: relative;
 }
 
-.m3-progress-indicator__fill--indeterminate {
-  width: auto;
+/* Linear Determinate Stop Indicator */
+.m3-progress-indicator__fill--linear::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 4px;
+  width: 4px;
+  background-color: var(--md-sys-color-primary);
+  opacity: 0; /* Only show when needed or handled by TSX logic if we wanted it separate, but it's part of the fill visually */
+}
+
+/* Linear Indeterminate Animation */
+.m3-progress-indicator__fill--linear-indeterminate {
+  width: 100%;
   position: absolute;
   left: 0;
   bottom: 0;
   top: 0;
-  animation: indeterminate-progress var(--md-sys-motion-duration-extra-long4) infinite linear;
+  background-color: transparent;
   transform-origin: left center;
 }
 
-@keyframes indeterminate-progress {
+.m3-progress-indicator__fill--linear-indeterminate::before,
+.m3-progress-indicator__fill--linear-indeterminate::after {
+  content: '';
+  position: absolute;
+  height: 100%;
+  background-color: var(--md-sys-color-primary);
+  border-radius: 2px;
+}
+
+/* M3 dual-line asymmetrical indeterminate pattern */
+.m3-progress-indicator__fill--linear-indeterminate::before {
+  animation: linear-indeterminate-1 2s infinite linear;
+}
+
+.m3-progress-indicator__fill--linear-indeterminate::after {
+  animation: linear-indeterminate-2 2s infinite linear;
+}
+
+@keyframes linear-indeterminate-1 {
+  0% { left: -35%; right: 100%; }
+  60% { left: 100%; right: -90%; }
+  100% { left: 100%; right: -90%; }
+}
+
+@keyframes linear-indeterminate-2 {
+  0% { left: -200%; right: 100%; }
+  60% { left: 107%; right: -8%; }
+  100% { left: 107%; right: -8%; }
+}
+
+/* --- Circular Variant --- */
+
+.m3-progress-indicator__track--circular {
+  width: 40px; /* M3 baseline diameter */
+  height: 40px;
+  position: relative;
+}
+
+.m3-progress-indicator__svg {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg); /* Start at 12 o'clock */
+}
+
+.m3-progress-indicator__svg--indeterminate {
+  animation: circular-indeterminate-rotate 2s linear infinite;
+}
+
+.m3-progress-indicator__circle-track {
+  fill: none;
+  stroke: transparent; /* M3 circular usually has transparent inactive track, or very subtle */
+  stroke-width: 4px;
+}
+
+.m3-progress-indicator__circle-fill {
+  fill: none;
+  stroke: var(--md-sys-color-primary);
+  stroke-width: 4px;
+  stroke-linecap: square; /* M3 rarely uses round caps for standard indicators */
+  transition: stroke-dashoffset var(--md-sys-motion-duration-medium1) var(--md-sys-motion-easing-standard);
+  /* Circumference for r=18 is ~113.097 */
+  stroke-dasharray: 113.097;
+  stroke-dashoffset: 0;
+}
+
+.m3-progress-indicator__circle-fill--indeterminate {
+  animation: circular-indeterminate-dash 1.5s ease-in-out infinite;
+  /* Disable transition during indeterminate loop to prevent fighting */
+  transition: none;
+}
+
+@keyframes circular-indeterminate-rotate {
+  100% { transform: rotate(270deg); }
+}
+
+@keyframes circular-indeterminate-dash {
   0% {
-    left: -35%;
-    right: 100%;
+    stroke-dasharray: 1, 200;
+    stroke-dashoffset: 0;
   }
-  60% {
-    left: 100%;
-    right: -90%;
+  50% {
+    stroke-dasharray: 89, 200;
+    stroke-dashoffset: -35px;
   }
   100% {
-    left: 100%;
-    right: -90%;
+    stroke-dasharray: 89, 200;
+    stroke-dashoffset: -113px;
   }
 }
+
+/* --- Typography --- */
 
 .m3-progress-indicator__label {
   font-family: var(--md-sys-typescale-body-small-font-family);

@@ -361,9 +361,17 @@ function App() {
                   <Button variant="outlined">Hover for details</Button>
                 </RichTooltip>
               </div>
-              <div className="component-row">
-                <ProgressIndicator label="Determinate (72%)" value={72} />
-                <ProgressIndicator label="Indeterminate" indeterminate />
+              <div className="component-row" style={{ alignItems: 'flex-start', flexWrap: 'wrap', gap: '24px' }}>
+                <div className="component-col" style={{ flex: 1, minWidth: '200px' }}>
+                  <ProgressIndicator variant="linear" label="Linear Determinate" value={sliderValue} />
+                  <ProgressIndicator variant="linear" label="Linear Indeterminate" indeterminate />
+                </div>
+                <div className="component-col" style={{ alignItems: 'center', justifyContent: 'center', minWidth: '100px' }}>
+                  <ProgressIndicator variant="circular" label="Circular" value={sliderValue} />
+                </div>
+                <div className="component-col" style={{ alignItems: 'center', justifyContent: 'center', minWidth: '100px' }}>
+                  <ProgressIndicator variant="circular" label="Loading" indeterminate />
+                </div>
               </div>
               <div className="component-col">
                 <List 
