@@ -1,0 +1,420 @@
+/* M3 Time Picker Components */
+
+.m3-time-picker-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.m3-time-picker {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.m3-time-picker__label {
+  color: var(--md-sys-color-primary);
+  font-family: var(--md-sys-typescale-body-small-font-family);
+  font-weight: var(--md-sys-typescale-body-small-font-weight, 400);
+  font-size: var(--md-sys-typescale-body-small-font-size, 12px);
+  line-height: var(--md-sys-typescale-body-small-line-height, 16px);
+  position: absolute;
+  top: -8px;
+  left: 12px;
+  padding: 0 4px;
+  background-color: var(--md-sys-color-surface-container-high);
+  z-index: 1;
+}
+
+.m3-time-picker__input-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 56px;
+  padding: 8px 16px;
+  border: 1px solid var(--md-sys-color-outline);
+  border-radius: 4px;
+  background: transparent;
+  color: var(--md-sys-color-on-surface);
+  font-family: var(--md-sys-typescale-body-large-font-family);
+  font-weight: var(--md-sys-typescale-body-large-font-weight, 400);
+  font-size: var(--md-sys-typescale-body-large-font-size, 16px);
+  line-height: var(--md-sys-typescale-body-large-line-height, 24px);
+  cursor: pointer;
+  min-width: 160px;
+}
+
+.m3-time-picker--focused .m3-time-picker__input-btn {
+  border: 2px solid var(--md-sys-color-primary);
+  padding: 7px 15px; /* Adjust for border width change */
+}
+
+.m3-time-picker__input-btn:disabled {
+  color: color-mix(in srgb, var(--md-sys-color-on-surface) 38%, transparent);
+  border-color: color-mix(in srgb, var(--md-sys-color-on-surface) 12%, transparent);
+  cursor: not-allowed;
+}
+
+.m3-time-picker__icon {
+  margin-left: 12px;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.m3-time-picker__input-btn:not(:disabled):hover {
+  background-color: color-mix(in srgb, var(--md-sys-color-on-surface) 8%, transparent);
+}
+
+/* Modal Variant */
+
+/* Overlay */
+.m3-timepicker-modal__overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.m3-timepicker-modal__scrim {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.32);
+  z-index: -1;
+}
+
+/* Modal Container */
+.m3-timepicker-modal {
+  display: flex;
+  flex-direction: column;
+  width: 328px;
+  border-radius: 28px;
+  background: var(--md-sys-color-surface-container-high);
+  box-shadow: var(--md-sys-elevation-level3);
+  animation: m3-modal-enter 250ms cubic-bezier(0.2, 0, 0, 1);
+  overflow: hidden;
+  padding: 24px 24px 16px;
+}
+
+/* Header */
+.m3-timepicker-modal__header-label {
+  display: block;
+  color: var(--md-sys-color-on-surface-variant);
+  font-family: var(--md-sys-typescale-label-medium-font-family);
+  font-weight: var(--md-sys-typescale-label-medium-font-weight, 500);
+  font-size: var(--md-sys-typescale-label-medium-font-size, 12px);
+  line-height: var(--md-sys-typescale-label-medium-line-height, 16px);
+  letter-spacing: var(--md-sys-typescale-label-medium-letter-spacing, 0.5px);
+  margin-bottom: 20px;
+}
+
+@keyframes m3-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.m3-timepicker-modal__content-area {
+  animation: m3-fade-in 250ms cubic-bezier(0.2, 0, 0, 1);
+}
+
+/* Time Input Area */
+.m3-timepicker-modal__time-display {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px; /* Spacing between digits and colon */
+  margin-bottom: 24px;
+}
+
+/* Digits */
+.m3-timepicker-modal__time-input {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.m3-timepicker-modal__digit {
+  width: 96px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 8px;
+  background-color: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface);
+  font-family: var(--md-sys-typescale-display-large-font-family);
+  font-weight: var(--md-sys-typescale-display-large-font-weight, 400);
+  font-size: var(--md-sys-typescale-display-large-font-size, 57px);
+  line-height: var(--md-sys-typescale-display-large-line-height, 64px);
+  cursor: pointer;
+  transition: background-color 200ms ease, color 200ms ease;
+  padding: 0;
+  outline: none;
+  text-align: center;
+}
+
+.m3-timepicker-modal__digit--active {
+  background-color: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+}
+
+.m3-timepicker-modal__digit:hover:not(.m3-timepicker-modal__digit--active) {
+  background-color: color-mix(in srgb, var(--md-sys-color-on-surface) 8%, var(--md-sys-color-surface-variant));
+}
+
+.m3-timepicker-modal__digit:focus-visible {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+/* Colon */
+.m3-timepicker-modal__colon {
+  font-family: var(--md-sys-typescale-display-large-font-family);
+  font-weight: var(--md-sys-typescale-display-large-font-weight, 400);
+  font-size: var(--md-sys-typescale-display-large-font-size, 57px);
+  color: var(--md-sys-color-on-surface);
+  height: 80px;
+  display: flex;
+  align-items: center;
+  padding-bottom: 8px; /* align center optical */
+}
+
+/* Input Keyboard variant */
+.m3-timepicker-modal__keyboard-input {
+  width: 96px;
+  height: 80px;
+  border-radius: 8px;
+  border: 2px solid var(--md-sys-color-outline);
+  background: transparent;
+  color: var(--md-sys-color-on-surface);
+  font-family: var(--md-sys-typescale-display-large-font-family);
+  font-weight: var(--md-sys-typescale-display-large-font-weight, 400);
+  font-size: var(--md-sys-typescale-display-large-font-size, 57px);
+  line-height: var(--md-sys-typescale-display-large-line-height, 64px);
+  text-align: center;
+  outline: none;
+  padding: 0;
+}
+
+.m3-timepicker-modal__keyboard-input:focus {
+  border-color: var(--md-sys-color-primary);
+}
+
+.m3-timepicker-modal__keyboard-input--error {
+  border-color: var(--md-sys-color-error);
+  color: var(--md-sys-color-error);
+}
+
+/* AM/PM Segmented */
+.m3-timepicker-modal__ampm {
+  display: flex;
+  flex-direction: column;
+  width: 52px;
+  height: 80px;
+  border-radius: 8px;
+  border: 1px solid var(--md-sys-color-outline);
+  overflow: hidden;
+  margin-left: 12px;
+}
+
+.m3-timepicker-modal__ampm-btn {
+  flex: 1;
+  border: none;
+  background: transparent;
+  color: var(--md-sys-color-on-surface-variant);
+  font-family: var(--md-sys-typescale-title-medium-font-family);
+  font-weight: var(--md-sys-typescale-title-medium-font-weight, 500);
+  font-size: var(--md-sys-typescale-title-medium-font-size, 16px);
+  line-height: 1; /* exact fit */
+  cursor: pointer;
+  transition: background-color 200ms ease;
+  padding: 0;
+}
+
+.m3-timepicker-modal__ampm-btn:first-child {
+  border-bottom: 1px solid var(--md-sys-color-outline);
+}
+
+.m3-timepicker-modal__ampm-btn--active {
+  background-color: var(--md-sys-color-tertiary-container);
+  color: var(--md-sys-color-on-tertiary-container);
+}
+
+.m3-timepicker-modal__ampm-btn:hover:not(.m3-timepicker-modal__ampm-btn--active) {
+  background-color: color-mix(in srgb, var(--md-sys-color-on-surface) 8%, transparent);
+}
+
+/* Dial Engine */
+.m3-timedial-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.m3-timedial {
+  width: 256px;
+  height: 256px;
+  border-radius: 50%;
+  background-color: var(--md-sys-color-surface-variant);
+  position: relative;
+  touch-action: none; /* For dragging */
+}
+
+/* Center dot */
+.m3-timedial__center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--md-sys-color-primary);
+  transform: translate(-50%, -50%);
+  z-index: 2;
+}
+
+/* Hand line */
+.m3-timedial__hand {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  height: 2px;
+  background-color: var(--md-sys-color-primary);
+  transform-origin: left center;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.m3-timedial__hand--animated {
+  transition: transform 300ms cubic-bezier(0.2, 0, 0, 1), width 300ms cubic-bezier(0.2, 0, 0, 1);
+}
+
+/* Terminal dot on the hand */
+.m3-timedial__terminal {
+  position: absolute;
+  right: -20px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: var(--md-sys-color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.m3-timedial__terminal--inner {
+  right: -16px; /* Inner ring for 24h */
+  width: 32px;
+  height: 32px;
+}
+
+.m3-timedial__terminal-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--md-sys-color-on-primary);
+}
+
+/* Dial Numbers */
+.m3-timedial__number {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  color: var(--md-sys-color-on-surface);
+  font-family: var(--md-sys-typescale-body-large-font-family);
+  font-weight: var(--md-sys-typescale-body-large-font-weight, 400);
+  font-size: var(--md-sys-typescale-body-large-font-size, 16px);
+  transform: translate(-50%, -50%);
+  pointer-events: none; /* Let the container handle drag/clicks */
+  z-index: 3;
+}
+
+.m3-timedial__number--inner {
+  font-size: 14px;
+  width: 32px;
+  height: 32px;
+}
+
+.m3-timedial__number--selected {
+  color: var(--md-sys-color-on-primary);
+}
+
+
+/* Footer Actions */
+.m3-timepicker-modal__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.m3-timepicker-modal__mode-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: none;
+  background: transparent;
+  color: var(--md-sys-color-on-surface-variant);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color 200ms ease;
+}
+
+.m3-timepicker-modal__mode-toggle:hover {
+  background-color: color-mix(in srgb, var(--md-sys-color-on-surface) 8%, transparent);
+}
+
+.m3-timepicker-modal__actions {
+  display: flex;
+  gap: 8px;
+}
+
+.m3-timepicker-modal__action-btn {
+  background: transparent;
+  border: none;
+  border-radius: 20px;
+  padding: 10px 16px;
+  cursor: pointer;
+  color: var(--md-sys-color-primary);
+  font-family: var(--md-sys-typescale-label-large-font-family);
+  font-weight: var(--md-sys-typescale-label-large-font-weight, 500);
+  font-size: var(--md-sys-typescale-label-large-font-size, 14px);
+  line-height: var(--md-sys-typescale-label-large-line-height, 20px);
+  letter-spacing: var(--md-sys-typescale-label-large-letter-spacing, 0.1px);
+  transition: background-color 150ms ease;
+}
+
+.m3-timepicker-modal__action-btn:hover {
+  background-color: color-mix(in srgb, var(--md-sys-color-primary) 8%, transparent);
+}
+
+.m3-timepicker-modal__action-btn:disabled {
+  color: color-mix(in srgb, var(--md-sys-color-on-surface) 38%, transparent);
+  cursor: not-allowed;
+}
+
+.m3-timepicker-support-text {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 12px;
+  color: var(--md-sys-color-on-surface-variant);
+  font-family: var(--md-sys-typescale-body-small-font-family);
+  font-weight: 400;
+  font-size: 12px;
+}
+
+.m3-timepicker-modal__keyboard-input--error + .m3-timepicker-support-text {
+  color: var(--md-sys-color-error);
+}

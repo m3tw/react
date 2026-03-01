@@ -68,6 +68,8 @@
       "TabsProps",
       "TabsVariant",
       "TextField",
+      "TimePicker",
+      "TimePickerProps",
       "Tooltip",
       "TopAppBar"
     ]
@@ -162,14 +164,16 @@
         "TabsProps",
         "TabsVariant",
         "TextField",
+        "TimePicker",
+        "TimePickerProps",
         "Tooltip",
         "TopAppBar"
       ],
       "changeType": "minor",
       "riskLevel": "medium",
       "migrationGuide": "Trigger: additive Public-API-Erweiterung fuer Tabs-, Loading- und Progress-Typen; Migrationsaufwand: low; Alt -> Neu: bestehende Runtime-Nutzung bleibt unveraendert, zusaetzlich sind `TabItem`, `TabsLayout`, `TabsProps`, `TabsVariant`, `LoadingIndicator`, `LoadingIndicatorProps`, `ProgressIndicatorVariant` ueber den Public Entry verfuegbar; Betroffene Exports/Pfade: alle Public-Exports aus `src/index.ts` (kein Deep-Import); Verifikation: `cd react-md3 && npm run quality:gate`",
-      "changelogToken": "[api-contract-hash:4693dd7f454297051f20bd9d5c47025cff0db01c08e1aac5cff924e7c6d6e844]"
+      "changelogToken": "[api-contract-hash:23aaf14662337fe2d7f12a8b87f61dcb2475894d8535d580a7f8ec63bae793f5]"
     }
   },
-  "contractHash": "4693dd7f454297051f20bd9d5c47025cff0db01c08e1aac5cff924e7c6d6e844"
+  "contractHash": "23aaf14662337fe2d7f12a8b87f61dcb2475894d8535d580a7f8ec63bae793f5"
 }

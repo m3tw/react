@@ -39,7 +39,8 @@ import {
   PlainTooltip,
   RichTooltip,
   TopAppBar,
-  BottomAppBar
+  BottomAppBar,
+  TimePicker
 } from './index'
 import './App.css'
 import { useRef } from 'react'
@@ -480,6 +481,11 @@ function App() {
                 <div className="component-row">
                   <DateTimePicker label="Select Date" />
                   <DateTimePicker label="Disabled Picker" disabled />
+                </div>
+                <div className="component-row">
+                  <TimePicker label="Select Time" />
+                  <TimePicker label="24-Hour Time" is24Hour />
+                  <TimePicker label="Disabled Time" disabled />
                 </div>
                 <div className="component-row">
                   <Button variant="outlined" onClick={() => setShowModalPicker(true)}>Open Modal Date Picker</Button>

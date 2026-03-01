@@ -15,10 +15,10 @@
 
 ## 2026-02-28 - Story 2.6 42/42 Coverage Nachweis
 
-[api-contract-hash:4693dd7f454297051f20bd9d5c47025cff0db01c08e1aac5cff924e7c6d6e844]
+[api-contract-hash:23aaf14662337fe2d7f12a8b87f61dcb2475894d8535d580a7f8ec63bae793f5]
 
 - changeType: minor
-- affectedExports: AlertDialog, Badge, BottomAppBar, BottomSheet, Button, ButtonGroup, ButtonProps, ButtonShape, ButtonSize, ButtonVariant, Card, CardProps, CardVariant, Carousel, CarouselLayout, CarouselProps, Checkbox, Chip, ChipProps, ChipVariant, DatePickerModal, DateTimePicker, Dialog, Divider, DockedToolbar, Fab, FabColor, FabMenuItem, FabProps, FabSize, FabVariant, FloatingToolbar, FullScreenDialog, IconButton, IconButtonProps, IconButtonVariant, List, ListItem, ListProps, LoadingIndicator, LoadingIndicatorProps, Menu, NavigationBar, NavigationDrawer, NavigationRail, PlainTooltip, ProgressIndicator, ProgressIndicatorVariant, RadioGroup, RichTooltip, SearchBar, SideSheet, Slider, Snackbar, SplitButton, Surface, Switch, TabItem, Tabs, TabsLayout, TabsProps, TabsVariant, TextField, Tooltip, TopAppBar
+- affectedExports: AlertDialog, Badge, BottomAppBar, BottomSheet, Button, ButtonGroup, ButtonProps, ButtonShape, ButtonSize, ButtonVariant, Card, CardProps, CardVariant, Carousel, CarouselLayout, CarouselProps, Checkbox, Chip, ChipProps, ChipVariant, DatePickerModal, DateTimePicker, Dialog, Divider, DockedToolbar, Fab, FabColor, FabMenuItem, FabProps, FabSize, FabVariant, FloatingToolbar, FullScreenDialog, IconButton, IconButtonProps, IconButtonVariant, List, ListItem, ListProps, LoadingIndicator, LoadingIndicatorProps, Menu, NavigationBar, NavigationDrawer, NavigationRail, PlainTooltip, ProgressIndicator, ProgressIndicatorVariant, RadioGroup, RichTooltip, SearchBar, SideSheet, Slider, Snackbar, SplitButton, Surface, Switch, TabItem, Tabs, TabsLayout, TabsProps, TabsVariant, TextField, TimePicker, TimePickerProps, Tooltip, TopAppBar
 - riskLevel: medium
 - migrationGuide: Trigger: additive Public-API-Erweiterung fuer Tabs-, Loading- und Progress-Typen; Migrationsaufwand: low; Alt -> Neu: bestehende Runtime-Nutzung bleibt unveraendert, zusaetzlich sind `TabItem`, `TabsLayout`, `TabsProps`, `TabsVariant`, `LoadingIndicator`, `LoadingIndicatorProps`, `ProgressIndicatorVariant` ueber den Public Entry verfuegbar; Betroffene Exports/Pfade: alle Public-Exports aus `src/index.ts` (kein Deep-Import); Verifikation: `cd react-md3 && npm run quality:gate`
 
