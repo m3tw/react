@@ -3,13 +3,13 @@ import { useId } from 'react'
 
 import './TextField.css'
 
-type TextFieldProps = Omit<InputHTMLAttributes<HTMLInputElement | HTMLTextAreaElement>, 'size'> & {
+type TextFieldProps = {
   label: string
   errorText?: string
   supportingText?: string
   multiline?: boolean
   rows?: number
-}
+} & Omit<InputHTMLAttributes<HTMLInputElement> & InputHTMLAttributes<HTMLTextAreaElement>, 'size'>
 
 export function TextField({
   label,
@@ -51,7 +51,7 @@ export function TextField({
       <div className={`m3-text-field__container ${multiline ? 'm3-text-field__container--multiline' : ''}`}>
         {multiline ? (
           <textarea
-            {...(props as any)}
+            {...props}
             aria-describedby={describedBy || undefined}
             aria-invalid={hasError ? 'true' : undefined}
             className={['m3-text-field__input', 'm3-text-field__input--multiline', className ?? ''].filter(Boolean).join(' ')}
@@ -62,7 +62,7 @@ export function TextField({
           />
         ) : (
           <input
-            {...(props as any)}
+            {...props}
             aria-describedby={describedBy || undefined}
             aria-invalid={hasError ? 'true' : undefined}
             className={['m3-text-field__input', className ?? ''].filter(Boolean).join(' ')}
