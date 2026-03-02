@@ -322,6 +322,22 @@ function App() {
                 />
               </div>
               <div className="component-row">
+                <TextField 
+                  label="Multiline Text Area" 
+                  value={textValue} 
+                  onChange={(e) => setTextValue(e.target.value)} 
+                  multiline
+                  rows={4}
+                />
+                <TextField 
+                  label="Disabled Multiline" 
+                  value="This is some disabled long text..." 
+                  disabled
+                  multiline
+                  rows={4}
+                />
+              </div>
+              <div className="component-row">
                 <SearchBar 
                   onSearch={(q) => setSearchValue(q)} 
                 />
