@@ -40,7 +40,7 @@
   flex-shrink: 0;
   border-radius: 28px; /* M3 standard large component radius */
   overflow: hidden;
-  transition: width 0.3s cubic-bezier(0.2, 0, 0, 1), transform 0.3s cubic-bezier(0.2, 0, 0, 1);
+  transition: width var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-standard), transform var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-standard);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -61,7 +61,7 @@
   top: 50%;
   transform: translateY(-50%);
   z-index: 2;
-  transition: opacity 0.2s ease;
+  transition: opacity var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard);
   pointer-events: auto;
 }
 

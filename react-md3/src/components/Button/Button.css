@@ -34,10 +34,10 @@
   letter-spacing: var(--md-sys-typescale-label-large-letter-spacing);
   
   cursor: pointer;
-  transition: background-color 200ms cubic-bezier(0.2, 0, 0, 1),
-              color 200ms cubic-bezier(0.2, 0, 0, 1),
-              box-shadow 200ms cubic-bezier(0.2, 0, 0, 1),
-              opacity 200ms cubic-bezier(0.2, 0, 0, 1);
+  transition: background-color var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard),
+              color var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard),
+              box-shadow var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard),
+              opacity var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard);
   
   overflow: hidden;
   -webkit-tap-highlight-color: transparent;

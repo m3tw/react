@@ -27,7 +27,7 @@
 }
 
 .m3-bottom-sheet-scrim {
-  animation: m3-bottom-sheet-scrim-fade-in var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized);
+  animation: m3-bottom-sheet-scrim-fade-in var(--md-sys-motion-duration-medium1) var(--md-sys-motion-easing-emphasized);
 }
 
 .m3-bottom-sheet {
@@ -39,7 +39,7 @@
   max-width: 640px;
   max-height: calc(100vh - 72px);
   overflow-y: auto;
-  animation: m3-bottom-sheet-slide-in var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized);
+  animation: m3-bottom-sheet-slide-in var(--md-sys-motion-duration-medium1) var(--md-sys-motion-easing-emphasized);
 }
 
 .m3-bottom-sheet--standard {

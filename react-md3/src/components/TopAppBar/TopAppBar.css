@@ -11,8 +11,8 @@
   border-radius: 0;
   box-shadow: var(--md-sys-elevation-level0);
   transition:
-    background-color var(--md-sys-motion-duration-short2, 200ms) var(--md-sys-motion-easing-standard, ease),
-    box-shadow var(--md-sys-motion-duration-short2, 200ms) var(--md-sys-motion-easing-standard, ease);
+    background-color var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard),
+    box-shadow var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard);
   z-index: 10;
   position: relative;
 }

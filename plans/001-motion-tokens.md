@@ -128,6 +128,7 @@ usage** must be remapped to the token that now holds its old value:
    - `react-md3/src/components/DateTimePicker/Calendar.css:82` (`transform 200ms ...`)
    - `react-md3/src/components/DateTimePicker/Calendar.css:105` (`m3-dropdown-enter 150ms cubic-bezier(0.2, 0, 0, 1)` → `m3-dropdown-enter var(--md-sys-motion-duration-short3) var(--md-sys-motion-easing-standard)`)
    - `react-md3/src/components/DateTimePicker/DateTimePicker.css:100` (`m3-date-picker-enter 200ms ...` → `short4` + standard)
+   - `react-md3/src/components/TimePicker/TimePicker.css:93` (`animation: m3-modal-enter 250ms cubic-bezier(0.2, 0, 0, 1)` → `medium1` + standard. Amendment: this is the TimePicker twin of `DatePickerModal.css:29`; plan 002 owns the DatePickerModal instance but explicitly excludes TimePicker, so it must be migrated here or the grep criterion below is unsatisfiable)
    - `react-md3/src/components/TimePicker/TimePicker.css:120` area — `animation: m3-fade-in 250ms cubic-bezier(0.2, 0, 0, 1)` → `medium1` + standard
    - `react-md3/src/components/TimePicker/TimePicker.css:294` (`transform 300ms ...` and `width 300ms ...` → `medium2` + standard)
    - `react-md3/src/components/SplitButton/SplitButton.css:111-113` (200ms, all properties) and `:154` (`transform 200ms ...`)

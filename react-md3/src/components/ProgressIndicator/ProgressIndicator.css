@@ -30,7 +30,7 @@
   height: 100%;
   background-color: var(--md-sys-color-primary);
   border-radius: 2px;
-  transition: width var(--md-sys-motion-duration-medium1) var(--md-sys-motion-easing-standard);
+  transition: width var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard);
   position: relative;
 }
 
@@ -116,7 +116,7 @@
   stroke: var(--md-sys-color-primary);
   stroke-width: 4px;
   stroke-linecap: square; /* M3 rarely uses round caps for standard indicators */
-  transition: stroke-dashoffset var(--md-sys-motion-duration-medium1) var(--md-sys-motion-easing-standard);
+  transition: stroke-dashoffset var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard);
   /* Circumference for r=18 is ~113.097 */
   stroke-dasharray: 113.097;
   stroke-dashoffset: 0;

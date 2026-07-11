@@ -90,7 +90,7 @@
   border-radius: 28px;
   background: var(--md-sys-color-surface-container-high);
   box-shadow: var(--md-sys-elevation-level3);
-  animation: m3-modal-enter 250ms cubic-bezier(0.2, 0, 0, 1);
+  animation: m3-modal-enter var(--md-sys-motion-duration-medium1) var(--md-sys-motion-easing-standard);
   overflow: hidden;
   padding: 24px 24px 16px;
 }
@@ -117,7 +117,7 @@
 }
 
 .m3-timepicker-modal__content-area {
-  animation: m3-fade-in 250ms cubic-bezier(0.2, 0, 0, 1);
+  animation: m3-fade-in var(--md-sys-motion-duration-medium1) var(--md-sys-motion-easing-standard);
 }
 
 /* Time Input Area */
@@ -151,7 +151,7 @@
   font-size: var(--md-sys-typescale-display-large-font-size, 57px);
   line-height: var(--md-sys-typescale-display-large-line-height, 64px);
   cursor: pointer;
-  transition: background-color 200ms ease, color 200ms ease;
+  transition: background-color var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard), color var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard);
   padding: 0;
   outline: none;
   text-align: center;
@@ -231,7 +231,7 @@
   font-size: var(--md-sys-typescale-title-medium-font-size, 16px);
   line-height: 1; /* exact fit */
   cursor: pointer;
-  transition: background-color 200ms ease;
+  transition: background-color var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard);
   padding: 0;
 }
 
@@ -291,7 +291,7 @@
 }
 
 .m3-timedial__hand--animated {
-  transition: transform 300ms cubic-bezier(0.2, 0, 0, 1), width 300ms cubic-bezier(0.2, 0, 0, 1);
+  transition: transform var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-standard), width var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-standard);
 }
 
 /* Terminal dot on the hand */
@@ -369,7 +369,7 @@
   color: var(--md-sys-color-on-surface-variant);
   border-radius: 50%;
   cursor: pointer;
-  transition: background-color 200ms ease;
+  transition: background-color var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard);
 }
 
 .m3-timepicker-modal__mode-toggle:hover {
@@ -393,7 +393,7 @@
   font-size: var(--md-sys-typescale-label-large-font-size, 14px);
   line-height: var(--md-sys-typescale-label-large-line-height, 20px);
   letter-spacing: var(--md-sys-typescale-label-large-letter-spacing, 0.1px);
-  transition: background-color 150ms ease;
+  transition: background-color var(--md-sys-motion-duration-short3) var(--md-sys-motion-easing-standard);
 }
 
 .m3-timepicker-modal__action-btn:hover {

@@ -26,7 +26,7 @@
 }
 
 .m3-side-sheet-scrim {
-  animation: m3-side-sheet-scrim-fade-in var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized);
+  animation: m3-side-sheet-scrim-fade-in var(--md-sys-motion-duration-medium1) var(--md-sys-motion-easing-emphasized);
 }
 
 .m3-side-sheet {
@@ -54,7 +54,7 @@
   position: fixed;
   inset-block: 0;
   inset-inline-end: 0;
-  animation: m3-side-sheet-slide-in var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized);
+  animation: m3-side-sheet-slide-in var(--md-sys-motion-duration-medium1) var(--md-sys-motion-easing-emphasized);
 }
 
 .m3-side-sheet__header {
