@@ -30,7 +30,7 @@ export function Menu({ items, onSelect, ariaLabel = 'Menu' }: MenuProps) {
     if (enabledItems.length === 0) return
 
     const currentIndex = enabledItems.findIndex((el) => el === document.activeElement)
-    let nextIndex = currentIndex
+    let nextIndex: number
 
     switch (e.key) {
       case 'ArrowDown':

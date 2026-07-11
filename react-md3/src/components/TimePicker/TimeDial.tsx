@@ -123,7 +123,7 @@ export function TimeDial({ mode, is24Hour, value, onChange, onModeSwitch }: Time
 
     return numbers.map((n, idx) => {
       // Determine selection
-      let selected = false;
+      let selected: boolean
       if (mode === 'hour') {
         if (is24Hour) {
            selected = (n.numVal === value) || (value === 0 && n.val === '00')

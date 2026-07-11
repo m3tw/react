@@ -109,7 +109,7 @@ export function Tabs({
     if (selectableValues.length === 0) return
 
     const currentIndex = selectableValues.indexOf(activeValue as string)
-    let nextIndex = currentIndex
+    let nextIndex: number
 
     switch (e.key) {
       case 'ArrowLeft':
