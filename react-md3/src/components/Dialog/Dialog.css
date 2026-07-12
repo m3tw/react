@@ -9,11 +9,13 @@
   padding: 24px;
   background-color: color-mix(in srgb, var(--m3-dialog-scrim-bg) 32%, transparent);
   z-index: 30;
-  animation: m3-dialog-scrim-enter 150ms ease-out;
+  opacity: 0;
+  transition: opacity var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard);
 }
 
-.m3-dialog-scrim--closing {
-  animation: m3-dialog-scrim-exit 75ms ease-in forwards;
+.m3-dialog-scrim--open {
+  opacity: 1;
+  transition-duration: var(--md-sys-motion-duration-short3);
 }
 
 .m3-dialog {
@@ -30,11 +32,21 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
-  animation: m3-dialog-enter 150ms ease-out;
+  opacity: 0;
+  transform: scale(0.9);
+  transition: opacity var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-emphasized-accelerate),
+              transform var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-emphasized-accelerate);
 }
 
-.m3-dialog--closing {
-  animation: m3-dialog-exit 75ms ease-in forwards;
+.m3-dialog--open {
+  opacity: 1;
+  transform: scale(1);
+  transition: opacity var(--md-sys-motion-duration-short3) var(--md-sys-motion-easing-emphasized-decelerate),
+              transform var(--md-sys-motion-duration-short3) var(--md-sys-motion-easing-emphasized-decelerate);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .m3-dialog, .m3-dialog--open { transform: none; transition-property: opacity; }
 }
 
 .m3-dialog__header {
@@ -98,36 +110,4 @@
   justify-content: flex-end;
   gap: 8px;
   margin-top: 8px;
-}
-
-@keyframes m3-dialog-scrim-enter {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-@keyframes m3-dialog-scrim-exit {
-  from { opacity: 1; }
-  to { opacity: 0; }
-}
-
-@keyframes m3-dialog-enter {
-  from {
-    opacity: 0;
-    transform: scale(0.9);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-@keyframes m3-dialog-exit {
-  from {
-    opacity: 1;
-    transform: scale(1);
-  }
-  to {
-    opacity: 0;
-    transform: scale(0.9);
-  }
 }

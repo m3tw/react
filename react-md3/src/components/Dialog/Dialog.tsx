@@ -1,7 +1,7 @@
 import { useEffect, useId, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { Button } from "../Button";
-import type { KeyboardEvent, ReactNode } from 'react'
+import type { KeyboardEvent, ReactNode, TransitionEvent } from 'react'
 
 import './Dialog.css'
 
@@ -68,26 +68,44 @@ export function Dialog({
   const [internalOpen, setInternalOpen] = useState(defaultOpen)
   const isOpen = isControlled ? open : internalOpen
   const [rendered, setRendered] = useState(isOpen)
+  const [entered, setEntered] = useState(false)
   const panelRef = useRef<HTMLDivElement>(null)
   const previousFocusRef = useRef<HTMLElement | null>(null)
   const wasOpenRef = useRef(isOpen)
   const titleId = useId()
   const descriptionId = useId()
 
+  // Deferred unmount so the exit transition can play; double-rAF arms the enter.
   useEffect(() => {
     if (isOpen) {
-      if (!rendered) {
-        const timer = window.setTimeout(() => setRendered(true), 0)
-        return () => window.clearTimeout(timer)
+      let raf1 = 0
+      let raf2 = 0
+      const mountTimer = window.setTimeout(() => {
+        setRendered(true)
+        raf1 = requestAnimationFrame(() => {
+          raf2 = requestAnimationFrame(() => setEntered(true))
+        })
+      }, 0)
+      return () => {
+        window.clearTimeout(mountTimer)
+        cancelAnimationFrame(raf1)
+        cancelAnimationFrame(raf2)
       }
-      return
     }
 
-    if (rendered) {
-      const timer = window.setTimeout(() => setRendered(false), 75)
-      return () => window.clearTimeout(timer)
+    const closeTimer = window.setTimeout(() => setEntered(false), 0)
+    const timer = window.setTimeout(() => setRendered(false), 100 /* keep in sync with exit duration in Dialog.css */)
+    return () => {
+      window.clearTimeout(closeTimer)
+      window.clearTimeout(timer)
     }
-  }, [isOpen, rendered])
+  }, [isOpen])
+
+  const handleTransitionEnd = (event: TransitionEvent<HTMLDivElement>) => {
+    if (!isOpen && event.target === panelRef.current) {
+      setRendered(false)
+    }
+  }
 
   const setDialogOpen = (nextOpen: boolean) => {
     if (!isControlled) {
@@ -107,7 +125,7 @@ export function Dialog({
   }
 
   useEffect(() => {
-    if (!isOpen) {
+    if (!isOpen || !rendered) {
       return
     }
 
@@ -116,7 +134,7 @@ export function Dialog({
 
     const [firstFocusable] = getFocusableElements(panelRef.current)
     ;(firstFocusable ?? panelRef.current)?.focus()
-  }, [isOpen])
+  }, [isOpen, rendered])
 
   useEffect(() => {
     if (wasOpenRef.current && !isOpen) {
@@ -160,15 +178,13 @@ export function Dialog({
     }
   }
 
-  const closing = rendered && !isOpen
-
   if (!rendered) {
     return null
   }
 
   return createPortal(
     <div
-      className={['m3-dialog-scrim', closing ? 'm3-dialog-scrim--closing' : ''].filter(Boolean).join(' ')}
+      className={['m3-dialog-scrim', entered ? 'm3-dialog-scrim--open' : ''].filter(Boolean).join(' ')}
       onMouseDown={(event) => {
         if (event.target === event.currentTarget && dismissible) {
           closeAsCancel()
@@ -179,8 +195,9 @@ export function Dialog({
         aria-describedby={description ? descriptionId : undefined}
         aria-labelledby={titleId}
         aria-modal="true"
-        className={['m3-dialog', closing ? 'm3-dialog--closing' : '', icon ? 'm3-dialog--with-icon' : '', className ?? ''].filter(Boolean).join(' ')}
+        className={['m3-dialog', entered ? 'm3-dialog--open' : '', icon ? 'm3-dialog--with-icon' : '', className ?? ''].filter(Boolean).join(' ')}
         onKeyDown={handleKeyDown}
+        onTransitionEnd={handleTransitionEnd}
         ref={panelRef}
         role={role}
         tabIndex={-1}

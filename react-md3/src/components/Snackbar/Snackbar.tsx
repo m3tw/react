@@ -1,6 +1,7 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { Button } from '../Button'
+import type { TransitionEvent } from 'react'
 
 import './Snackbar.css'
 
@@ -46,6 +47,8 @@ export function Snackbar({
   const isOpen = isControlled ? open : internalOpen
 
   const [rendered, setRendered] = useState(isOpen)
+  const [entered, setEntered] = useState(false)
+  const panelRef = useRef<HTMLDivElement>(null)
 
   const setSnackbarOpen = useCallback(
     (nextOpen: boolean) => {
@@ -76,21 +79,37 @@ export function Snackbar({
     [closeSnackbar],
   )
 
-  // Deferred unmount for exit animation
+  // Deferred unmount so the exit transition can play; double-rAF arms the enter.
   useEffect(() => {
     if (isOpen) {
-      if (!rendered) {
-        const timer = window.setTimeout(() => setRendered(true), 0)
-        return () => window.clearTimeout(timer)
+      let raf1 = 0
+      let raf2 = 0
+      const mountTimer = window.setTimeout(() => {
+        setRendered(true)
+        raf1 = requestAnimationFrame(() => {
+          raf2 = requestAnimationFrame(() => setEntered(true))
+        })
+      }, 0)
+      return () => {
+        window.clearTimeout(mountTimer)
+        cancelAnimationFrame(raf1)
+        cancelAnimationFrame(raf2)
       }
-      return
     }
 
-    if (rendered) {
-      const timer = window.setTimeout(() => setRendered(false), 75)
-      return () => window.clearTimeout(timer)
+    const closeTimer = window.setTimeout(() => setEntered(false), 0)
+    const timer = window.setTimeout(() => setRendered(false), 100 /* keep in sync with exit duration in Snackbar.css */)
+    return () => {
+      window.clearTimeout(closeTimer)
+      window.clearTimeout(timer)
     }
-  }, [isOpen, rendered])
+  }, [isOpen])
+
+  const handleTransitionEnd = (event: TransitionEvent<HTMLDivElement>) => {
+    if (!isOpen && event.target === panelRef.current) {
+      setRendered(false)
+    }
+  }
 
   // Auto-hide: disabled when actionLabel is present (M3 spec)
   useEffect(() => {
@@ -107,8 +126,6 @@ export function Snackbar({
     }
   }, [actionLabel, autoHideDuration, closeSnackbar, isOpen, message])
 
-  const closing = rendered && !isOpen
-
   if (!rendered) {
     return null
   }
@@ -119,12 +136,14 @@ export function Snackbar({
         aria-live="polite"
         className={[
           'm3-snackbar',
-          closing ? 'm3-snackbar--closing' : '',
+          entered ? 'm3-snackbar--open' : '',
           className ?? '',
         ]
           .filter(Boolean)
           .join(' ')}
         onKeyDown={handleKeyDown}
+        onTransitionEnd={handleTransitionEnd}
+        ref={panelRef}
         role="status"
       >
         <p className="m3-snackbar__message">{message}</p>

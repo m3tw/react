@@ -110,4 +110,28 @@ describe('FullScreenDialog', () => {
     unmount()
     trigger.remove()
   })
+
+  it('focuses the modal when controlled open flips to true', () => {
+    const onOpenChange = vi.fn()
+    const { getByRole, rerender } = render(
+      <FullScreenDialog open={false} onOpenChange={onOpenChange} headline="Deferred Focus">
+        <p>Content</p>
+      </FullScreenDialog>,
+    )
+
+    rerender(
+      <FullScreenDialog open onOpenChange={onOpenChange} headline="Deferred Focus">
+        <p>Content</p>
+      </FullScreenDialog>,
+    )
+
+    act(() => { vi.advanceTimersByTime(50) })
+
+    const dialog = getByRole('dialog', { name: 'Deferred Focus' })
+    expect(dialog).toBeInTheDocument()
+    expect(dialog.contains(document.activeElement)).toBe(true)
+
+    fireEvent.keyDown(document.activeElement!, { key: 'Escape' })
+    expect(onOpenChange).toHaveBeenCalledWith(false)
+  })
 })

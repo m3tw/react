@@ -103,4 +103,24 @@ describe('Dialog', () => {
     const dialog = getByRole('alertdialog', { name: 'Portal Test' })
     expect(document.body.contains(dialog)).toBe(true)
   })
+
+  it('focuses the modal when controlled open flips to true', () => {
+    const onOpenChange = vi.fn()
+    const { getByRole, rerender } = render(
+      <Dialog open={false} onOpenChange={onOpenChange} title="Deferred Focus" />,
+    )
+
+    rerender(
+      <Dialog open onOpenChange={onOpenChange} title="Deferred Focus" />,
+    )
+
+    act(() => { vi.advanceTimersByTime(50) })
+
+    const dialog = getByRole('alertdialog', { name: 'Deferred Focus' })
+    expect(dialog).toBeInTheDocument()
+    expect(dialog.contains(document.activeElement)).toBe(true)
+
+    fireEvent.keyDown(document.activeElement!, { key: 'Escape' })
+    expect(onOpenChange).toHaveBeenCalledWith(false)
+  })
 })

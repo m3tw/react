@@ -1,6 +1,6 @@
 # 002 — Give sheets and the date-picker modal real exit animations (interruptible transitions)
 
-- **Status**: EXECUTED 2026-07-12 — review-approved, uncommitted in worktree `agent-a4d16d8c2ccb290fd`; pending merge + browser feel-check (see Execution notes)
+- **Status**: DONE — merged as `7a7acc2` (2026-07-12); browser feel-check still pending (see Execution notes)
 - **Commit**: 5c6d25f
 - **Severity**: HIGH
 - **Category**: Exit motion / interruptibility

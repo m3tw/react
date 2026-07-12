@@ -1,6 +1,6 @@
 # 003 — Convert Dialog, FullScreenDialog, and Snackbar from keyframes to interruptible transitions
 
-- **Status**: TODO
+- **Status**: EXECUTED 2026-07-12 — review-approved, uncommitted in worktree `agent-a1ae219c620e8a737` (base `7a7acc2`); pending merge + browser feel-check (see Execution notes)
 - **Commit**: 5c6d25f
 - **Severity**: MEDIUM
 - **Category**: Interruptibility / easing
@@ -228,3 +228,23 @@ fallback numbers above weren't applied exactly.
     feedback is still visible.
 - **Done when**: zero `@keyframes` remain in the three CSS files, spamming open/close
   never restarts motion from zero, and the full test suite is green untouched.
+
+## Execution notes (2026-07-12, worktree `agent-a1ae219c620e8a737`, base `7a7acc2`)
+
+Executed with plan 002's three amendments pre-applied (lint-safe setState via
+`setTimeout(fn, 0)`; rAF chain nested inside the mount timer with all three handles
+cancelled on cleanup; focus effects gated on `rendered` with `rendered` in deps). No
+further amendments were needed. The latent focus-on-controlled-open bug in `Dialog.tsx`
+and `FullScreenDialog.tsx` flagged by 002's review is fixed; regression tests
+("focuses the modal when controlled open flips to true") added to both test files.
+Diff to test files verified additive-only — zero existing assertions changed.
+
+Review verdict: **APPROVED**. `npm run lint` / `test` / `build` all green
+(39 test files, 155 tests). Zero `@keyframes`, `animation:`, `--closing`, or
+hand-typed curves remain in the three CSS files; repo-wide grep found no dangling
+references to the removed keyframe/class names.
+
+Browser feel-check still pending (needs a human): Esc mid-enter reverses from current
+pose (no jump/restart), rapid-fire snackbar never snaps offscreen, FullScreenDialog
+exit (200ms accelerate) reads snappier than enter (250ms decelerate), scrim and panel
+start together, reduced-motion shows fades only.
