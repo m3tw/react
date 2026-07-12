@@ -1,6 +1,6 @@
 # 006 — ButtonGroup: replace scale(0) check keyframes with Checkbox-style transitions
 
-- **Status**: EXECUTED 2026-07-12 — review passed; applied to main working tree (uncommitted); feel-check pending
+- **Status**: DONE — merged as `e0cf2b1`; feel-check pending
 - **Commit**: 5c6d25f
 - **Severity**: MEDIUM
 - **Category**: Physicality / interruptibility
