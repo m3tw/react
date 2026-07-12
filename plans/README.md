@@ -16,7 +16,8 @@ and a feel-check protocol. Execute with any agent
 | 005 | [Gate hover styles for touch](005-touch-hover-gating.md) | MEDIUM | Accessibility | DONE — merged as `69f84dd`; feel-check pending |
 | 006 | [ButtonGroup check: scale(0) keyframes → transitions](006-buttongroup-check-transition.md) | MEDIUM | Physicality | DONE — merged as `e0cf2b1`; feel-check pending |
 | 007 | [FAB menu: stagger on open only, snap close](007-fab-menu-close-stagger.md) | MEDIUM | Asymmetric timing | DONE — merged as `979d88d`; feel-check pending |
-| 008 | [Reduced-motion sweep + library-wide verification](008-reduced-motion-sweep.md) | HIGH | Accessibility | EXECUTED 2026-07-12 — review passed; applied to main working tree (uncommitted); feel-check pending |
+| 008 | [Reduced-motion sweep + library-wide verification](008-reduced-motion-sweep.md) | HIGH | Accessibility | DONE — merged as `90f49fd`; feel-check pending |
+| 009 | [TimePicker modal: dead keyframe → DatePickerModal transition pattern](009-timepicker-modal-transitions.md) | HIGH | Bug / interruptibility | EXECUTED 2026-07-12 — review passed; applied to main working tree (uncommitted); feel-check pending |
 
 ## Execution order & dependencies
 
@@ -66,8 +67,10 @@ File-ownership notes (to avoid conflicts if executed out of order):
   animating under reduced motion by design — the policy removes translation/scale of
   surfaces; small icon rotations are comprehension micro-motion, same class as the
   keep-listed Tabs indicator. Documented here so they aren't re-reported.
-- Pre-existing bug found by 008's sweep (backlog, needs its own fix):
-  `TimePicker.css:95` still references `m3-modal-enter`, whose keyframes plan 002
-  deleted from `DatePickerModal.css` — the TimePicker modal currently has **no**
-  enter animation for anyone. Either restore a local keyframe or port the 002/003
-  transition pattern.
+- Pre-existing bug found by 008's sweep: `TimePicker.css:95` still references
+  `m3-modal-enter`, whose keyframes plan 002 deleted from `DatePickerModal.css` — the
+  TimePicker modal currently has **no** enter animation for anyone (plus an unfaded
+  scrim and a hard unmount on close). Now planned as **plan 009** (written 2026-07-12
+  at `90f49fd`): port DatePickerModal's 002 pattern rather than restore the dead
+  keyframe. 009 is independent — its dependencies (001 tokens, 002 donor pattern) are
+  already merged.

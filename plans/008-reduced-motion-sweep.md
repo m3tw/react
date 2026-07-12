@@ -1,6 +1,6 @@
 # 008 — prefers-reduced-motion: cover the remaining movers and verify the whole library
 
-- **Status**: EXECUTED 2026-07-12 — review passed; applied to main working tree (uncommitted); feel-check pending. Coverage grep: all 14 expected files. Gap pass: 4 rotate-only icon transitions (FAB icon, calendar caret, split-button arrow, time-dial hand) judged keep-list-equivalent micro-motion, documented in README backlog; TimePicker's dead `m3-modal-enter` reference flagged as a separate pre-existing bug.
+- **Status**: DONE — merged as `90f49fd` (2026-07-12); feel-check pending. Coverage grep: all 14 expected files. Gap pass: 4 rotate-only icon transitions (FAB icon, calendar caret, split-button arrow, time-dial hand) judged keep-list-equivalent micro-motion, documented in README backlog; TimePicker's dead `m3-modal-enter` reference flagged as a separate pre-existing bug.
 - **Commit**: 5c6d25f
 - **Severity**: HIGH
 - **Category**: Accessibility

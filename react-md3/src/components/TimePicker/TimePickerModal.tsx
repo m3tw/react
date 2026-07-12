@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import type { RefObject, TransitionEvent } from 'react'
 import { TimeDial } from './TimeDial'
 import './TimePicker.css'
 
@@ -38,7 +39,43 @@ export function TimePickerModal({
   onConfirm,
   onCancel,
 }: TimePickerModalProps) {
-  if (!open) return null
+  const [rendered, setRendered] = useState(open)
+  const [entered, setEntered] = useState(false)
+  const panelRef = useRef<HTMLDivElement>(null)
+
+  // Deferred unmount so the exit transition can play; double-rAF arms the enter.
+  useEffect(() => {
+    if (open) {
+      let raf1 = 0
+      let raf2 = 0
+      const mountTimer = window.setTimeout(() => {
+        setRendered(true)
+        raf1 = requestAnimationFrame(() => {
+          raf2 = requestAnimationFrame(() => setEntered(true))
+        })
+      }, 0)
+      return () => {
+        window.clearTimeout(mountTimer)
+        cancelAnimationFrame(raf1)
+        cancelAnimationFrame(raf2)
+      }
+    }
+
+    const closeTimer = window.setTimeout(() => setEntered(false), 0)
+    const timer = window.setTimeout(() => setRendered(false), 150)
+    return () => {
+      window.clearTimeout(closeTimer)
+      window.clearTimeout(timer)
+    }
+  }, [open])
+
+  const handleTransitionEnd = (event: TransitionEvent<HTMLDivElement>) => {
+    if (!open && event.target === panelRef.current) {
+      setRendered(false)
+    }
+  }
+
+  if (!rendered) return null
 
   return (
     <TimePickerModalContent
@@ -48,11 +85,18 @@ export function TimePickerModal({
       initialMode={initialMode}
       onConfirm={onConfirm}
       onCancel={onCancel}
+      entered={entered}
+      panelRef={panelRef}
+      onPanelTransitionEnd={handleTransitionEnd}
     />
   )
 }
 
-type TimePickerModalContentProps = Omit<TimePickerModalProps, 'open'>
+type TimePickerModalContentProps = Omit<TimePickerModalProps, 'open'> & {
+  entered: boolean
+  panelRef: RefObject<HTMLDivElement | null>
+  onPanelTransitionEnd: (event: TransitionEvent<HTMLDivElement>) => void
+}
 
 function TimePickerModalContent({
   value,
@@ -60,6 +104,9 @@ function TimePickerModalContent({
   initialMode = 'dial',
   onConfirm,
   onCancel,
+  entered,
+  panelRef,
+  onPanelTransitionEnd,
 }: TimePickerModalContentProps) {
   const [mode, setMode] = useState<'dial' | 'input'>(initialMode)
   const [dialMode, setDialMode] = useState<'hour' | 'minute'>('hour')
@@ -131,12 +178,24 @@ function TimePickerModalContent({
 
   return (
     <div className="m3-timepicker-modal__overlay">
-      <div className="m3-timepicker-modal__scrim" onClick={onCancel} aria-hidden="true" />
-      <div 
-        className="m3-timepicker-modal"
+      <div
+        className={[
+          'm3-timepicker-modal__scrim',
+          entered ? 'm3-timepicker-modal__scrim--open' : '',
+        ].filter(Boolean).join(' ')}
+        onClick={onCancel}
+        aria-hidden="true"
+      />
+      <div
+        className={[
+          'm3-timepicker-modal',
+          entered ? 'm3-timepicker-modal--open' : '',
+        ].filter(Boolean).join(' ')}
         role="dialog"
         aria-modal="true"
         aria-label={`Select time. Current time is ${ariaTimeText}`}
+        ref={panelRef}
+        onTransitionEnd={onPanelTransitionEnd}
       >
         <div className="m3-timepicker-modal__header-label">
            {mode === 'dial' ? 'Select time' : 'Enter time'}
