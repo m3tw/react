@@ -115,9 +115,11 @@
   z-index: 0;
 }
 
-.m3-chip__button:hover::after,
-.m3-chip__dismiss:hover::after {
-  background-color: color-mix(in srgb, var(--m3-chip-color) 8%, transparent);
+@media (hover: hover) and (pointer: fine) {
+  .m3-chip__button:hover::after,
+  .m3-chip__dismiss:hover::after {
+    background-color: color-mix(in srgb, var(--m3-chip-color) 8%, transparent);
+  }
 }
 
 .m3-chip__button:focus-visible::after,

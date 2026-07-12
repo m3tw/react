@@ -140,8 +140,10 @@
   --m3-button-color: var(--md-sys-color-primary);
   --m3-button-elevation: var(--md-sys-elevation-level1);
 }
-.m3-button--elevated:hover:not(:disabled) {
-  --m3-button-elevation: var(--md-sys-elevation-level2);
+@media (hover: hover) and (pointer: fine) {
+  .m3-button--elevated:hover:not(:disabled) {
+    --m3-button-elevation: var(--md-sys-elevation-level2);
+  }
 }
 .m3-button--elevated:focus-visible:not(:disabled),
 .m3-button--elevated:active:not(:disabled) {
@@ -153,8 +155,10 @@
   --m3-button-bg: var(--md-sys-color-primary);
   --m3-button-color: var(--md-sys-color-on-primary);
 }
-.m3-button--filled:hover:not(:disabled) {
-  --m3-button-elevation: var(--md-sys-elevation-level1);
+@media (hover: hover) and (pointer: fine) {
+  .m3-button--filled:hover:not(:disabled) {
+    --m3-button-elevation: var(--md-sys-elevation-level1);
+  }
 }
 
 /* Tonal */
@@ -162,8 +166,10 @@
   --m3-button-bg: var(--md-sys-color-secondary-container);
   --m3-button-color: var(--md-sys-color-on-secondary-container);
 }
-.m3-button--tonal:hover:not(:disabled) {
-  --m3-button-elevation: var(--md-sys-elevation-level1);
+@media (hover: hover) and (pointer: fine) {
+  .m3-button--tonal:hover:not(:disabled) {
+    --m3-button-elevation: var(--md-sys-elevation-level1);
+  }
 }
 
 /* Outlined */

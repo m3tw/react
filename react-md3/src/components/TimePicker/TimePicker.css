@@ -59,8 +59,10 @@
   color: var(--md-sys-color-on-surface-variant);
 }
 
-.m3-time-picker__input-btn:not(:disabled):hover {
-  background-color: color-mix(in srgb, var(--md-sys-color-on-surface) 8%, transparent);
+@media (hover: hover) and (pointer: fine) {
+  .m3-time-picker__input-btn:not(:disabled):hover {
+    background-color: color-mix(in srgb, var(--md-sys-color-on-surface) 8%, transparent);
+  }
 }
 
 /* Modal Variant */
@@ -162,8 +164,10 @@
   color: var(--md-sys-color-on-secondary-container);
 }
 
-.m3-timepicker-modal__digit:hover:not(.m3-timepicker-modal__digit--active) {
-  background-color: color-mix(in srgb, var(--md-sys-color-on-surface) 8%, var(--md-sys-color-surface-variant));
+@media (hover: hover) and (pointer: fine) {
+  .m3-timepicker-modal__digit:hover:not(.m3-timepicker-modal__digit--active) {
+    background-color: color-mix(in srgb, var(--md-sys-color-on-surface) 8%, var(--md-sys-color-surface-variant));
+  }
 }
 
 .m3-timepicker-modal__digit:focus-visible {
@@ -244,8 +248,10 @@
   color: var(--md-sys-color-on-tertiary-container);
 }
 
-.m3-timepicker-modal__ampm-btn:hover:not(.m3-timepicker-modal__ampm-btn--active) {
-  background-color: color-mix(in srgb, var(--md-sys-color-on-surface) 8%, transparent);
+@media (hover: hover) and (pointer: fine) {
+  .m3-timepicker-modal__ampm-btn:hover:not(.m3-timepicker-modal__ampm-btn--active) {
+    background-color: color-mix(in srgb, var(--md-sys-color-on-surface) 8%, transparent);
+  }
 }
 
 /* Dial Engine */
@@ -372,8 +378,10 @@
   transition: background-color var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard);
 }
 
-.m3-timepicker-modal__mode-toggle:hover {
-  background-color: color-mix(in srgb, var(--md-sys-color-on-surface) 8%, transparent);
+@media (hover: hover) and (pointer: fine) {
+  .m3-timepicker-modal__mode-toggle:hover {
+    background-color: color-mix(in srgb, var(--md-sys-color-on-surface) 8%, transparent);
+  }
 }
 
 .m3-timepicker-modal__actions {
@@ -396,8 +404,10 @@
   transition: background-color var(--md-sys-motion-duration-short3) var(--md-sys-motion-easing-standard);
 }
 
-.m3-timepicker-modal__action-btn:hover {
-  background-color: color-mix(in srgb, var(--md-sys-color-primary) 8%, transparent);
+@media (hover: hover) and (pointer: fine) {
+  .m3-timepicker-modal__action-btn:hover {
+    background-color: color-mix(in srgb, var(--md-sys-color-primary) 8%, transparent);
+  }
 }
 
 .m3-timepicker-modal__action-btn:disabled {

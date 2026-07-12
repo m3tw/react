@@ -49,9 +49,11 @@
   --m3-card-bg: var(--md-sys-color-surface-container-low);
   --m3-card-elevation: var(--md-sys-elevation-level1);
 }
-.m3-card--elevated.m3-card--interactive:hover {
-  /* Hover elevates from 1 to 2 */
-  --m3-card-elevation: var(--md-sys-elevation-level2);
+@media (hover: hover) and (pointer: fine) {
+  .m3-card--elevated.m3-card--interactive:hover {
+    /* Hover elevates from 1 to 2 */
+    --m3-card-elevation: var(--md-sys-elevation-level2);
+  }
 }
 .m3-card--elevated.m3-card--interactive:focus-visible,
 .m3-card--elevated.m3-card--interactive:active {
@@ -65,9 +67,11 @@
   --m3-card-bg: var(--md-sys-color-surface-container-highest);
   --m3-card-elevation: none; /* level 0 */
 }
-.m3-card--filled.m3-card--interactive:hover {
-  /* Hover elevates from 0 to 1 */
-  --m3-card-elevation: var(--md-sys-elevation-level1);
+@media (hover: hover) and (pointer: fine) {
+  .m3-card--filled.m3-card--interactive:hover {
+    /* Hover elevates from 0 to 1 */
+    --m3-card-elevation: var(--md-sys-elevation-level1);
+  }
 }
 .m3-card--filled.m3-card--interactive:focus-visible,
 .m3-card--filled.m3-card--interactive:active {
@@ -82,9 +86,11 @@
   --m3-card-elevation: none; /* level 0 */
   --m3-card-border: 1px solid var(--md-sys-color-outline-variant);
 }
-.m3-card--outlined.m3-card--interactive:hover {
-  /* Hover elevates from 0 to 1 and drops the border visually */
-  --m3-card-elevation: var(--md-sys-elevation-level1);
+@media (hover: hover) and (pointer: fine) {
+  .m3-card--outlined.m3-card--interactive:hover {
+    /* Hover elevates from 0 to 1 and drops the border visually */
+    --m3-card-elevation: var(--md-sys-elevation-level1);
+  }
 }
 .m3-card--outlined.m3-card--interactive:focus-visible {
   /* Focus thickens border (via state layer logic below typically) or just uses outline */

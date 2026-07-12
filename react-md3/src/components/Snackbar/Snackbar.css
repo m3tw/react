@@ -78,8 +78,10 @@
   flex-shrink: 0;
 }
 
-.m3-snackbar__close:hover {
-  background-color: color-mix(in srgb, var(--md-sys-color-inverse-on-surface) 8%, transparent);
+@media (hover: hover) and (pointer: fine) {
+  .m3-snackbar__close:hover {
+    background-color: color-mix(in srgb, var(--md-sys-color-inverse-on-surface) 8%, transparent);
+  }
 }
 
 .m3-snackbar__close:focus-visible {

@@ -59,8 +59,10 @@
   z-index: 1;
 }
 
-.m3-fab:hover:not(:disabled) {
-  --m3-fab-elevation: var(--md-sys-elevation-level4);
+@media (hover: hover) and (pointer: fine) {
+  .m3-fab:hover:not(:disabled) {
+    --m3-fab-elevation: var(--md-sys-elevation-level4);
+  }
 }
 .m3-fab:focus-visible:not(:disabled),
 .m3-fab:active:not(:disabled) {

@@ -101,8 +101,10 @@
   outline-offset: 2px;
 }
 
-.m3-checkbox__input:hover:not(:disabled) ~ .m3-checkbox__visual {
-  --m3-checkbox-border: var(--md-sys-color-on-surface);
+@media (hover: hover) and (pointer: fine) {
+  .m3-checkbox__input:hover:not(:disabled) ~ .m3-checkbox__visual {
+    --m3-checkbox-border: var(--md-sys-color-on-surface);
+  }
 }
 
 /* Checked state */
@@ -129,8 +131,10 @@
   --m3-checkbox-mark: var(--md-sys-color-on-error);
 }
 
-.m3-checkbox--error .m3-checkbox__input:hover:not(:disabled) ~ .m3-checkbox__visual {
-  --m3-checkbox-border: var(--md-sys-color-on-error-container);
+@media (hover: hover) and (pointer: fine) {
+  .m3-checkbox--error .m3-checkbox__input:hover:not(:disabled) ~ .m3-checkbox__visual {
+    --m3-checkbox-border: var(--md-sys-color-on-error-container);
+  }
 }
 
 .m3-checkbox--error .m3-checkbox__label-text {

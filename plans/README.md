@@ -12,8 +12,8 @@ and a feel-check protocol. Execute with any agent
 | 001 | [Complete M3 motion tokens, migrate hand-typed values](001-motion-tokens.md) | HIGH | Cohesion & tokens | DONE — merged as `2130a50` |
 | 002 | [Sheet & date-picker exit animations (interruptible)](002-sheet-picker-exit-animations.md) | HIGH | Exit motion / interruptibility | DONE — merged as `7a7acc2`; feel-check pending |
 | 003 | [Dialog / FullScreenDialog / Snackbar → transitions](003-dialog-snackbar-transitions.md) | MEDIUM | Interruptibility / easing | DONE — merged as `eb849fd`; feel-check pending |
-| 004 | [Tooltip enter motion (@starting-style)](004-tooltip-enter-motion.md) | MEDIUM | Easing / missed motion | EXECUTED 2026-07-12 — review passed; applied to main working tree (uncommitted); feel-check pending |
-| 005 | [Gate hover styles for touch](005-touch-hover-gating.md) | MEDIUM | Accessibility | TODO |
+| 004 | [Tooltip enter motion (@starting-style)](004-tooltip-enter-motion.md) | MEDIUM | Easing / missed motion | DONE — merged as `bfc01f7`; feel-check pending |
+| 005 | [Gate hover styles for touch](005-touch-hover-gating.md) | MEDIUM | Accessibility | EXECUTED 2026-07-12 — review passed; applied to main working tree (uncommitted); feel-check pending |
 | 006 | [ButtonGroup check: scale(0) keyframes → transitions](006-buttongroup-check-transition.md) | MEDIUM | Physicality | TODO |
 | 007 | [FAB menu: stagger on open only, snap close](007-fab-menu-close-stagger.md) | MEDIUM | Asymmetric timing | TODO |
 | 008 | [Reduced-motion sweep + library-wide verification](008-reduced-motion-sweep.md) | HIGH | Accessibility | TODO |

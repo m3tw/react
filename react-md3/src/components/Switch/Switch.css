@@ -115,9 +115,11 @@
   outline-offset: 2px;
 }
 
-.m3-switch:hover:not(:disabled) .m3-switch__thumb {
-  background-color: var(--md-sys-color-on-surface-variant);
-  /* Unselected Hover thumb is 24x24 */
+@media (hover: hover) and (pointer: fine) {
+  .m3-switch:hover:not(:disabled) .m3-switch__thumb {
+    background-color: var(--md-sys-color-on-surface-variant);
+    /* Unselected Hover thumb is 24x24 */
+  }
 }
 
 .m3-switch:active:not(:disabled) .m3-switch__thumb {
@@ -148,8 +150,10 @@
 }
 
 /* Switch on hover in checked state */
-.m3-switch--checked:hover:not(:disabled) .m3-switch__thumb {
-  background-color: var(--md-sys-color-primary-container);
+@media (hover: hover) and (pointer: fine) {
+  .m3-switch--checked:hover:not(:disabled) .m3-switch__thumb {
+    background-color: var(--md-sys-color-primary-container);
+  }
 }
 
 .m3-switch--checked .m3-switch__icon--on {

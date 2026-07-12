@@ -1,6 +1,6 @@
 # 005 — Gate hover styles behind `@media (hover: hover)` (kill sticky touch-hover)
 
-- **Status**: TODO
+- **Status**: EXECUTED 2026-07-12 — review passed; applied to main working tree (uncommitted); feel-check pending
 - **Commit**: 5c6d25f
 - **Severity**: MEDIUM
 - **Category**: Accessibility / input adaptation

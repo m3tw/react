@@ -41,8 +41,10 @@
   padding: 0;
 }
 
-.m3-calendar__arrow-btn:hover {
-  background-color: color-mix(in srgb, var(--md-sys-color-on-surface) 8%, transparent);
+@media (hover: hover) and (pointer: fine) {
+  .m3-calendar__arrow-btn:hover {
+    background-color: color-mix(in srgb, var(--md-sys-color-on-surface) 8%, transparent);
+  }
 }
 
 .m3-calendar__arrow-btn:active {
@@ -73,8 +75,10 @@
   white-space: nowrap;
 }
 
-.m3-calendar__dropdown-btn:hover {
-  background-color: color-mix(in srgb, var(--md-sys-color-on-surface) 8%, transparent);
+@media (hover: hover) and (pointer: fine) {
+  .m3-calendar__dropdown-btn:hover {
+    background-color: color-mix(in srgb, var(--md-sys-color-on-surface) 8%, transparent);
+  }
 }
 
 /* Caret arrow */
@@ -153,9 +157,11 @@
   padding: 0 12px;
 }
 
-.m3-calendar__dropdown-option:hover,
-.m3-calendar__year-option:hover {
-  background-color: color-mix(in srgb, var(--md-sys-color-on-surface) 8%, transparent);
+@media (hover: hover) and (pointer: fine) {
+  .m3-calendar__dropdown-option:hover,
+  .m3-calendar__year-option:hover {
+    background-color: color-mix(in srgb, var(--md-sys-color-on-surface) 8%, transparent);
+  }
 }
 
 .m3-calendar__dropdown-option--selected,
@@ -237,8 +243,10 @@
 }
 
 /* Hover */
-.m3-calendar__day:hover:not(:disabled):not(.m3-calendar__day--selected) {
-  background-color: color-mix(in srgb, var(--md-sys-color-on-surface) 8%, transparent);
+@media (hover: hover) and (pointer: fine) {
+  .m3-calendar__day:hover:not(:disabled):not(.m3-calendar__day--selected) {
+    background-color: color-mix(in srgb, var(--md-sys-color-on-surface) 8%, transparent);
+  }
 }
 
 /* Focus */
@@ -254,8 +262,10 @@
   opacity: 1;
 }
 
-.m3-calendar__day--selected:hover {
-  background-color: color-mix(in srgb, var(--md-sys-color-primary) 88%, var(--md-sys-color-on-primary));
+@media (hover: hover) and (pointer: fine) {
+  .m3-calendar__day--selected:hover {
+    background-color: color-mix(in srgb, var(--md-sys-color-primary) 88%, var(--md-sys-color-on-primary));
+  }
 }
 
 /* Today */
@@ -299,8 +309,10 @@
   transition: background-color var(--md-sys-motion-duration-short3) var(--md-sys-motion-easing-standard);
 }
 
-.m3-calendar__action-btn:hover {
-  background-color: color-mix(in srgb, var(--md-sys-color-primary) 8%, transparent);
+@media (hover: hover) and (pointer: fine) {
+  .m3-calendar__action-btn:hover {
+    background-color: color-mix(in srgb, var(--md-sys-color-primary) 8%, transparent);
+  }
 }
 
 .m3-calendar__action-btn:disabled {

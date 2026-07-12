@@ -57,8 +57,10 @@
   margin-left: 12px;
 }
 
-.m3-date-time-picker__input-btn:not(:disabled):hover {
-  border-color: var(--md-sys-color-on-surface);
+@media (hover: hover) and (pointer: fine) {
+  .m3-date-time-picker__input-btn:not(:disabled):hover {
+    border-color: var(--md-sys-color-on-surface);
+  }
 }
 
 .m3-date-time-picker--focused .m3-date-time-picker__input-btn,

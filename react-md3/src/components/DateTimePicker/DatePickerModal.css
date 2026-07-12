@@ -105,8 +105,10 @@
   transition: background-color var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard);
 }
 
-.m3-datepicker-modal__mode-btn:hover {
-  background-color: color-mix(in srgb, var(--md-sys-color-on-surface) 8%, transparent);
+@media (hover: hover) and (pointer: fine) {
+  .m3-datepicker-modal__mode-btn:hover {
+    background-color: color-mix(in srgb, var(--md-sys-color-on-surface) 8%, transparent);
+  }
 }
 
 /* Divider */
@@ -213,8 +215,10 @@
   transition: background-color var(--md-sys-motion-duration-short3) var(--md-sys-motion-easing-standard);
 }
 
-.m3-datepicker-modal__action-btn:hover {
-  background-color: color-mix(in srgb, var(--md-sys-color-primary) 8%, transparent);
+@media (hover: hover) and (pointer: fine) {
+  .m3-datepicker-modal__action-btn:hover {
+    background-color: color-mix(in srgb, var(--md-sys-color-primary) 8%, transparent);
+  }
 }
 
 .m3-datepicker-modal__action-btn:disabled {

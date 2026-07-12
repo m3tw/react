@@ -115,8 +115,10 @@
   outline-offset: 2px;
 }
 
-.m3-radio__input:hover:not(:disabled) ~ .m3-radio__visual {
-  --m3-radio-border: var(--md-sys-color-on-surface);
+@media (hover: hover) and (pointer: fine) {
+  .m3-radio__input:hover:not(:disabled) ~ .m3-radio__visual {
+    --m3-radio-border: var(--md-sys-color-on-surface);
+  }
 }
 
 /* Checked state */
@@ -140,8 +142,10 @@
   --m3-radio-fill: var(--md-sys-color-error);
 }
 
-.m3-radio-group--error .m3-radio__input:hover:not(:disabled) ~ .m3-radio__visual {
-  --m3-radio-border: var(--md-sys-color-on-error-container);
+@media (hover: hover) and (pointer: fine) {
+  .m3-radio-group--error .m3-radio__input:hover:not(:disabled) ~ .m3-radio__visual {
+    --m3-radio-border: var(--md-sys-color-on-error-container);
+  }
 }
 
 .m3-radio-group--error .m3-radio-group__legend,

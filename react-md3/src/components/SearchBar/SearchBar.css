@@ -32,8 +32,10 @@
   z-index: 0;
 }
 
-.m3-search-bar__container:hover::before {
-  background-color: color-mix(in srgb, var(--md-sys-color-on-surface) 8%, transparent);
+@media (hover: hover) and (pointer: fine) {
+  .m3-search-bar__container:hover::before {
+    background-color: color-mix(in srgb, var(--md-sys-color-on-surface) 8%, transparent);
+  }
 }
 
 .m3-search-bar__container:focus-within::before {

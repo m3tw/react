@@ -19,8 +19,10 @@
 }
 
 /* Base selectors for handling state layers declaratively based on parent states */
-:where(button, a, [role="button"], [role="menuitem"], [role="tab"], [role="checkbox"], [role="radio"], [role="switch"], .m3-interactive):not(:disabled,[aria-disabled="true"]):hover > .m3-ripple-container > .m3-state-layer {
-  opacity: var(--md-sys-state-hover);
+@media (hover: hover) and (pointer: fine) {
+  :where(button, a, [role="button"], [role="menuitem"], [role="tab"], [role="checkbox"], [role="radio"], [role="switch"], .m3-interactive):not(:disabled,[aria-disabled="true"]):hover > .m3-ripple-container > .m3-state-layer {
+    opacity: var(--md-sys-state-hover);
+  }
 }
 
 :where(button, a, [role="button"], [role="menuitem"], [role="tab"], [role="checkbox"], [role="radio"], [role="switch"], .m3-interactive):not(:disabled,[aria-disabled="true"]):focus-visible > .m3-ripple-container > .m3-state-layer {
