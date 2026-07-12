@@ -1,6 +1,6 @@
 # 004 — Tooltip enter motion (fade + settle via @starting-style)
 
-- **Status**: TODO
+- **Status**: EXECUTED 2026-07-12 — review passed; applied to main working tree (uncommitted); feel-check pending
 - **Commit**: 5c6d25f
 - **Severity**: MEDIUM
 - **Category**: Easing & duration / missed motion

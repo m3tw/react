@@ -13,6 +13,9 @@
   background-color: var(--md-sys-color-surface-container);
   box-shadow: var(--md-sys-elevation-level2);
   box-sizing: border-box;
+
+  transition: opacity var(--md-sys-motion-duration-short3) var(--md-sys-motion-easing-emphasized-decelerate),
+              transform var(--md-sys-motion-duration-short3) var(--md-sys-motion-easing-emphasized-decelerate);
 }
 
 .m3-rich-tooltip--with-actions {
@@ -74,4 +77,21 @@
   left: 100%;
   top: 50%;
   transform: translateY(-50%) translateX(4px);
+}
+
+.m3-rich-tooltip--top    { transform-origin: center bottom; }
+.m3-rich-tooltip--bottom { transform-origin: center top; }
+.m3-rich-tooltip--left   { transform-origin: right center; }
+.m3-rich-tooltip--right  { transform-origin: left center; }
+
+@starting-style {
+  .m3-rich-tooltip { opacity: 0; }
+  .m3-rich-tooltip--top    { transform: translateX(-50%) translateY(-4px) scale(0.98); }
+  .m3-rich-tooltip--bottom { transform: translateX(-50%) translateY(4px) scale(0.98); }
+  .m3-rich-tooltip--left   { transform: translateY(-50%) translateX(-4px) scale(0.98); }
+  .m3-rich-tooltip--right  { transform: translateY(-50%) translateX(4px) scale(0.98); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .m3-rich-tooltip { transition-property: opacity; }
 }
