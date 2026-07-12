@@ -1,11 +1,16 @@
-import { cleanup, fireEvent, render } from '@testing-library/react'
-import { afterEach, describe, expect, it, vi } from 'vitest'
+import { act, cleanup, fireEvent, render } from '@testing-library/react'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { SideSheet } from './SideSheet'
 
 describe('SideSheet', () => {
+  beforeEach(() => {
+    vi.useFakeTimers()
+  })
+
   afterEach(() => {
     cleanup()
+    vi.useRealTimers()
   })
 
   it('renders standard variant with complementary role', () => {
@@ -44,6 +49,7 @@ describe('SideSheet', () => {
 
     expect(onClose).toHaveBeenCalledTimes(1)
     expect(onOpenChange).toHaveBeenCalledWith(false)
+    act(() => { vi.advanceTimersByTime(250) })
     expect(queryByRole('complementary', { name: 'Close Test' })).not.toBeInTheDocument()
   })
 
@@ -59,6 +65,7 @@ describe('SideSheet', () => {
     fireEvent.keyDown(dialog, { key: 'Escape' })
 
     expect(onOpenChange).toHaveBeenCalledWith(false)
+    act(() => { vi.advanceTimersByTime(250) })
     expect(queryByRole('dialog', { name: 'Escape Test' })).not.toBeInTheDocument()
   })
 
@@ -144,7 +151,32 @@ describe('SideSheet', () => {
       </SideSheet>,
     )
 
+    act(() => { vi.advanceTimersByTime(250) })
     expect(queryByRole('complementary', { name: 'Controlled' })).not.toBeInTheDocument()
+  })
+
+  it('focuses the modal when controlled open flips to true', () => {
+    const onOpenChange = vi.fn()
+    const { getByRole, rerender } = render(
+      <SideSheet open={false} onOpenChange={onOpenChange} headline="Deferred Focus" variant="modal">
+        <p>Content</p>
+      </SideSheet>,
+    )
+
+    rerender(
+      <SideSheet open onOpenChange={onOpenChange} headline="Deferred Focus" variant="modal">
+        <p>Content</p>
+      </SideSheet>,
+    )
+
+    act(() => { vi.advanceTimersByTime(50) })
+
+    const dialog = getByRole('dialog', { name: 'Deferred Focus' })
+    expect(dialog).toBeInTheDocument()
+    expect(dialog.contains(document.activeElement)).toBe(true)
+
+    fireEvent.keyDown(document.activeElement!, { key: 'Escape' })
+    expect(onOpenChange).toHaveBeenCalledWith(false)
   })
 
   it('throws when both open and defaultOpen are provided', () => {

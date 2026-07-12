@@ -9,8 +9,8 @@ and a feel-check protocol. Execute with any agent
 
 | # | Plan | Severity | Category | Status |
 | --- | --- | --- | --- | --- |
-| 001 | [Complete M3 motion tokens, migrate hand-typed values](001-motion-tokens.md) | HIGH | Cohesion & tokens | TODO |
-| 002 | [Sheet & date-picker exit animations (interruptible)](002-sheet-picker-exit-animations.md) | HIGH | Exit motion / interruptibility | TODO |
+| 001 | [Complete M3 motion tokens, migrate hand-typed values](001-motion-tokens.md) | HIGH | Cohesion & tokens | DONE — merged as `2130a50` |
+| 002 | [Sheet & date-picker exit animations (interruptible)](002-sheet-picker-exit-animations.md) | HIGH | Exit motion / interruptibility | EXECUTED 2026-07-12 — uncommitted in worktree `agent-a4d16d8c2ccb290fd`; pending merge + feel-check |
 | 003 | [Dialog / FullScreenDialog / Snackbar → transitions](003-dialog-snackbar-transitions.md) | MEDIUM | Interruptibility / easing | TODO |
 | 004 | [Tooltip enter motion (@starting-style)](004-tooltip-enter-motion.md) | MEDIUM | Easing / missed motion | TODO |
 | 005 | [Gate hover styles for touch](005-touch-hover-gating.md) | MEDIUM | Accessibility | TODO |
@@ -40,6 +40,10 @@ File-ownership notes (to avoid conflicts if executed out of order):
   what they own in their Boundaries sections.
 - 002 and 003 use the same TSX pattern (`rendered`/`entered` + transitionend + timeout
   fallback) but touch disjoint files.
+- 003's executor MUST read plan 002's "Execution notes" first: the shared TSX pattern
+  needed two review amendments (focus effect gated on `rendered`; rAF chain nested in
+  the mount timer, all handles cancelled), and Dialog.tsx / FullScreenDialog.tsx carry
+  the same latent focus-on-controlled-open bug that 002's review caught in the sheets.
 - 008 must not patch files owned by 002/003/004/007 — it reports gaps instead.
 
 ## Audit context (for reviewers)

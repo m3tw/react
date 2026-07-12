@@ -8,26 +8,14 @@
   z-index: 30;
 }
 
-@keyframes m3-bottom-sheet-slide-in {
-  from {
-    transform: translateY(100%);
-  }
-  to {
-    transform: translateY(0);
-  }
-}
-
-@keyframes m3-bottom-sheet-scrim-fade-in {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
 .m3-bottom-sheet-scrim {
-  animation: m3-bottom-sheet-scrim-fade-in var(--md-sys-motion-duration-medium1) var(--md-sys-motion-easing-emphasized);
+  opacity: 0;
+  transition: opacity var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard);
+}
+
+.m3-bottom-sheet-scrim--open {
+  opacity: 1;
+  transition-duration: var(--md-sys-motion-duration-medium1);
 }
 
 .m3-bottom-sheet {
@@ -39,14 +27,36 @@
   max-width: 640px;
   max-height: calc(100vh - 72px);
   overflow-y: auto;
-  animation: m3-bottom-sheet-slide-in var(--md-sys-motion-duration-medium1) var(--md-sys-motion-easing-emphasized);
+}
+
+.m3-bottom-sheet {
+  transition: transform var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized-accelerate);
+}
+
+.m3-bottom-sheet--open {
+  transition: transform var(--md-sys-motion-duration-medium1) var(--md-sys-motion-easing-emphasized-decelerate);
+}
+
+.m3-bottom-sheet--modal { transform: translateY(100%); }
+.m3-bottom-sheet--modal.m3-bottom-sheet--open { transform: translateY(0); }
+
+/* standard variant: keep the horizontal centering inside every state (fixes the jump) */
+.m3-bottom-sheet--standard { transform: translateX(-50%) translateY(100%); }
+.m3-bottom-sheet--standard.m3-bottom-sheet--open { transform: translateX(-50%) translateY(0); }
+
+@media (prefers-reduced-motion: reduce) {
+  .m3-bottom-sheet { transition-property: opacity; opacity: 0; }
+  .m3-bottom-sheet--open { opacity: 1; }
+  .m3-bottom-sheet--modal { transform: none; }
+  .m3-bottom-sheet--modal.m3-bottom-sheet--open { transform: none; }
+  .m3-bottom-sheet--standard { transform: translateX(-50%); }
+  .m3-bottom-sheet--standard.m3-bottom-sheet--open { transform: translateX(-50%); }
 }
 
 .m3-bottom-sheet--standard {
   position: fixed;
   bottom: 0;
   left: 50%;
-  transform: translateX(-50%);
   z-index: 20;
   box-shadow: var(--md-sys-elevation-level0);
 }

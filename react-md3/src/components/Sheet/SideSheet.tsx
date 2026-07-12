@@ -1,6 +1,6 @@
 import { useEffect, useId, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
-import type { KeyboardEvent, ReactNode } from 'react'
+import type { KeyboardEvent, ReactNode, TransitionEvent } from 'react'
 import { IconButton } from '../IconButton'
 
 import './SideSheet.css'
@@ -68,6 +68,9 @@ export function SideSheet({
   const isModal = variant === 'modal'
   const showDivider = divider ?? (variant === 'standard')
 
+  const [rendered, setRendered] = useState(isOpen)
+  const [entered, setEntered] = useState(false)
+
   const setSheetOpen = (nextOpen: boolean) => {
     if (!isControlled) {
       setInternalOpen(nextOpen)
@@ -82,7 +85,7 @@ export function SideSheet({
 
   // Focus management for modal
   useEffect(() => {
-    if (!isOpen || !isModal) {
+    if (!isOpen || !isModal || !rendered) {
       return
     }
 
@@ -91,7 +94,7 @@ export function SideSheet({
 
     const [firstFocusable] = getFocusableElements(panelRef.current)
     ;(firstFocusable ?? panelRef.current)?.focus()
-  }, [isOpen, isModal])
+  }, [isOpen, isModal, rendered])
 
   // Restore focus on close
   useEffect(() => {
@@ -138,7 +141,47 @@ export function SideSheet({
     }
   }
 
-  if (!isOpen) {
+  // Deferred unmount so the exit transition can play; double-rAF arms the enter.
+  useEffect(() => {
+    if (isOpen) {
+      let raf1 = 0
+      let raf2 = 0
+      const mountTimer = window.setTimeout(() => {
+        setRendered(true)
+        raf1 = requestAnimationFrame(() => {
+          raf2 = requestAnimationFrame(() => setEntered(true))
+        })
+      }, 0)
+      return () => {
+        window.clearTimeout(mountTimer)
+        cancelAnimationFrame(raf1)
+        cancelAnimationFrame(raf2)
+      }
+    }
+
+    if (!isModal) {
+      const exitTimer = window.setTimeout(() => {
+        setEntered(false)
+        setRendered(false)
+      }, 0)
+      return () => window.clearTimeout(exitTimer)
+    }
+
+    const closeTimer = window.setTimeout(() => setEntered(false), 0)
+    const timer = window.setTimeout(() => setRendered(false), 250)
+    return () => {
+      window.clearTimeout(closeTimer)
+      window.clearTimeout(timer)
+    }
+  }, [isOpen, isModal])
+
+  const handleTransitionEnd = (event: TransitionEvent<HTMLDivElement>) => {
+    if (!isOpen && event.target === panelRef.current) {
+      setRendered(false)
+    }
+  }
+
+  if (!rendered) {
     return null
   }
 
@@ -149,10 +192,12 @@ export function SideSheet({
       className={[
         'm3-side-sheet',
         `m3-side-sheet--${variant}`,
+        entered ? 'm3-side-sheet--open' : '',
         !showDivider && variant === 'standard' ? 'm3-side-sheet--no-divider' : '',
         className ?? '',
       ].filter(Boolean).join(' ')}
       onKeyDown={handleKeyDown}
+      onTransitionEnd={handleTransitionEnd}
       ref={panelRef}
       role={isModal ? 'dialog' : 'complementary'}
       tabIndex={-1}
@@ -179,7 +224,10 @@ export function SideSheet({
   if (isModal) {
     return createPortal(
       <div
-        className="m3-side-sheet-scrim"
+        className={[
+          'm3-side-sheet-scrim',
+          entered ? 'm3-side-sheet-scrim--open' : '',
+        ].filter(Boolean).join(' ')}
         onMouseDown={(event) => {
           if (event.target === event.currentTarget) {
             close()

@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import type { TransitionEvent } from 'react'
 import { Calendar } from './Calendar'
 import './DatePickerModal.css'
 
@@ -60,7 +61,43 @@ export function DatePickerModal({
   const [inputValue, setInputValue] = useState(formatInputValue(value))
   const [inputError, setInputError] = useState(false)
 
-  if (!open) return null
+  const [rendered, setRendered] = useState(open)
+  const [entered, setEntered] = useState(false)
+  const panelRef = useRef<HTMLDivElement>(null)
+
+  // Deferred unmount so the exit transition can play; double-rAF arms the enter.
+  useEffect(() => {
+    if (open) {
+      let raf1 = 0
+      let raf2 = 0
+      const mountTimer = window.setTimeout(() => {
+        setRendered(true)
+        raf1 = requestAnimationFrame(() => {
+          raf2 = requestAnimationFrame(() => setEntered(true))
+        })
+      }, 0)
+      return () => {
+        window.clearTimeout(mountTimer)
+        cancelAnimationFrame(raf1)
+        cancelAnimationFrame(raf2)
+      }
+    }
+
+    const closeTimer = window.setTimeout(() => setEntered(false), 0)
+    const timer = window.setTimeout(() => setRendered(false), 150)
+    return () => {
+      window.clearTimeout(closeTimer)
+      window.clearTimeout(timer)
+    }
+  }, [open])
+
+  const handleTransitionEnd = (event: TransitionEvent<HTMLDivElement>) => {
+    if (!open && event.target === panelRef.current) {
+      setRendered(false)
+    }
+  }
+
+  if (!rendered) return null
 
   const handleCalendarSelect = (date: Date) => {
     setSelectedDate(date)
@@ -96,8 +133,25 @@ export function DatePickerModal({
 
   return (
     <div className="m3-datepicker-modal__overlay">
-      <div className="m3-datepicker-modal__scrim" onClick={onCancel} aria-hidden="true" />
-      <div className="m3-datepicker-modal" role="dialog" aria-modal="true" aria-label="Select date">
+      <div
+        className={[
+          'm3-datepicker-modal__scrim',
+          entered ? 'm3-datepicker-modal__scrim--open' : '',
+        ].filter(Boolean).join(' ')}
+        onClick={onCancel}
+        aria-hidden="true"
+      />
+      <div
+        className={[
+          'm3-datepicker-modal',
+          entered ? 'm3-datepicker-modal--open' : '',
+        ].filter(Boolean).join(' ')}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Select date"
+        onTransitionEnd={handleTransitionEnd}
+        ref={panelRef}
+      >
         {/* Header */}
         <div className="m3-datepicker-modal__header">
           <span className="m3-datepicker-modal__header-label">Select date</span>

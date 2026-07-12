@@ -1,6 +1,6 @@
 # 002 — Give sheets and the date-picker modal real exit animations (interruptible transitions)
 
-- **Status**: TODO
+- **Status**: EXECUTED 2026-07-12 — review-approved, uncommitted in worktree `agent-a4d16d8c2ccb290fd`; pending merge + browser feel-check (see Execution notes)
 - **Commit**: 5c6d25f
 - **Severity**: HIGH
 - **Category**: Exit motion / interruptibility
@@ -308,3 +308,27 @@ change (`entered` gates CSS classes, not rendering).
     only — zero translation/scale — but still fade.
 - **Done when**: all overlays in this plan animate out, mid-animation interruptions
   retarget (no restarts), tests pass, and reduced-motion shows fades only.
+
+## Execution notes (2026-07-12, worktree `agent-a4d16d8c2ccb290fd`, base 2130a50)
+
+Two amendments to this plan's TSX snippet were required during review — apply them
+anywhere this pattern is reused (plan 003 especially):
+
+1. **Lint constraint**: `react-hooks/set-state-in-effect` (error-level in this repo)
+   forbids synchronous setState in effects. Mount/exit signals are wrapped in
+   `window.setTimeout(fn, 0)`, matching the existing `Dialog.tsx` convention.
+2. **Focus effect must gate on `rendered`**: because the panel now mounts one tick
+   after `isOpen` flips, focus effects keyed on `[isOpen, isModal]` ran against a null
+   `panelRef` and silently never focused the panel (Esc + focus trap dead until click).
+   Fixed with `if (!isOpen || !isModal || !rendered) return` + `rendered` in deps.
+   ⚠️ `Dialog.tsx` and `FullScreenDialog.tsx` on main have this same latent bug today
+   (focus effect deps `[isOpen]` with a deferred `rendered` flip) — fix it when
+   executing plan 003. Regression tests added: "focuses the modal when controlled open
+   flips to true" in both sheet test files.
+3. **rAF chain nested inside the mount timer**: scheduling the double-rAF parallel to
+   the mount timeout left the inner rAF uncancellable (close during the first ~2 frames
+   could re-arm `--open` mid-exit). The chain now starts inside the timeout callback
+   and cleanup cancels all three handles.
+
+Browser feel-check still pending (needs a human): Esc mid-enter retargets, exit ~200ms
+vs enter 250ms, standard sheet stays centered, reduced-motion fades only.
