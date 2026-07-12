@@ -138,3 +138,9 @@
   height: 100vh;
   border-radius: 0;
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .m3-carousel__track {
+    scroll-behavior: auto;
+  }
+}

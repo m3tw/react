@@ -15,8 +15,8 @@ and a feel-check protocol. Execute with any agent
 | 004 | [Tooltip enter motion (@starting-style)](004-tooltip-enter-motion.md) | MEDIUM | Easing / missed motion | DONE — merged as `bfc01f7`; feel-check pending |
 | 005 | [Gate hover styles for touch](005-touch-hover-gating.md) | MEDIUM | Accessibility | DONE — merged as `69f84dd`; feel-check pending |
 | 006 | [ButtonGroup check: scale(0) keyframes → transitions](006-buttongroup-check-transition.md) | MEDIUM | Physicality | DONE — merged as `e0cf2b1`; feel-check pending |
-| 007 | [FAB menu: stagger on open only, snap close](007-fab-menu-close-stagger.md) | MEDIUM | Asymmetric timing | EXECUTED 2026-07-12 — review passed; applied to main working tree (uncommitted); feel-check pending |
-| 008 | [Reduced-motion sweep + library-wide verification](008-reduced-motion-sweep.md) | HIGH | Accessibility | TODO |
+| 007 | [FAB menu: stagger on open only, snap close](007-fab-menu-close-stagger.md) | MEDIUM | Asymmetric timing | DONE — merged as `979d88d`; feel-check pending |
+| 008 | [Reduced-motion sweep + library-wide verification](008-reduced-motion-sweep.md) | HIGH | Accessibility | EXECUTED 2026-07-12 — review passed; applied to main working tree (uncommitted); feel-check pending |
 
 ## Execution order & dependencies
 
@@ -61,3 +61,13 @@ File-ownership notes (to avoid conflicts if executed out of order):
   NavigationDrawer component (the demo hand-rolls one in `App.css`), drag-to-dismiss
   for the BottomSheet's decorative drag handle, and reusing SplitButton's
   scale-from-origin pattern when Menu gains anchored positioning.
+- Plan 008's gap pass (2026-07-12): four rotate-only icon transitions (FAB toggle
+  icon 45°, calendar caret 180°, split-button arrow 180°, time-dial hand) are left
+  animating under reduced motion by design — the policy removes translation/scale of
+  surfaces; small icon rotations are comprehension micro-motion, same class as the
+  keep-listed Tabs indicator. Documented here so they aren't re-reported.
+- Pre-existing bug found by 008's sweep (backlog, needs its own fix):
+  `TimePicker.css:95` still references `m3-modal-enter`, whose keyframes plan 002
+  deleted from `DatePickerModal.css` — the TimePicker modal currently has **no**
+  enter animation for anyone. Either restore a local keyframe or port the 002/003
+  transition pattern.

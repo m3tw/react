@@ -288,3 +288,9 @@
   height: 24px;
   color: var(--md-sys-color-on-surface-variant);
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .m3-split-button__menu {
+    animation: none;
+  }
+}

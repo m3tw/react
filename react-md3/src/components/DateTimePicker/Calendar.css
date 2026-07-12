@@ -319,3 +319,9 @@
   color: color-mix(in srgb, var(--md-sys-color-on-surface) 38%, transparent);
   cursor: not-allowed;
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .m3-calendar__dropdown-menu {
+    animation: none;
+  }
+}

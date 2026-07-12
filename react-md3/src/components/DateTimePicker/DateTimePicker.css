@@ -112,3 +112,9 @@
     transform: translateY(0);
   }
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .m3-date-time-picker__modal-container {
+    animation: none;
+  }
+}
